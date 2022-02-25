@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
@@ -79,11 +80,12 @@ class _FavouritesState extends State<Favourites> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: _isLoading
-            ? Center(child: CircularProgressIndicator.adaptive())
+            ? Center(child: CircularProgressIndicator())
             : AnimatedContainer(
                 duration: Duration(milliseconds: 400),
                 width: _folded ? 56 : 300,
                 height: 56,
+                curve: Curves.easeInOut,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32),
                   color: Colors.white,
@@ -131,5 +133,19 @@ class _FavouritesState extends State<Favourites> {
                         ))
                   ],
                 )));
+  }
+
+  Widget _buildRecipeCard(BuildContext context, int index) {
+    return Scaffold(
+        body: ListView.builder(
+      itemCount: _recipes.length,
+      itemBuilder: (context, index) {
+        return RecipeCard(
+            title: _recipes[index].title,
+            cookTime: _recipes[index].readyInMinutes.toString() + " mins",
+            rating: _recipes[index].weightWatcherSmartPoints.toString() + " ",
+            thumbnailUrl: _recipes[index].image);
+      },
+    ));
   }
 }

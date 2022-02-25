@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodify/constants/key.dart';
 
 class MyList extends StatefulWidget {
-  const MyList({Key? key}) : super(key: key);
+  // const MyList({Key? key}) : super(key: key);
 
   @override
   _MyListState createState() => _MyListState();
@@ -10,29 +11,37 @@ class MyList extends StatefulWidget {
 class _MyListState extends State<MyList> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
 
-  List<String> _data = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Last Item'];
+  // ignore: prefer_final_fields
 
   @override
   Widget build(BuildContext context) {
     initState() {
-      super.initState();
+      //super.initState();
     }
 
-    return AnimatedList(
-      itemBuilder: (context, index, animation) {
-        initState();
-        return _buildItem(_data[index], animation, index);
-      },
-      key: _listKey,
-      initialItemCount: _data.length,
-    );
+    return Scaffold(
+        body: AnimatedList(
+          itemBuilder: (context, index, animation) {
+            initState();
+            return _buildItem(data[index], animation, index);
+          },
+          key: _listKey,
+          initialItemCount: data.length,
+        ),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.undo_rounded),
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            onPressed: () => _insertSingleItem("Hello")));
+  }
 
-    // floatingActionButton: FloatingActionButton(
-    // child: Icon(Icons.playlist_add),
-    // backgroundColor: Colors.blue,
-    // foregroundColor: Colors.white,
-    // onPressed: () => _insertSingleItem(),
-    // );
+  Widget _addItemButton(String item) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      backgroundColor: Colors.blue,
+      foregroundColor: Colors.white,
+      onPressed: () => _insertSingleItem(item),
+    );
   }
 
   Widget _buildItem(String item, Animation<double> animation, int index) {
@@ -60,22 +69,21 @@ class _MyListState extends State<MyList> {
   }
 
   /// Method to add an item to an index in a list
-  Future<void> _insertSingleItem() async {
+  Future<void> _insertSingleItem(String item) async {
     int insertIndex;
-    if (_data.length > 0) {
-      insertIndex = _data.length;
+    if (data.length > 0) {
+      insertIndex = data.length;
     } else {
       insertIndex = 0;
     }
-    String item = "Item insertIndex + 1";
-    _data.insert(insertIndex, item); //
+    data.add(item); //
     _listKey.currentState!.insertItem(insertIndex);
   }
 
   /// Method to remove an item at an index from the list
   Future<void> _removeSingleItems(int removeAt) async {
     int removeIndex = removeAt;
-    String removedItem = _data.removeAt(removeIndex);
+    String removedItem = data.removeAt(removeIndex);
     // This builder is just so that the animation has something
     // to work with before it disappears from view since the original
     // has already been deleted.
