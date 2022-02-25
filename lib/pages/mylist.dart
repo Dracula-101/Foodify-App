@@ -46,26 +46,38 @@ class _MyListState extends State<MyList> {
 
   Widget _buildItem(String item, Animation<double> animation, int index) {
     return SizeTransition(
-      sizeFactor: animation,
-      child: Card(
-        elevation: 5.0,
-        child: ListTile(
-          title: Text(
-            item,
-            style: TextStyle(fontSize: 20),
-          ),
-          trailing: GestureDetector(
-            child: Icon(
-              Icons.remove_circle,
-              color: Colors.red,
+        sizeFactor: animation,
+        child: Card(
+            color: Color.fromARGB(248, 248, 255, 255),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.white70, width: 1),
+              borderRadius: BorderRadius.circular(20),
             ),
-            onTap: () {
-              _removeSingleItems(index);
-            },
-          ),
-        ),
-      ),
-    );
+            margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+            elevation: 5.0,
+            borderOnForeground: true,
+            child: ListTile(
+              title: Text(
+                item,
+                style: TextStyle(fontSize: 20),
+              ),
+              trailing: GestureDetector(
+                child: Column(
+                  children: <Widget>[
+                    Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                    Text('Delete',
+                        style: TextStyle(fontSize: 10),
+                        textAlign: TextAlign.center),
+                  ],
+                ),
+                onTap: () {
+                  _removeSingleItems(index);
+                },
+              ),
+            )));
   }
 
   /// Method to add an item to an index in a list
