@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'favourites.dart';
-import 'home.dart';
-import 'mylist.dart';
-import 'settings.dart';
+import 'pages/favourites.dart';
+import 'pages/home.dart';
+import 'pages/mylist.dart';
+import 'pages/settings.dart';
 
 void main() {
   runApp(const MyApp());
