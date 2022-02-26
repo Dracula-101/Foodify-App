@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodify/constants/key.dart';
 
 class MyList extends StatefulWidget {
-  // const MyList({Key? key}) : super(key: key);
+  const MyList({Key? key}) : super(key: key);
 
   @override
   _MyListState createState() => _MyListState();
@@ -32,7 +32,7 @@ class _MyListState extends State<MyList> {
             child: Icon(Icons.undo_rounded),
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
-            onPressed: () => _insertSingleItem("Hello")));
+            onPressed: () => _insertSingleUndoItem()));
   }
 
   Widget _addItemButton(String item) {
@@ -44,6 +44,15 @@ class _MyListState extends State<MyList> {
     );
   }
 
+  void _insertSingleUndoItem() {
+    if (deletedData != null) {
+      String deletedItem = deletedData.elementAt(0);
+      data.add(deletedItem);
+      deletedData.remove(deletedItem);
+      _listKey.currentState!.insertItem(data.length - 1);
+    }
+  }
+
   Widget _buildItem(String item, Animation<double> animation, int index) {
     return SizeTransition(
         sizeFactor: animation,
@@ -53,7 +62,7 @@ class _MyListState extends State<MyList> {
               side: BorderSide(color: Colors.white70, width: 1),
               borderRadius: BorderRadius.circular(20),
             ),
-            margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+            margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
             elevation: 5.0,
             borderOnForeground: true,
             child: ListTile(
@@ -63,13 +72,15 @@ class _MyListState extends State<MyList> {
               ),
               trailing: GestureDetector(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Icon(
                       Icons.delete,
                       color: Colors.red,
                     ),
                     Text('Delete',
-                        style: TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: 12),
                         textAlign: TextAlign.center),
                   ],
                 ),
@@ -96,6 +107,7 @@ class _MyListState extends State<MyList> {
   Future<void> _removeSingleItems(int removeAt) async {
     int removeIndex = removeAt;
     String removedItem = data.removeAt(removeIndex);
+    deletedData.add(removedItem);
     // This builder is just so that the animation has something
     // to work with before it disappears from view since the original
     // has already been deleted.
