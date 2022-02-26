@@ -30,8 +30,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(children: [
+    return Container(
+      margin: EdgeInsets.all(10),
+      child: Column(children: [
         TextField(
           decoration: InputDecoration(
             suffixIcon: Icon(
@@ -56,7 +57,7 @@ class _HomeState extends State<Home> {
                           rating: _recipes[index].rating.toString() + " ",
                           thumbnailUrl: _recipes[index].image);
                     },
-                  ))
+                  )),
       ]),
     );
   }
