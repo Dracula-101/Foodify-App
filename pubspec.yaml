@@ -35,6 +35,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   image_picker: ^0.8.4+9
   google_nav_bar: ^5.0.5
+  fluid_action_card: ^1.0.0+4
+  video_player: ^2.2.19
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +51,18 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
+          weight: 400
+
+    - family: PlayfairDisplay
+      fonts:
+        - asset: assets/fonts/PlayfairDisplay-Bold.ttf
+          weight: 700
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
