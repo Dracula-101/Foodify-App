@@ -3,6 +3,14 @@
 *.log
 *.pyc
 *.swp
+*.h
+*.sh
+*.h
+*.m
+*.lock
+*.bin
+
+
 .DS_Store
 .atom/
 .buildlog/
