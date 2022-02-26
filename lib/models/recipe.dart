@@ -1,24 +1,27 @@
+import 'package:foodify/constants/key.dart';
+
 class Recipe {
   final String title;
   final String image;
-  final int weightWatcherSmartPoints;
+  final double rating;
   final int readyInMinutes;
 
   Recipe(
       {required this.title,
       required this.image,
-      required this.weightWatcherSmartPoints,
+      required this.rating,
       required this.readyInMinutes});
 
   factory Recipe.fromJson(dynamic json) {
     return Recipe(
         title: json['title'] as String,
         image: json['image'] as String,
-        weightWatcherSmartPoints: json['weightWatcherSmartPoints'] as int,
+        rating: (json['spoonacularScore'] as double) / 20.0,
         readyInMinutes: json['readyInMinutes'] as int);
   }
 
   static List<Recipe> recipesFromSnapshot(List snapshot) {
+    // print(snapshot);
     return snapshot.map((data) {
       return Recipe.fromJson(data);
     }).toList();
@@ -26,6 +29,6 @@ class Recipe {
 
   @override
   String toString() {
-    return 'Recipe {name: $title, image: $image, weightWatcherSmartPoints: $weightWatcherSmartPoints, readyInMinutes: $readyInMinutes}';
+    return 'Recipe {name: $title, image: $image, rating: $rating, readyInMinutes: $readyInMinutes}';
   }
 }

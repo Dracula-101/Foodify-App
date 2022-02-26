@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodify/constants/key.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class MyList extends StatefulWidget {
   const MyList({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _MyListState extends State<MyList> {
   }
 
   void _insertSingleUndoItem() {
-    if (deletedData != null) {
+    if (deletedData != null && deletedData.isNotEmpty) {
       String deletedItem = deletedData.elementAt(0);
       data.add(deletedItem);
       deletedData.remove(deletedItem);
@@ -66,6 +67,10 @@ class _MyListState extends State<MyList> {
             elevation: 5.0,
             borderOnForeground: true,
             child: ListTile(
+              leading: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.greenAccent,
+                  backgroundImage: AssetImage('assets/images/image 1.png')),
               title: Text(
                 item,
                 style: TextStyle(fontSize: 20),
@@ -75,13 +80,13 @@ class _MyListState extends State<MyList> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Icon(
-                      Icons.delete,
-                      color: Colors.red,
+                    CircleAvatar(
+                      backgroundColor: HexColor("#0C1E7F"),
+                      child: Icon(
+                        Icons.delete,
+                        color: HexColor("#FFB085"),
+                      ),
                     ),
-                    Text('Delete',
-                        style: TextStyle(fontSize: 12),
-                        textAlign: TextAlign.center),
                   ],
                 ),
                 onTap: () {

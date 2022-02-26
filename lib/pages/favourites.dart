@@ -64,7 +64,7 @@ class _FavouritesState extends State<Favourites> {
 
   void initState() {
     super.initState();
-    //filteredSearchHistory = filterSearchTerms(filter: null);
+    // filteredSearchHistory = filterSearchTerms(filter: null);
     //getRecipes();
   }
 
@@ -78,64 +78,68 @@ class _FavouritesState extends State<Favourites> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : AnimatedContainer(
-                duration: Duration(milliseconds: 400),
-                width: _folded ? 56 : 300,
-                height: 56,
-                curve: Curves.easeInOut,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32),
-                  color: Colors.white,
-                  boxShadow: kElevationToShadow[6],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                      padding: EdgeInsets.only(
-                          left: 16, right: 16, top: 8, bottom: 8),
-                      child: !_folded
-                          ? TextField(
-                              decoration: InputDecoration(
-                                  hintText: 'Search Recipes',
-                                  hintStyle: TextStyle(color: Colors.blue[300]),
-                                  border: InputBorder.none),
-                            )
-                          : null,
-                    )),
-                    AnimatedContainer(
-                        duration: Duration(milliseconds: 400),
-                        child: Material(
-                          type: MaterialType.transparency,
-                          child: InkWell(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(_folded ? 32 : 0),
-                              topRight: Radius.circular(32),
-                              bottomLeft: Radius.circular(_folded ? 32 : 0),
-                              bottomRight: Radius.circular(32),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Icon(
-                                _folded ? Icons.search : Icons.close,
-                                color: Colors.blue[900],
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _folded = !_folded;
-                              });
-                            },
+    return Stack(alignment: Alignment.topCenter, children: [
+      Image(image: AssetImage('assets/images/img_veggieimage.png')),
+      _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : AnimatedContainer(
+              duration: Duration(milliseconds: 400),
+              width: _folded ? 56 : 250,
+              // alignment: Alignment.topRight,
+              height: 56,
+              curve: Curves.fastOutSlowIn,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32),
+                color: Colors.white,
+                boxShadow: kElevationToShadow[6],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Container(
+                    padding:
+                        EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                    child: !_folded
+                        ? TextField(
+                            decoration: InputDecoration(
+                                hintText: 'Search Recipes',
+                                hintStyle: TextStyle(color: Colors.blue[300]),
+                                border: InputBorder.none),
+                          )
+                        : null,
+                  )),
+                  AnimatedContainer(
+                      duration: Duration(milliseconds: 400),
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: InkWell(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(_folded ? 32 : 0),
+                            topRight: Radius.circular(32),
+                            bottomLeft: Radius.circular(_folded ? 32 : 0),
+                            bottomRight: Radius.circular(32),
                           ),
-                        ))
-                  ],
-                )));
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Icon(
+                              _folded ? Icons.search : Icons.close,
+                              color: Colors.blue[900],
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _folded = !_folded;
+                            });
+                          },
+                        ),
+                      ))
+                ],
+              )),
+    ]);
   }
 
-  Widget _buildRecipeCard(BuildContext context, int index) {
+  Widget _buildRecipeCard(BuildContext context) {
     return Scaffold(
         body: ListView.builder(
       itemCount: _recipes.length,
@@ -143,7 +147,7 @@ class _FavouritesState extends State<Favourites> {
         return RecipeCard(
             title: _recipes[index].title,
             cookTime: _recipes[index].readyInMinutes.toString() + " mins",
-            rating: _recipes[index].weightWatcherSmartPoints.toString() + " ",
+            rating: _recipes[index].rating.toString() + " ",
             thumbnailUrl: _recipes[index].image);
       },
     ));

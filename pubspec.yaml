@@ -37,11 +37,13 @@ dependencies:
   google_nav_bar: ^5.0.5
   fluid_action_card: ^1.0.0+4
   video_player: ^2.2.19
+  hexcolor: ^2.0.6
+  dio: ^4.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  material_floating_search_bar: ^0.2.6
+  #material_floating_search_bar: ^0.2.6
   flutter_lints: ^1.0.0
 
 # For information on the generic Dart part of this file, see the

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -34,7 +34,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentTab = 0;
-  final List screens = [Home(), Favourites(), MyList(), Settings()];
+  final List screens = [
+    const Home(),
+    Favourites(),
+    const MyList(),
+    const Settings()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: screens.elementAt(_currentTab),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(20),
             ),
             color: Colors.white,
             boxShadow: [
@@ -71,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
               child: GNav(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 16,
                 ),
                 rippleColor: Colors.grey[300]!,
@@ -79,24 +84,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 gap: 8,
                 activeColor: Colors.blue[900],
                 iconSize: 25,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-                duration: Duration(milliseconds: 400),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+                duration: const Duration(milliseconds: 400),
                 tabBackgroundColor: Colors.grey[100]!,
                 color: Colors.black54,
                 tabs: [
-                  GButton(icon: Icons.house_outlined, text: 'Home'),
-                  GButton(
+                  const GButton(icon: Icons.house_outlined, text: 'Home'),
+                  const GButton(
                     icon: Icons.favorite_border,
                     // iconSize: 23,
                     text: 'Liked',
                   ),
-                  GButton(
+                  const GButton(
                     icon: Icons.format_list_bulleted_sharp,
                     // iconSize: 25,
                     // icon: Icons.checklist_rounded,
                     text: 'My List',
                   ),
-                  GButton(
+                  const GButton(
                     // iconSize: 25,
                     icon: Icons.settings_outlined,
                     text: 'Settings',

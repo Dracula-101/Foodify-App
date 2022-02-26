@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
@@ -18,11 +19,11 @@ class RecipeCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 180,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
+        color: Colors.black,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+            color: Colors.black.withOpacity(0.6),
             offset: Offset(
               0.0,
               10.0,
@@ -47,9 +48,7 @@ class RecipeCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 5.0),
               child: Text(
                 title,
-                style: TextStyle(
-                  fontSize: 19,
-                ),
+                style: TextStyle(fontSize: 19, color: HexColor("#ffffff")),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 textAlign: TextAlign.center,
@@ -65,7 +64,7 @@ class RecipeCard extends StatelessWidget {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 1).withOpacity(0.4),
+                    color: Colors.black.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Row(
@@ -76,7 +75,11 @@ class RecipeCard extends StatelessWidget {
                         size: 18,
                       ),
                       SizedBox(width: 7),
-                      Text(rating),
+                      Text(
+                        rating,
+                        style:
+                            TextStyle(fontSize: 12, color: HexColor("#ffffff")),
+                      ),
                     ],
                   ),
                 ),
@@ -84,18 +87,23 @@ class RecipeCard extends StatelessWidget {
                   padding: EdgeInsets.all(5),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
+                    color: Colors.black.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.schedule,
                         color: Colors.yellow,
                         size: 18,
                       ),
-                      SizedBox(width: 7),
-                      Text(cookTime),
+                      SizedBox(width: 9),
+                      Text(
+                        cookTime,
+                        style:
+                            TextStyle(fontSize: 12, color: HexColor("#ffffff")),
+                      ),
                     ],
                   ),
                 )
