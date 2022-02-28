@@ -145,6 +145,7 @@ class _FavouritesState extends State<Favourites> {
       itemCount: _recipes.length,
       itemBuilder: (context, index) {
         return RecipeCard(
+            id: _recipes[index].id,
             title: _recipes[index].title,
             cookTime: _recipes[index].readyInMinutes.toString() + " mins",
             rating: _recipes[index].rating.toString() + " ",

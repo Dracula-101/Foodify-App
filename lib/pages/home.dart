@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodify/loading/loader.dart';
 
 import '../models/recipe.api.dart';
 import '../models/recipe.dart';
@@ -46,11 +47,12 @@ class _HomeState extends State<Home> {
         ),
         Expanded(
             child: _isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? Center(child: Loader())
                 : ListView.builder(
                     itemCount: _recipes.length,
                     itemBuilder: (context, index) {
                       return RecipeCard(
+                          id: _recipes[index].id,
                           title: _recipes[index].title,
                           cookTime: _recipes[index].readyInMinutes.toString() +
                               " mins",
