@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodify/loading/loader.dart';
+import 'package:foodify/views/widgets/shimmer_widget.dart';
+import 'package:foodify/constants/key.dart';
 
 import '../models/recipe.api.dart';
 import '../models/recipe.dart';
@@ -21,6 +23,9 @@ class _HomeState extends State<Home> {
     setState(() {
       _isLoading = false;
     });
+    for (var i = 0; i < _recipes.length; i++) {
+      if (_recipes.elementAt(i) == null) _recipes.remove(i);
+    }
   }
 
   @override
@@ -55,7 +60,7 @@ class _HomeState extends State<Home> {
                           id: _recipes[index].id,
                           title: _recipes[index].title,
                           cookTime: _recipes[index].readyInMinutes.toString() +
-                              " mins",
+                              " mins ",
                           rating: _recipes[index].rating.toString() + " ",
                           thumbnailUrl: _recipes[index].image);
                     },
@@ -63,4 +68,11 @@ class _HomeState extends State<Home> {
       ]),
     );
   }
+
+  Widget buildFoodShimmer() => ListTile(
+        title: ShimmerWidget.rectangular(
+          height: 180,
+          br: BorderRadius.circular(15),
+        ),
+      );
 }

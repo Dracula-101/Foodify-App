@@ -6,8 +6,7 @@ import 'package:foodify/constants/key.dart';
 class RecipeApi {
   static Future<List<Recipe>> getRecipe() async {
     var uri = Uri.https(BASE_URL, '/recipes/random', {
-      "number": "20",
-      "start": "0",
+      "number": items.toString(),
       "apiKey": API_KEY,
     });
 

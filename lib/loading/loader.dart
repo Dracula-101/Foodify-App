@@ -5,7 +5,7 @@ class Loader extends StatefulWidget {
   final double radius;
   final double dotRadius;
 
-  Loader({this.radius = 30.0, this.dotRadius = 3.0});
+  Loader({this.radius = 50.0, this.dotRadius = 20.0});
 
   @override
   _LoaderState createState() => _LoaderState();
@@ -26,8 +26,6 @@ class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
 
     radius = widget.radius;
     dotRadius = widget.dotRadius;
-
-    print(dotRadius);
 
     controller = AnimationController(
         lowerBound: 0.0,
@@ -78,103 +76,100 @@ class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
       width: 100.0,
       height: 100.0,
       //color: Colors.black12,
-      child: new Center(
-        child: new RotationTransition(
+      child: Center(
+        child: RotationTransition(
           turns: animation_rotation,
-          child: new Container(
-            //color: Colors.limeAccent,
-            child: new Center(
-              child: Stack(
-                children: <Widget>[
-                  new Transform.translate(
-                    offset: Offset(0.0, 0.0),
-                    child: Dot(
-                      radius: radius,
-                      color: Colors.black12,
-                    ),
+          child: Center(
+            child: Stack(
+              children: <Widget>[
+                Transform.translate(
+                  offset: Offset(0.0, 0.0),
+                  child: Dot(
+                    radius: radius,
+                    color: Colors.black12,
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.amber,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0),
-                      radius * sin(0.0),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.amber,
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.deepOrangeAccent,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0 + 1 * pi / 4),
-                      radius * sin(0.0 + 1 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius * cos(0.0),
+                    radius * sin(0.0),
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.pinkAccent,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0 + 2 * pi / 4),
-                      radius * sin(0.0 + 2 * pi / 4),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.deepOrangeAccent,
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.purple,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0 + 3 * pi / 4),
-                      radius * sin(0.0 + 3 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius * cos(0.0 + 1 * pi / 4),
+                    radius * sin(0.0 + 1 * pi / 4),
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.yellow,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0 + 4 * pi / 4),
-                      radius * sin(0.0 + 4 * pi / 4),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.pinkAccent,
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.lightGreen,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0 + 5 * pi / 4),
-                      radius * sin(0.0 + 5 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius * cos(0.0 + 2 * pi / 4),
+                    radius * sin(0.0 + 2 * pi / 4),
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.orangeAccent,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0 + 6 * pi / 4),
-                      radius * sin(0.0 + 6 * pi / 4),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.purple,
                   ),
-                  new Transform.translate(
-                    child: Dot(
-                      radius: dotRadius,
-                      color: Colors.blueAccent,
-                    ),
-                    offset: Offset(
-                      radius * cos(0.0 + 7 * pi / 4),
-                      radius * sin(0.0 + 7 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius * cos(0.0 + 3 * pi / 4),
+                    radius * sin(0.0 + 3 * pi / 4),
                   ),
-                ],
-              ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.yellow,
+                  ),
+                  offset: Offset(
+                    radius * cos(0.0 + 4 * pi / 4),
+                    radius * sin(0.0 + 4 * pi / 4),
+                  ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.lightGreen,
+                  ),
+                  offset: Offset(
+                    radius * cos(0.0 + 5 * pi / 4),
+                    radius * sin(0.0 + 5 * pi / 4),
+                  ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.orangeAccent,
+                  ),
+                  offset: Offset(
+                    radius * cos(0.0 + 6 * pi / 4),
+                    radius * sin(0.0 + 6 * pi / 4),
+                  ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius,
+                    color: Colors.blueAccent,
+                  ),
+                  offset: Offset(
+                    radius * cos(0.0 + 7 * pi / 4),
+                    radius * sin(0.0 + 7 * pi / 4),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -197,7 +192,7 @@ class Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
+    return Center(
       child: Container(
         width: radius,
         height: radius,

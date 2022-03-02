@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class RecipeCard extends StatelessWidget {
   final int id;
@@ -7,6 +11,7 @@ class RecipeCard extends StatelessWidget {
   final String rating;
   final String cookTime;
   final String thumbnailUrl;
+
   RecipeCard({
     required this.id,
     required this.title,
@@ -21,37 +26,49 @@ class RecipeCard extends StatelessWidget {
           print(id.toString());
         },
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
           width: MediaQuery.of(context).size.width,
           height: 180,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.6),
-                offset: Offset(
-                  0.0,
-                  10.0,
-                ),
-                blurRadius: 10.0,
-                spreadRadius: -6.0,
-              ),
-            ],
-            image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.35),
-                BlendMode.multiply,
-              ),
-              image: NetworkImage(thumbnailUrl),
-              fit: BoxFit.cover,
-            ),
-          ),
           child: Stack(
+            fit: StackFit.expand,
             children: [
+              CachedNetworkImage(
+                imageUrl: thumbnailUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                        colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.5),
+                          BlendMode.multiply,
+                        ),
+                        image: imageProvider,
+                        fit: BoxFit.cover),
+                  ),
+                ),
+                placeholder: (context, url) => ShimmerWidget.rectangular(
+                    height: 180, br: BorderRadius.circular(15)),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+              // CachedNetworkImage(
+              //   fit: BoxFit.fitWidth,
+              //   imageUrl: thumbnailUrl,
+              //   placeholder: (context, url) => buildShimmer(context),
+              //   errorWidget: (context, url, error) => Icon(Icons.error),
+              // ),
+              // FadeInImage.memoryNetwork(
+              //     fit: BoxFit.scaleDown,
+              //     width: MediaQuery.of(context).size.width,
+              //     height: 180,
+              //     // fit: BoxFit.fitWidth,
+              //     // fadeInDuration: Duration(microseconds: 500),
+              //     placeholder: kTransparentImage,
+              //     image: thumbnailUrl),
               Align(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: Text(
                     title,
                     style: TextStyle(fontSize: 19, color: HexColor("#ffffff")),
@@ -67,20 +84,20 @@ class RecipeCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(5),
-                      margin: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.star,
                             color: Colors.yellow,
                             size: 18,
                           ),
-                          SizedBox(width: 7),
+                          const SizedBox(width: 7),
                           Text(
                             rating,
                             style: TextStyle(
@@ -90,8 +107,8 @@ class RecipeCard extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(5),
-                      margin: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(15),
@@ -99,12 +116,12 @@ class RecipeCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.schedule,
                             color: Colors.yellow,
                             size: 18,
                           ),
-                          SizedBox(width: 9),
+                          const SizedBox(width: 9),
                           Text(
                             cookTime,
                             style: TextStyle(
@@ -119,6 +136,36 @@ class RecipeCard extends StatelessWidget {
               ),
             ],
           ),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            color: Colors.black,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.6),
+                offset: const Offset(
+                  0.0,
+                  10.0,
+                ),
+                blurRadius: 10.0,
+                spreadRadius: -6.0,
+              ),
+            ],
+            // image: DecorationImage(
+            //   colorFilter: ColorFilter.mode(
+            //     Colors.black.withOpacity(0.5),
+            //     BlendMode.multiply,
+            //   ),
+            //   image: NetworkImage(thumbnailUrl),
+            //   fit: BoxFit.cover,
+            // ),
+          ),
         ));
   }
+
+  Widget buildShimmer(BuildContext context) => Container(
+        child: ShimmerWidget.rectangular(
+          height: 180,
+          br: BorderRadius.circular(15),
+        ),
+      );
 }

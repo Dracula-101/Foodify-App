@@ -39,6 +39,9 @@ dependencies:
   video_player: ^2.2.19
   hexcolor: ^2.0.6
   dio: ^4.0.4
+  transparent_image: ^2.0.0
+  cached_network_image: ^3.2.0
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
