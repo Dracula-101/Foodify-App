@@ -14,12 +14,12 @@ class _MyListState extends State<MyList> {
 
   // ignore: prefer_final_fields
 
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    initState() {
-      //super.initState();
-    }
-
     return Scaffold(
       body: Stack(
         children: [
