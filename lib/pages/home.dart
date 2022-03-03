@@ -1,14 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_const
 
 import 'package:flutter/material.dart';
-import 'package:foodify/loading/loader.dart';
+import 'package:foodify/views/widgets/randomRecipe.dart';
 import 'package:foodify/views/widgets/searchbar.dart';
-import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:foodify/constants/key.dart';
-
-import '../models/recipe.api.dart';
-import '../models/recipe.dart';
-import '../views/widgets/recipe_card.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,23 +13,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late List<Recipe> _recipes;
-  bool _isLoading = true;
-
-  Future<void> getRecipes() async {
-    _recipes = await RecipeApi.getRecipe();
-    setState(() {
-      _isLoading = false;
-    });
-    for (var i = 0; i < _recipes.length; i++) {
-      if (_recipes.elementAt(i) == null) _recipes.remove(i);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    getRecipes();
   }
 
   @override
@@ -91,31 +72,9 @@ class _HomeState extends State<Home> {
             ),
             alignment: Alignment.topLeft,
           ),
-          Expanded(
-            child: _isLoading
-                ? Center(child: Loader())
-                : ListView.builder(
-                    itemCount: _recipes.length,
-                    itemBuilder: (context, index) {
-                      return RecipeCard(
-                          id: _recipes[index].id,
-                          title: _recipes[index].title,
-                          cookTime: _recipes[index].readyInMinutes.toString() +
-                              " mins ",
-                          rating: _recipes[index].rating.toString() + " ",
-                          thumbnailUrl: _recipes[index].image);
-                    },
-                  ),
-          ),
+          RandomRecipe()
         ],
       ),
     );
   }
-
-  Widget buildFoodShimmer() => ListTile(
-        title: ShimmerWidget.rectangular(
-          height: 180,
-          br: BorderRadius.circular(15),
-        ),
-      );
 }
