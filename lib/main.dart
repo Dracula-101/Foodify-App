@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'pages/favourites.dart';
 import 'pages/home.dart';
 import 'pages/mylist.dart';
 import 'pages/settings.dart';
+import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
+import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
+import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,14 +35,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentTab = 0;
-  final List screens = [
-    const Home(),
-    Favourites(),
-    const MyList(),
-    const Settings()
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,72 +47,85 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: Center(
-        child: screens.elementAt(_currentTab),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(20),
-            ),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 20,
-                color: Colors.black.withOpacity(.1),
+      body: CurvedNavBar(
+        actionButton: CurvedActionBar(
+            activeIcon: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
               ),
-            ],
-          ),
-          child: SafeArea(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-              child: GNav(
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                ),
-                rippleColor: Colors.grey[300]!,
-                hoverColor: Colors.grey[100]!,
-                gap: 8,
-                activeColor: Colors.blue[900],
-                iconSize: 25,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-                duration: const Duration(milliseconds: 400),
-                tabBackgroundColor: Colors.grey[100]!,
+              child: Icon(
+                Icons.camera_alt_outlined,
+                size: 37,
+                color: Colors.blue,
+              ),
+            ),
+            inActiveIcon: Container(
+              padding: EdgeInsets.all(8),
+              decoration:
+                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              child: Icon(
+                Icons.camera_alt_outlined,
+                size: 37,
+                color: Colors.white,
+              ),
+            ),
+            text: ""),
+        activeColor: Colors.blue,
+        navBarBackgroundColor: Colors.white,
+        inActiveColor: Colors.black45,
+        appBarItems: [
+          FABBottomAppBarItem(
+              activeIcon: Icon(
+                Icons.house_outlined,
+                color: Colors.blue,
+              ),
+              inActiveIcon: Icon(
+                Icons.house_outlined,
                 color: Colors.black54,
-                tabs: [
-                  const GButton(icon: Icons.house_outlined, text: 'Home'),
-                  const GButton(
-                    icon: Icons.favorite_border,
-                    // iconSize: 23,
-                    text: 'Liked',
-                  ),
-                  const GButton(
-                    icon: Icons.format_list_bulleted_sharp,
-                    // iconSize: 25,
-                    // icon: Icons.checklist_rounded,
-                    text: 'My List',
-                  ),
-                  const GButton(
-                    // iconSize: 25,
-                    icon: Icons.settings_outlined,
-                    text: 'Settings',
-                  ),
-                ],
-                selectedIndex: _currentTab,
-                onTabChange: (index) {
-                  setState(
-                    () {
-                      _currentTab = index;
-                    },
-                  );
-                },
               ),
-            ),
-          ),
+              text: 'Home'),
+          FABBottomAppBarItem(
+              activeIcon: Icon(
+                Icons.favorite_border,
+                color: Colors.blue,
+              ),
+              inActiveIcon: Icon(
+                Icons.favorite_border,
+                color: Colors.black54,
+              ),
+              text: 'Liked'),
+          FABBottomAppBarItem(
+              activeIcon: Icon(
+                Icons.format_list_bulleted_sharp,
+                color: Colors.blue,
+              ),
+              inActiveIcon: Icon(
+                Icons.format_list_bulleted_sharp,
+                color: Colors.black54,
+              ),
+              text: 'My List'),
+          FABBottomAppBarItem(
+              activeIcon: Icon(
+                Icons.settings_outlined,
+                color: Colors.blue,
+              ),
+              inActiveIcon: Icon(
+                Icons.settings_outlined,
+                color: Colors.black54,
+              ),
+              text: 'Settings'),
+        ],
+        bodyItems: [
+          Home(),
+          Favourites(),
+          MyList(),
+          Settings(),
+        ],
+        actionBarView: Container(
+          height: MediaQuery.of(context).size.height,
+          color: Colors.black,
         ),
       ),
     );

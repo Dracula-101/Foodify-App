@@ -37,20 +37,27 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
-      child: Column(children: [
-        TextField(
-          decoration: InputDecoration(
-            suffixIcon: Icon(
-              Icons.search,
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: TextField(
+              decoration: InputDecoration(
+                suffixIcon: Icon(
+                  Icons.search,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                hintText: 'Search',
+              ),
             ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            hintText: 'Search',
           ),
-        ),
-        Expanded(
+          SizedBox(
+            height: 5,
+          ),
+          Expanded(
             child: _isLoading
                 ? Center(child: Loader())
                 : ListView.builder(
@@ -64,8 +71,10 @@ class _HomeState extends State<Home> {
                           rating: _recipes[index].rating.toString() + " ",
                           thumbnailUrl: _recipes[index].image);
                     },
-                  )),
-      ]),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 

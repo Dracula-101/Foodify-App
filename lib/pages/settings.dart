@@ -11,14 +11,6 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getImages(),
-        child: Icon(Icons.camera_alt_rounded),
-      ),
-    );
+    return Container();
   }
-
-  getImages() {}
 }

@@ -21,19 +21,32 @@ class _MyListState extends State<MyList> {
     }
 
     return Scaffold(
-        body: AnimatedList(
-          itemBuilder: (context, index, animation) {
-            initState();
-            return _buildItem(data[index], animation, index);
-          },
-          key: _listKey,
-          initialItemCount: data.length,
-        ),
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.undo_rounded),
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-            onPressed: () => _insertSingleUndoItem()));
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: AnimatedList(
+              itemBuilder: (context, index, animation) {
+                initState();
+                return _buildItem(data[index], animation, index);
+              },
+              key: _listKey,
+              initialItemCount: data.length,
+            ),
+          ),
+          Positioned(
+            bottom: 70,
+            right: 15,
+            child: FloatingActionButton(
+              child: Icon(Icons.undo_rounded),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              onPressed: () => _insertSingleUndoItem(),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _addItemButton(String item) {
@@ -56,44 +69,46 @@ class _MyListState extends State<MyList> {
 
   Widget _buildItem(String item, Animation<double> animation, int index) {
     return SizeTransition(
-        sizeFactor: animation,
-        child: Card(
-            color: Color.fromARGB(248, 248, 255, 255),
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.white70, width: 1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-            elevation: 5.0,
-            borderOnForeground: true,
-            child: ListTile(
-              leading: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.greenAccent,
-                  backgroundImage: AssetImage('assets/images/image 1.png')),
-              title: Text(
-                item,
-                style: TextStyle(fontSize: 20),
-              ),
-              trailing: GestureDetector(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: HexColor("#0C1E7F"),
-                      child: Icon(
-                        Icons.delete,
-                        color: HexColor("#FFB085"),
-                      ),
-                    ),
-                  ],
+      sizeFactor: animation,
+      child: Card(
+        color: Color.fromARGB(248, 248, 255, 255),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white70, width: 1),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        elevation: 5.0,
+        borderOnForeground: true,
+        child: ListTile(
+          leading: CircleAvatar(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.greenAccent,
+              backgroundImage: AssetImage('assets/images/image 1.png')),
+          title: Text(
+            item,
+            style: TextStyle(fontSize: 20),
+          ),
+          trailing: GestureDetector(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: HexColor("#0C1E7F"),
+                  child: Icon(
+                    Icons.delete,
+                    color: HexColor("#FFB085"),
+                  ),
                 ),
-                onTap: () {
-                  _removeSingleItems(index);
-                },
-              ),
-            )));
+              ],
+            ),
+            onTap: () {
+              _removeSingleItems(index);
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   /// Method to add an item to an index in a list
