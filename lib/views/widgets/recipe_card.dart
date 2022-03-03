@@ -163,6 +163,21 @@ class RecipeCard extends StatelessWidget {
   }
 
   Widget buildShimmer(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          color: Colors.black,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.6),
+              offset: const Offset(
+                0.0,
+                10.0,
+              ),
+              blurRadius: 10.0,
+              spreadRadius: -6.0,
+            ),
+          ],
+        ),
         child: ShimmerWidget.rectangular(
           height: 180,
           br: BorderRadius.circular(15),

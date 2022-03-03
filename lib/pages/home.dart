@@ -57,6 +57,17 @@ class _HomeState extends State<Home> {
           SizedBox(
             height: 5,
           ),
+          const Text(
+            "Recipes for you",
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontFamily: "playfairdisplaybold700",
+              color: Colors.greenAccent,
+              fontSize: 30,
+              decorationThickness: 10,
+            ),
+          ),
           Expanded(
             child: _isLoading
                 ? Center(child: Loader())

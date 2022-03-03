@@ -69,6 +69,41 @@ flutter:
         - asset: assets/fonts/PlayfairDisplay-Bold.ttf
           weight: 700
 
+    - family: Open Sans
+      fonts:
+        - asset: assets/fonts/opensansbold700.ttf
+          weight: 700
+        - asset: assets/fonts/opensansregular400.ttf
+          weight: 400
+        - asset: assets/fonts/opensanslight300.ttf
+          weight: 300
+        - asset: assets/fonts/opensanssemibold600.ttf
+          weight: 600
+
+    - family: Playfair Display
+      fonts:
+        - asset: assets/fonts/playfairdisplaybold700.ttf
+          weight: 700
+        - asset: assets/fonts/playfairdisplayregular400.ttf
+          weight: 400
+
+    - family: Lora
+      fonts:
+        - asset: assets/fonts/lorabold700.ttf
+          weight: 700
+        - asset: assets/fonts/loraregular400.ttf
+          weight: 400
+
+    - family: Oswald
+      fonts:
+        - asset: assets/fonts/oswaldlight300.ttf
+          weight: 300
+    - family: Poppins
+
+      fonts:
+        - asset: assets/fonts/poppinsbold700.ttf
+          weight: 700
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
