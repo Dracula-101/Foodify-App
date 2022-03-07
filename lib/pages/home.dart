@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: "lorabold700",
-                        color: Colors.amber,
+                        color: Color.fromARGB(255, 0, 0, 0),
                         fontSize: 30,
                         // decorationThickness: 10,
                         fontWeight: FontWeight.bold,
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
             ),
             alignment: Alignment.topLeft,
           ),
-          RandomRecipe()
+          // RandomRecipe()
         ],
       ),
     );

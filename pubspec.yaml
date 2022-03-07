@@ -43,6 +43,7 @@ dependencies:
   cached_network_image: ^3.2.0
   shimmer: ^2.0.0
   curved_nav_bar: ^0.0.2
+  tflite: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +58,11 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/fonts/
+    - assets/tflite/ssd_mobilenet.tflite
+    - assets/tflite/ssd_mobilenet.txt
+    - assets/tflite/yolov2_tiny.tflite
+    - assets/tflite/yolov2_tiny.txt
 
   fonts:
     - family: OpenSans
