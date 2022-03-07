@@ -1,24 +1,26 @@
 import 'package:foodify/models/recipe.dart';
 
-class recipeDetails {
+class recipeID {
   late String title;
   late String imageUrl;
   late int rating;
   late List<dynamic> ingredients;
   late List<dynamic> steps;
   late String recipeId;
+  late String summary;
 
-  recipeDetails({
+  recipeID({
     required this.recipeId,
     String? title,
     String? imageUrl,
     rating,
     List? ingredients,
     List? steps,
+    String? summary,
   });
 
-  factory recipeDetails.fromJson(dynamic json) {
-    return recipeDetails(
+  factory recipeID.fromJson(dynamic json) {
+    return recipeID(
         title: json['title'] as String,
         imageUrl: json['image'] as String,
         rating: (json['spoonacularScore']) / 20,
@@ -26,17 +28,18 @@ class recipeDetails {
             .map((e) => e['original'])
             .toList(),
         steps: (json['analyzedInstructions.steps'] as List),
-        recipeId: json['id']);
+        recipeId: json['id'],
+        summary: json['summary']);
   }
 
-  static List<recipeDetails> recipesFromSnapshotDetails(List snapshot) {
+  static List<recipeID> recipesFromSnapshotDetails(List snapshot) {
     return snapshot.map((data) {
-      return recipeDetails.fromJson(data);
+      return recipeID.fromJson(data);
     }).toList();
   }
 
   @override
   String toString() {
-    return 'recipeDetails {name: $title, image: $imageUrl, rating: $rating, ingredients: $ingredients, steps: $steps}';
+    return 'recipeID {name: $title, image: $imageUrl, rating: $rating, ingredients: $ingredients, steps: $steps,summary: $summary}';
   }
 }

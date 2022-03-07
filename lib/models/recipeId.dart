@@ -1,115 +1,42 @@
-// To parse this JSON data, do
+import 'package:foodify/models/recipe.dart';
 
-//     final recipeId = recipeIdFromJson(jsonString);
+class recipeID {
+  late String title;
+  late String imageUrl;
+  late int rating;
+  late List<dynamic> ingredients;
+  late List<dynamic> steps;
+  late String recipeId;
 
-import 'dart:convert';
-
-RecipeId recipeIdFromJson(String str) => RecipeId.fromJson(json.decode(str));
-
-String recipeIdToJson(RecipeId data) => json.encode(data.toJson());
-
-class RecipeId {
-  RecipeId({
-    this.vegetarian,
-    this.spoonacularScore,
-    this.healthScore,
-    this.extendedIngredients,
-    this.id,
-    this.title,
-    this.readyInMinutes,
-    this.sourceUrl,
-    this.image,
-    this.instructions,
-    this.analyzedInstructions,
+  recipeID({
+    required this.recipeId,
+    String? title,
+    String? imageUrl,
+    rating,
+    List? ingredients,
+    List? steps,
   });
 
-  bool? vegetarian;
-  int? spoonacularScore;
-  int? healthScore;
-  List<ExtendedIngredient>? extendedIngredients;
-  int? id;
-  String? title;
-  int? readyInMinutes;
-  int? servings;
-  String? sourceUrl;
-  String? image;
-  String? instructions;
-  List<dynamic>? analyzedInstructions;
+  factory recipeID.fromJson(dynamic json) {
+    return recipeID(
+        title: json['title'] as String,
+        imageUrl: json['image'] as String,
+        rating: (json['spoonacularScore']) / 20,
+        ingredients: (json['extendedIngredients'] as List)
+            .map((e) => e['original'])
+            .toList(),
+        steps: (json['analyzedInstructions.steps'] as List),
+        recipeId: json['id']);
+  }
 
-  factory RecipeId.fromJson(Map<String, dynamic> json) => RecipeId(
-        vegetarian: json["vegetarian"],
-        spoonacularScore: json["spoonacularScore"],
-        healthScore: json["healthScore"],
-        extendedIngredients: json["extendedIngredients"] == null
-            ? null
-            : List<ExtendedIngredient>.from(json["extendedIngredients"]
-                .map((x) => ExtendedIngredient.fromJson(x))),
-        id: json["id"],
-        title: json["title"],
-        readyInMinutes: json["readyInMinutes"],
-        instructions: json["instructions"],
-        analyzedInstructions: json["analyzedInstructions"] == null
-            ? null
-            : List<dynamic>.from(json["analyzedInstructions"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "vegetarian": vegetarian,
-        "extendedIngredients": extendedIngredients == null
-            ? null
-            : List<dynamic>.from(extendedIngredients!.map((x) => x.toJson())),
-        "id": id,
-        "title": title,
-        "readyInMinutes": readyInMinutes,
-        "servings": servings,
-        "sourceUrl": sourceUrl,
-        "image": image,
-      };
-
-  static List<RecipeId> recipeSearchFromSnapshot(List snapshot) {
+  static List<recipeID> recipesFromSnapshotDetails(List snapshot) {
     return snapshot.map((data) {
-      return RecipeId.fromJson(data);
+      return recipeID.fromJson(data);
     }).toList();
   }
-}
 
-class ExtendedIngredient extends RecipeId {
-  ExtendedIngredient({
-    this.id,
-    this.image,
-    this.name,
-    this.amount,
-    this.unit,
-  });
-
-  int? id;
-  String? aisle;
-  String? image;
-  String? name;
-  double? amount;
-  String? unit;
-
-  factory ExtendedIngredient.fromJson(Map<String, dynamic> json) =>
-      ExtendedIngredient(
-        id: json["id"],
-        image: json["image"],
-        name: json["name"],
-        amount: json["amount"] == null ? null : json["amount"].toDouble(),
-        unit: json["unit"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "aisle": aisle,
-        "image": image,
-        "name": name,
-        "amount": amount,
-        "unit": unit,
-      };
-
-  static List<ExtendedIngredient> recipeSearchFromSnapshot(List snapshot) {
-    return snapshot.map((data) {
-      return ExtendedIngredient.fromJson(data);
-    }).toList();
+  @override
+  String toString() {
+    return 'recipeID {name: $title, image: $imageUrl, rating: $rating, ingredients: $ingredients, steps: $steps}';
   }
 }

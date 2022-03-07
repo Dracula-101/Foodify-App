@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:foodify/models/recipeDetails.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class RecipeCard extends StatelessWidget {
   final int id;
@@ -22,8 +21,8 @@ class RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          print(id.toString());
+        onTap: () async {
+          // getRecipeDetails(id.toString());
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
