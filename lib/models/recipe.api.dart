@@ -15,6 +15,9 @@ class RecipeApi {
         .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
 
     Map data = jsonDecode(response.body);
+    if (data == null) {
+      changeAPiKey();
+    }
     List _temp = [];
 
     for (var i in data['recipes']) {

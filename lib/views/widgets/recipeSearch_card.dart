@@ -5,14 +5,14 @@ import 'package:foodify/models/recipeSearch.dart';
 import 'package:foodify/views/widgets/recipe_card.dart';
 
 class RecipeSearchCard extends StatefulWidget {
-  const RecipeSearchCard({Key? key}) : super(key: key);
+  final String title;
+  const RecipeSearchCard({Key? key, required this.title}) : super(key: key);
 
   @override
   State<RecipeSearchCard> createState() => _RecipeSearchCardState();
 }
 
 class _RecipeSearchCardState extends State<RecipeSearchCard> {
-  String title = "Mac and Cheese";
   late List<RecipeSearch> _recipes;
   bool _isLoading = true;
   @override
@@ -22,7 +22,7 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
   }
 
   Future<void> getRecipes() async {
-    _recipes = await RecipeSearchApi.getRecipe(title);
+    _recipes = await RecipeSearchApi.getRecipe(widget.title);
     setState(() {
       _isLoading = false;
     });
