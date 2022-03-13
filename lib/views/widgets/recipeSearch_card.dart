@@ -42,6 +42,7 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
                   cookTime: _recipes[index].cookTime.toString() + " mins ",
                   thumbnailUrl: _recipes[index].image,
                   rating: _recipes[index].rating.toString() + " ",
+                  vegetarian: _recipes[index].vegetarian,
                   description: "search",
                 );
               },

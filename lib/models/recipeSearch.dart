@@ -5,6 +5,7 @@ class RecipeSearch {
   final String title;
   final String image;
   final int cookTime;
+  final bool vegetarian;
   final double rating;
 
   RecipeSearch(
@@ -12,7 +13,8 @@ class RecipeSearch {
       required this.title,
       required this.image,
       required this.cookTime,
-      required this.rating
+      required this.rating,
+      required this.vegetarian
       // required this.calories,
       // required this.proteins,
       });
@@ -25,6 +27,7 @@ class RecipeSearch {
       image: json['image'] as String,
       cookTime: json['readyInMinutes'] as int,
       rating: (json['spoonacularScore'] as double) / 20.0,
+      vegetarian: json['vegetarian'] as bool,
       // calories: json['nutrition.nutrients.amount'] as int,
       // proteins: json['nutrition.nutrients.amount'] as int
     );

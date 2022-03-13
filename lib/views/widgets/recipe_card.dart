@@ -10,6 +10,7 @@ class RecipeCard extends StatelessWidget {
   final String rating;
   final String cookTime;
   final String thumbnailUrl;
+  final bool vegetarian;
   final String description;
 
   RecipeCard({
@@ -19,6 +20,7 @@ class RecipeCard extends StatelessWidget {
     required this.rating,
     required this.thumbnailUrl,
     required this.description,
+    required this.vegetarian,
   });
   @override
   Widget build(BuildContext context) {
@@ -67,18 +69,18 @@ class RecipeCard extends StatelessWidget {
                 alignment: Alignment.center,
               ),
               Align(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: description == "random"
-                            ? Row(
+                child: description == "random"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.all(5),
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Row(
                                 children: [
                                   const Icon(
                                     Icons.star,
@@ -93,19 +95,17 @@ class RecipeCard extends StatelessWidget {
                                         color: HexColor("#ffffff")),
                                   ),
                                 ],
-                              )
-                            : null),
-                    Container(
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: description == "random"
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                              )),
+                          Container(
+                              padding: const EdgeInsets.all(5),
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
                                     const Icon(
                                       Icons.schedule,
                                       color: Colors.yellow,
@@ -118,12 +118,35 @@ class RecipeCard extends StatelessWidget {
                                           fontSize: 12,
                                           color: HexColor("#ffffff")),
                                     ),
-                                  ])
-                            : null)
-                  ],
-                ),
+                                  ]))
+                        ],
+                      )
+                    : null,
                 alignment: Alignment.bottomLeft,
               ),
+              Align(
+                child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.only(topLeft: Radius.circular(15)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+                      child: vegetarian
+                          ? Image.asset(
+                              'assets/images/veg.png',
+                              height: 40,
+                              width: 40,
+                            )
+                          : Image.asset(
+                              'assets/images/non-veg.png',
+                              height: 40,
+                              width: 40,
+                            ),
+                    )),
+                alignment: Alignment.topLeft,
+              )
             ],
           ),
           decoration: BoxDecoration(

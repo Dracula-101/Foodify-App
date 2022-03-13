@@ -4,13 +4,15 @@ class Recipe {
   final String image;
   final double rating;
   final int readyInMinutes;
+  final bool vegetarian;
 
   Recipe(
       {required this.id,
       required this.title,
       required this.image,
       required this.rating,
-      required this.readyInMinutes});
+      required this.readyInMinutes,
+      required this.vegetarian});
 
   factory Recipe.fromJson(dynamic json) {
     return Recipe(
@@ -18,7 +20,8 @@ class Recipe {
         title: json['title'] as String,
         image: json['image'] as String,
         rating: (json['spoonacularScore'] as double) / 20.0,
-        readyInMinutes: json['readyInMinutes'] as int);
+        readyInMinutes: json['readyInMinutes'] as int,
+        vegetarian: json['vegetarian'] as bool);
   }
 
   static List<Recipe> recipesFromSnapshot(List snapshot) {
@@ -30,6 +33,6 @@ class Recipe {
 
   @override
   String toString() {
-    return 'Recipe {id: $id, name: $title, image: $image, rating: $rating, readyInMinutes: $readyInMinutes}';
+    return 'Recipe {id: $id, name: $title, image: $image, rating: $rating, readyInMinutes: $readyInMinutes, vegetarian: $vegetarian}';
   }
 }
