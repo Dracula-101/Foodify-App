@@ -16,7 +16,7 @@ class _RandomRecipeState extends State<RandomRecipe> {
   @override
   void initState() {
     super.initState();
-    // getRecipes();
+    getRecipes();
   }
 
   late List<Recipe> _recipes;
