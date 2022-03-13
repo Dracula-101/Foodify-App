@@ -22,7 +22,6 @@ class RecipeSearchApi {
     for (var i in data['results']) {
       _temp.add(i);
     }
-    print(_temp);
     return RecipeSearch.recipeSearchFromSnapshot(_temp);
   }
 }
