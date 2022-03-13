@@ -15,8 +15,9 @@ class RecipeApi {
         .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
 
     Map data = jsonDecode(response.body);
-    if (data == null) {
+    if (data['code'] == 402) {
       changeAPiKey();
+      return getRecipe();
     }
     List _temp = [];
 
