@@ -16,7 +16,7 @@ class _RandomRecipeState extends State<RandomRecipe> {
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    // getRecipes();
   }
 
   late List<Recipe> _recipes;
@@ -42,12 +42,14 @@ class _RandomRecipeState extends State<RandomRecipe> {
                 itemCount: _recipes.length,
                 itemBuilder: (context, index) {
                   return RecipeCard(
-                      id: _recipes[index].id,
-                      title: _recipes[index].title,
-                      cookTime:
-                          _recipes[index].readyInMinutes.toString() + " mins ",
-                      rating: _recipes[index].rating.toString() + " ",
-                      thumbnailUrl: _recipes[index].image);
+                    id: _recipes[index].id,
+                    title: _recipes[index].title,
+                    cookTime:
+                        _recipes[index].readyInMinutes.toString() + " mins ",
+                    rating: _recipes[index].rating.toString() + " ",
+                    thumbnailUrl: _recipes[index].image,
+                    description: "random",
+                  );
                 },
               ),
       ),

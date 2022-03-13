@@ -10,6 +10,7 @@ class RecipeCard extends StatelessWidget {
   final String rating;
   final String cookTime;
   final String thumbnailUrl;
+  final String description;
 
   RecipeCard({
     required this.id,
@@ -17,6 +18,7 @@ class RecipeCard extends StatelessWidget {
     required this.cookTime,
     required this.rating,
     required this.thumbnailUrl,
+    required this.description,
   });
   @override
   Widget build(BuildContext context) {
@@ -51,20 +53,6 @@ class RecipeCard extends StatelessWidget {
                     height: 180, br: BorderRadius.circular(15)),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              // CachedNetworkImage(
-              //   fit: BoxFit.fitWidth,
-              //   imageUrl: thumbnailUrl,
-              //   placeholder: (context, url) => buildShimmer(context),
-              //   errorWidget: (context, url, error) => Icon(Icons.error),
-              // ),
-              // FadeInImage.memoryNetwork(
-              //     fit: BoxFit.scaleDown,
-              //     width: MediaQuery.of(context).size.width,
-              //     height: 180,
-              //     // fit: BoxFit.fitWidth,
-              //     // fadeInDuration: Duration(microseconds: 500),
-              //     placeholder: kTransparentImage,
-              //     image: thumbnailUrl),
               Align(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -83,52 +71,55 @@ class RecipeCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 7),
-                          Text(
-                            rating,
-                            style: TextStyle(
-                                fontSize: 12, color: HexColor("#ffffff")),
-                          ),
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: description == "random"
+                            ? Row(
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    color: Colors.yellow,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 7),
+                                  Text(
+                                    rating,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: HexColor("#ffffff")),
+                                  ),
+                                ],
+                              )
+                            : null),
                     Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.schedule,
-                            color: Colors.yellow,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 9),
-                          Text(
-                            cookTime,
-                            style: TextStyle(
-                                fontSize: 12, color: HexColor("#ffffff")),
-                          ),
-                        ],
-                      ),
-                    )
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: description == "random"
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                    const Icon(
+                                      Icons.schedule,
+                                      color: Colors.yellow,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(width: 9),
+                                    Text(
+                                      cookTime,
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: HexColor("#ffffff")),
+                                    ),
+                                  ])
+                            : null)
                   ],
                 ),
                 alignment: Alignment.bottomLeft,

@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
-import 'package:octo_image/octo_image.dart' as img;
 
 const String ssd = "SSD MobileNet";
 const String yolo = "Tiny Yolov2";
@@ -29,14 +28,14 @@ class _SettingsState extends State<Settings> {
 
   @override
   void initState() {
-    super.initState();
-    _busy = true;
+    // super.initState();
+    // _busy = true;
 
-    loadModel().then((val) {
-      setState(() {
-        _busy = false;
-      });
-    });
+    // loadModel().then((val) {
+    //   setState(() {
+    //     _busy = false;
+    //   });
+    // });
   }
 
   loadModel() async {
@@ -54,7 +53,7 @@ class _SettingsState extends State<Settings> {
           labels: "assets/tflite/ssd_mobilenet.txt",
         ))!;
       }
-      print(res);
+      // print(res);
     } on PlatformException {
       print("Failed to load the model");
     }
@@ -134,10 +133,11 @@ class _SettingsState extends State<Settings> {
         height: re["rect"]["h"] * factorY,
         child: Container(
           decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               border: Border.all(
-            color: appColour,
-            width: 3,
-          )),
+                color: appColour,
+                width: 3,
+              )),
           child: Text(
             "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
             style: TextStyle(
@@ -153,37 +153,44 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    List<Widget> stackChildren = [];
-
-    stackChildren.add(Positioned(
-      top: 0.0,
-      left: 0.0,
-      width: size.width,
-      child: _image == null ? Text("No Image Selected") : Image.file(_image!),
-    ));
-
-    stackChildren.addAll(renderBoxes(size));
-
-    if (_busy) {
-      stackChildren.add(Center(
-        child: CircularProgressIndicator(),
-      ));
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Food recognition."),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.image),
-        tooltip: "Pick Image from gallery",
-        onPressed: selectFromImagePicker,
-      ),
-      body: Stack(
-        children: stackChildren,
-      ),
+    return Container(
+      child: const RecipeSearchCard(),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   Size size = MediaQuery.of(context).size;
+
+  //   List<Widget> stackChildren = [];
+
+  //   stackChildren.add(Positioned(
+  //     top: 0.0,
+  //     left: 0.0,
+  //     width: size.width,
+  //     child: _image == null ? Text("No Image Selected") : Image.file(_image!),
+  //   ));
+
+  //   stackChildren.addAll(renderBoxes(size));
+
+  //   if (_busy) {
+  //     stackChildren.add(Center(
+  //       child: CircularProgressIndicator(),
+  //     ));
+  //   }
+
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text("Food recognition."),
+  //     ),
+  //     floatingActionButton: FloatingActionButton(
+  //       child: Icon(Icons.image),
+  //       tooltip: "Pick Image from gallery",
+  //       onPressed: selectFromImagePicker,
+  //     ),
+  //     body: Stack(
+  //       children: stackChildren,
+  //     ),
+  //   );
+  // }
 }

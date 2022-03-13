@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
             ),
             alignment: Alignment.topLeft,
           ),
-          // RandomRecipe()
+          RandomRecipe()
         ],
       ),
     );
