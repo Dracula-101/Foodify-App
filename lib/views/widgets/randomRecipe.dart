@@ -49,6 +49,8 @@ class _RandomRecipeState extends State<RandomRecipe> {
                     rating: _recipes[index].rating.toString() + " ",
                     thumbnailUrl: _recipes[index].image,
                     description: "random",
+                    calories: "-1",
+                    caloriesUnit: "cal",
                     vegetarian: _recipes[index].vegetarian,
                   );
                 },

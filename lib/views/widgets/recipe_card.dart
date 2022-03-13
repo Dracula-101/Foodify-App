@@ -11,6 +11,8 @@ class RecipeCard extends StatelessWidget {
   final String cookTime;
   final String thumbnailUrl;
   final bool vegetarian;
+  final String calories;
+  final String caloriesUnit;
   final String description;
 
   RecipeCard({
@@ -21,6 +23,8 @@ class RecipeCard extends StatelessWidget {
     required this.thumbnailUrl,
     required this.description,
     required this.vegetarian,
+    required this.calories,
+    required this.caloriesUnit,
   });
   @override
   Widget build(BuildContext context) {
@@ -69,70 +73,101 @@ class RecipeCard extends StatelessWidget {
                 alignment: Alignment.center,
               ),
               Align(
-                child: description == "random"
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Row(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 7),
+                            Text(
+                              rating,
+                              style: TextStyle(
+                                  fontSize: 12, color: HexColor("#ffffff")),
+                            ),
+                          ],
+                        )),
+                    description == "search"
+                        ? Container(
+                            padding: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                    size: 18,
+                                  Image.asset(
+                                    'assets/images/fire.png',
+                                    height: 18,
+                                    width: 18,
                                   ),
-                                  const SizedBox(width: 7),
+                                  const SizedBox(width: 9),
                                   Text(
-                                    rating,
+                                    calories + " " + caloriesUnit,
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: HexColor("#ffffff")),
                                   ),
-                                ],
-                              )),
-                          Container(
-                              padding: const EdgeInsets.all(5),
-                              margin: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.schedule,
-                                      color: Colors.yellow,
-                                      size: 18,
-                                    ),
-                                    const SizedBox(width: 9),
-                                    Text(
-                                      cookTime,
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: HexColor("#ffffff")),
-                                    ),
-                                  ]))
-                        ],
-                      )
-                    : null,
+                                ]))
+                        : Container(
+                            padding: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.schedule,
+                                    color: Colors.yellow,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 9),
+                                  Text(
+                                    cookTime,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: HexColor("#ffffff")),
+                                  ),
+                                ])),
+                  ],
+                ),
                 alignment: Alignment.bottomLeft,
               ),
               Align(
                 child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.only(topLeft: Radius.circular(15)),
-                    ),
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(15)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.6),
+                            offset: const Offset(
+                              0.0,
+                              10.0,
+                            ),
+                            blurRadius: 10.0,
+                            spreadRadius: -6.0,
+                          ),
+                        ]),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 7),
                       child: vegetarian
                           ? Image.asset(
                               'assets/images/veg.png',

@@ -7,7 +7,8 @@ class RecipeApi {
   static Future<List<Recipe>> getRecipe() async {
     var uri = Uri.https(BASE_URL, '/recipes/random', {
       "number": items.toString(),
-      "apiKey": API_KEY,
+      ""
+          "apiKey": API_KEY,
     });
 
     final response = await http
@@ -19,7 +20,7 @@ class RecipeApi {
     for (var i in data['recipes']) {
       _temp.add(i);
     }
-
+    // print(_temp);
     return Recipe.recipesFromSnapshot(_temp);
   }
 }

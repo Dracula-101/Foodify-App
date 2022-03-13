@@ -31,3 +31,6 @@ final List<dynamic> data = [
 ];
 
 final List<String> deletedData = [];
+
+final String imagenotfound =
+    "https://bitsofco.de/content/images/2018/12/broken-1.png";

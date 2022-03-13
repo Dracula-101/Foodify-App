@@ -12,7 +12,7 @@ class RecipeSearchCard extends StatefulWidget {
 }
 
 class _RecipeSearchCardState extends State<RecipeSearchCard> {
-  String title = "Butter Chicken";
+  String title = "Mac and Cheese";
   late List<RecipeSearch> _recipes;
   bool _isLoading = true;
   @override
@@ -43,6 +43,8 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
                   thumbnailUrl: _recipes[index].image,
                   rating: _recipes[index].rating.toString() + " ",
                   vegetarian: _recipes[index].vegetarian,
+                  calories: _recipes[index].calories,
+                  caloriesUnit: _recipes[index].caloriesUnit,
                   description: "search",
                 );
               },
