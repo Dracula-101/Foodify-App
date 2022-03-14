@@ -34,28 +34,26 @@ class _RandomRecipeState extends State<RandomRecipe> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Expanded(
-        child: _isLoading
-            ? Center(child: Loader())
-            : ListView.builder(
-                itemCount: _recipes.length,
-                itemBuilder: (context, index) {
-                  return RecipeCard(
-                    id: _recipes[index].id,
-                    title: _recipes[index].title,
-                    cookTime:
-                        _recipes[index].readyInMinutes.toString() + " mins ",
-                    rating: _recipes[index].rating.toString() + " ",
-                    thumbnailUrl: _recipes[index].image,
-                    description: "random",
-                    calories: "-1",
-                    caloriesUnit: "cal",
-                    vegetarian: _recipes[index].vegetarian,
-                  );
-                },
-              ),
-      ),
+    return Expanded(
+      child: _isLoading
+          ? Center(child: Loader())
+          : ListView.builder(
+              itemCount: _recipes.length,
+              itemBuilder: (context, index) {
+                return RecipeCard(
+                  id: _recipes[index].id,
+                  title: _recipes[index].title,
+                  cookTime:
+                      _recipes[index].readyInMinutes.toString() + " mins ",
+                  rating: _recipes[index].rating.toString() + " ",
+                  thumbnailUrl: _recipes[index].image,
+                  description: "random",
+                  calories: "-1",
+                  caloriesUnit: "cal",
+                  vegetarian: _recipes[index].vegetarian,
+                );
+              },
+            ),
     );
   }
 }

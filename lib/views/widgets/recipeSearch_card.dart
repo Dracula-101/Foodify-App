@@ -30,10 +30,11 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Expanded(
       child: _isLoading
           ? Center(child: Loader())
           : ListView.builder(
+              shrinkWrap: true,
               itemCount: _recipes.length,
               itemBuilder: (context, index) {
                 return RecipeCard(
