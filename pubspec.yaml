@@ -64,6 +64,8 @@ flutter:
     - assets/tflite/ssd_mobilenet.txt
     - assets/tflite/yolov2_tiny.tflite
     - assets/tflite/yolov2_tiny.txt
+    - assets/tflite/model_unquant.tflite
+    - assets/tflite/labels.txt
 
   fonts:
     - family: OpenSans
