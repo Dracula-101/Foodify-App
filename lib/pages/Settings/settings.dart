@@ -54,7 +54,7 @@ class Settings extends StatelessWidget {
 
   selectFromImagePicker() async {
     ImagePicker imagepick = new ImagePicker();
-    image = await imagepick.pickImage(source: ImageSource.gallery);
+    image = await imagepick.pickImage(source: ImageSource.camera);
     if (image == null) return;
     // setState(() {
     //   _busy = true;

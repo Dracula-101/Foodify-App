@@ -80,7 +80,7 @@ class Home extends StatelessWidget {
           ),
           alignment: Alignment.topLeft,
         ),
-        RandomRecipe()
+        // RandomRecipe()
       ],
     );
   }
