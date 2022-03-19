@@ -15,24 +15,15 @@ class Recipe {
       required this.vegetarian});
 
   factory Recipe.fromJson(dynamic json) {
-    if (json['image'] == null) {
-      print("the image was null");
-      return Recipe(
-          id: json['id'] as int,
-          title: json['title'] as String,
-          image: "https://bitsofco.de/content/images/2018/12/broken-1.png",
-          rating: (json['spoonacularScore'] as double) / 20.0,
-          readyInMinutes: json['readyInMinutes'] as int,
-          vegetarian: json['vegetarian'] as bool);
-    } else {
-      return Recipe(
-          id: json['id'] as int,
-          title: json['title'] as String,
-          image: json['image'] as String,
-          rating: (json['spoonacularScore'] as double) / 20.0,
-          readyInMinutes: json['readyInMinutes'] as int,
-          vegetarian: json['vegetarian'] as bool);
-    }
+    return Recipe(
+        id: json['id'] as int,
+        title: json['title'] as String,
+        image: json['image'] == null
+            ? "https://bitsofco.de/content/images/2018/12/broken-1.png"
+            : json['image'] as String,
+        rating: (json['spoonacularScore'] as double) / 20.0,
+        readyInMinutes: json['readyInMinutes'] as int,
+        vegetarian: json['vegetarian'] as bool);
   }
 
   static List<Recipe> recipesFromSnapshot(List snapshot) {

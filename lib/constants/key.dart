@@ -34,9 +34,9 @@ final List<dynamic> data = [
 final List<String> deletedData = [];
 
 void changeAPiKey() {
-  String temp=API_KEY;
-  API_KEY=other_api_key;
-  other_api_key=temp;
+  String temp = API_KEY;
+  API_KEY = other_api_key;
+  other_api_key = temp;
 }
 
 final String imagenotfound =
