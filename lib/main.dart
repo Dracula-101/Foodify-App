@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
@@ -9,7 +10,6 @@ import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
 import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -82,27 +82,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             inActiveIcon: Container(
-<<<<<<< Updated upstream
-              padding: EdgeInsets.all(8),
-              decoration:
-                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                  color: Colors.blue, shape: BoxShape.circle),
               child: IconButton(
-                padding: EdgeInsets.all(0),
-                icon: Icon(
+                padding: const EdgeInsets.all(0),
+                icon: const Icon(
                   Icons.camera_alt_outlined,
                   size: 37,
                   color: Colors.white,
                 ),
                 onPressed: selectFromImagePicker,
-=======
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  color: Colors.blue, shape: BoxShape.circle),
-              child: const Icon(
-                Icons.camera_alt_outlined,
-                size: 37,
-                color: Colors.white,
->>>>>>> Stashed changes
               ),
             ),
             text: ""),
@@ -152,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
               text: 'Settings'),
         ],
         bodyItems: [
-          const Home(),
+          Home(),
           Favourites(),
           MyList(),
           Settings(),
@@ -232,7 +222,12 @@ class _MyHomePageState extends State<MyHomePage> {
       name = str.substring(2);
       double a = res[0]['confidence'] * 100.0;
       confidence = (a.toString().substring(0, 2)) + '%';
-      Get.to();
+      print(res);
+      Get.to(() => RecipeFindClass(
+            ingredients: str,
+            ranking: '1',
+            pantry: true,
+          ));
     });
   }
 

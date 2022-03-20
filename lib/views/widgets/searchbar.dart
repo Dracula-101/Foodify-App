@@ -19,7 +19,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Align(
         child: AnimatedContainer(
             duration: const Duration(milliseconds: 400),

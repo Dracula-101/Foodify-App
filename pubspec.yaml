@@ -46,6 +46,7 @@ dependencies:
   curved_nav_bar: ^0.0.2
   tflite: ^1.1.2
   basic_utils: ^4.2.0
+  fading_edge_scrollview: ^2.0.1
 
 dev_dependencies:
   flutter_test:

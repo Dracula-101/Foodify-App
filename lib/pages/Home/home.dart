@@ -10,7 +10,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      // scrollDirection: Axis.vertical,
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
@@ -55,7 +54,7 @@ class Home extends StatelessWidget {
           child: Stack(
             children: [
               const Padding(
-                padding: EdgeInsets.fromLTRB(80, 17, 10, 20),
+                padding: EdgeInsets.fromLTRB(80, 10, 10, 20),
                 child: Align(
                   child: Text(
                     "Recipes for you",
@@ -64,7 +63,7 @@ class Home extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "lorabold700",
                       color: Color.fromARGB(255, 0, 0, 0),
-                      fontSize: 26,
+                      fontSize: 30,
                       // decorationThickness: 10,
                       fontWeight: FontWeight.bold,
                     ),
@@ -73,7 +72,7 @@ class Home extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 2),
+                padding: const EdgeInsets.fromLTRB(7, 0, 0, 5),
                 child: Align(child: SearchBar(), alignment: Alignment.topLeft),
               ),
             ],
