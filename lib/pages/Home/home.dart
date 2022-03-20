@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_const
 
 import 'package:flutter/material.dart';
-import 'package:foodify/views/widgets/randomRecipe.dart';
+import 'package:foodify/pages/RandomRecipe.dart/randomRecipe.dart';
 import 'package:foodify/views/widgets/searchbar.dart';
 
 class Home extends StatelessWidget {
@@ -80,7 +80,7 @@ class Home extends StatelessWidget {
           ),
           alignment: Alignment.topLeft,
         ),
-        RandomRecipe()
+        const RandomRecipe()
       ],
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodify/constants/key.dart';
 import 'package:foodify/pages/MyList/controller/mylist_controller.dart';
-import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -104,32 +103,29 @@ class MyList extends GetWidget<MyListController> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: Stack(
-    //     children: [
-    //       Padding(
-    //         padding: const EdgeInsets.symmetric(vertical: 5),
-    //         child: Obx(() => AnimatedList(
-    //               itemBuilder: (context, index, animation) {
-    //                 return _buildItem(data[index], animation, index);
-    //               },
-    //               key: _listKey,
-    //               initialItemCount: data.length,
-    //             )),
-    //       ),
-    //       Positioned(
-    //         bottom: 70,
-    //         right: 15,
-    //         child: FloatingActionButton(
-    //           child: Icon(Icons.undo_rounded),
-    //           backgroundColor: Colors.blue,
-    //           foregroundColor: Colors.white,
-    //           onPressed: () => _insertSingleUndoItem(),
-    //         ),
-    //       )
-    //     ],
-    //   ),
-    // );
-    return RecipeFindClass(ingredients: "chicken", ranking: "1", pantry: true);
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Obx(() => AnimatedList(
+                itemBuilder: (context, index, animation) {
+                  return _buildItem(data[index], animation, index);
+                },
+                key: _listKey,
+                initialItemCount: data.length,
+              )),
+        ),
+        Positioned(
+          bottom: 70,
+          right: 15,
+          child: FloatingActionButton(
+            child: Icon(Icons.undo_rounded),
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            onPressed: () => _insertSingleUndoItem(),
+          ),
+        )
+      ],
+    );
   }
 }

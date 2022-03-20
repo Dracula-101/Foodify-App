@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
 import 'pages/MyList/mylist.dart';
@@ -69,18 +70,19 @@ class _MyHomePageState extends State<MyHomePage> {
       body: CurvedNavBar(
         actionButton: CurvedActionBar(
             activeIcon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.camera_alt_outlined,
                 size: 37,
                 color: Colors.blue,
               ),
             ),
             inActiveIcon: Container(
+<<<<<<< Updated upstream
               padding: EdgeInsets.all(8),
               decoration:
                   BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
@@ -92,6 +94,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                 ),
                 onPressed: selectFromImagePicker,
+=======
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                  color: Colors.blue, shape: BoxShape.circle),
+              child: const Icon(
+                Icons.camera_alt_outlined,
+                size: 37,
+                color: Colors.white,
+>>>>>>> Stashed changes
               ),
             ),
             text: ""),
@@ -100,48 +111,48 @@ class _MyHomePageState extends State<MyHomePage> {
         inActiveColor: Colors.black45,
         appBarItems: [
           FABBottomAppBarItem(
-              activeIcon: Icon(
+              activeIcon: const Icon(
                 Icons.house_outlined,
                 color: Colors.blue,
               ),
-              inActiveIcon: Icon(
+              inActiveIcon: const Icon(
                 Icons.house_outlined,
                 color: Colors.black54,
               ),
               text: 'Home'),
           FABBottomAppBarItem(
-              activeIcon: Icon(
+              activeIcon: const Icon(
                 Icons.favorite_border,
                 color: Colors.blue,
               ),
-              inActiveIcon: Icon(
+              inActiveIcon: const Icon(
                 Icons.favorite_border,
                 color: Colors.black54,
               ),
               text: 'Liked'),
           FABBottomAppBarItem(
-              activeIcon: Icon(
+              activeIcon: const Icon(
                 Icons.format_list_bulleted_sharp,
                 color: Colors.blue,
               ),
-              inActiveIcon: Icon(
+              inActiveIcon: const Icon(
                 Icons.format_list_bulleted_sharp,
                 color: Colors.black54,
               ),
               text: 'My List'),
           FABBottomAppBarItem(
-              activeIcon: Icon(
+              activeIcon: const Icon(
                 Icons.settings_outlined,
                 color: Colors.blue,
               ),
-              inActiveIcon: Icon(
+              inActiveIcon: const Icon(
                 Icons.settings_outlined,
                 color: Colors.black54,
               ),
               text: 'Settings'),
         ],
         bodyItems: [
-          Home(),
+          const Home(),
           Favourites(),
           MyList(),
           Settings(),
@@ -221,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
       name = str.substring(2);
       double a = res[0]['confidence'] * 100.0;
       confidence = (a.toString().substring(0, 2)) + '%';
-      print(res);
+      Get.to();
     });
   }
 
