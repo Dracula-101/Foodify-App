@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodify/models/removebg.dart';
+import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
@@ -9,6 +11,7 @@ import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
 import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
 import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
 import 'dart:io';
+import 'package:flutter/src/widgets/image.dart' as img;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
@@ -175,17 +178,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   selectFromImagePicker() async {
+    print('aaaa');
     ImagePicker imagepick = ImagePicker();
-    ximage = await imagepick.pickImage(source: ImageSource.camera);
+    ximage = await imagepick.pickImage(source: ImageSource.gallery);
 
     image = convertToFile(ximage!);
     print('image picked is ' + image!.path);
-
+    // RemoveBgAPI.getImage(image!);
     predictImage(File(image!.path));
   }
 
   predictImage(File image) async {
-    if (image == null) return;
     print('Predict image called');
 
     await applyModel(image);
@@ -209,26 +212,33 @@ class _MyHomePageState extends State<MyHomePage> {
     var res = await Tflite.runModelOnImage(
       path: file.path,
       numResults: 5,
-      threshold: 0.3,
+      threshold: 0.7,
       imageMean: 0.0,
       imageStd: 255.0,
     );
     print('reached mount');
     if (!mounted) return;
     print('Setstate true');
-    setState(() {
-      // result = res;
-      String str = res![0]['label'];
-      name = str.substring(2);
-      double a = res[0]['confidence'] * 100.0;
-      confidence = (a.toString().substring(0, 2)) + '%';
-      print(res);
-      Get.to(() => RecipeFindClass(
-            ingredients: str,
-            ranking: '1',
-            pantry: true,
-          ));
-    });
+
+    if (res!.isEmpty) {
+      print('returning 0');
+      return;
+    }
+    String str = res[0]['label'];
+    name = str.substring(2);
+    double a = res[0]['confidence'] * 100.0;
+    confidence = (a.toString().substring(0, 2)) + '%';
+    print(res);
+    // Get.to(
+    //   () {
+    //     Prediction(image: file, recognitions: res);
+    //   },
+    //   transition: Transition.upToDown,
+    // );
+
+    Get.to(() {
+      return Prediction(image: Image.file(file), recognitions: res);
+    }, transition: Transition.upToDown);
   }
 
   File convertToFile(XFile xFile) {

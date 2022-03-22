@@ -24,8 +24,8 @@ class RecipeFind {
     // print("Missed: ${json['missedIngredientCount']}");
     // print("Used: ${json['usedIngredientCount']}");
 
-    print("Missed Ingredients: ${json['missedIngredients']}\n\n");
-    print("Used Ingredients: ${json['usedIngredients']}");
+    //print("Missed Ingredients: ${json['missedIngredients']}\n\n");
+    //print("Used Ingredients: ${json['usedIngredients']}");
     return RecipeFind(
       id: json['id'] as int,
       title: json['title'] as String,
