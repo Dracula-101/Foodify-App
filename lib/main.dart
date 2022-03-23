@@ -271,7 +271,9 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
     Get.to(() {
-      return Prediction(images: _imageFileList);
+      return ImageSelector(
+        images: _imageFileList,
+      );
     }, transition: Transition.upToDown);
   }
 }

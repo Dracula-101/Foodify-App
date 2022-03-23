@@ -132,6 +132,7 @@ class RecipeFindCard extends StatelessWidget {
                                     StringUtils.capitalize(missedIngredients[0]
                                             ['name']
                                         .toString()),
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: HexColor("#ffffff")),
@@ -151,6 +152,7 @@ class RecipeFindCard extends StatelessWidget {
                                   Text(
                                     StringUtils.capitalize(
                                         missedIngredients[1]['name']),
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: HexColor("#ffffff")),
@@ -177,6 +179,7 @@ class RecipeFindCard extends StatelessWidget {
                                             (missedIngredientCount - 2)
                                                 .toString() +
                                             " more",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: HexColor("#ffffff")),
@@ -203,6 +206,7 @@ class RecipeFindCard extends StatelessWidget {
                               const SizedBox(width: 9),
                               Text(
                                 "Used: " + usedIngredientCount.toString() + " ",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontSize: 12, color: HexColor("#ffffff")),
                               ),
@@ -233,6 +237,7 @@ class RecipeFindCard extends StatelessWidget {
                                 const SizedBox(width: 9),
                                 Text(
                                   "Likes: $likes",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 12, color: HexColor("#ffffff")),
                                 ),

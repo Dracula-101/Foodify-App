@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:get/get.dart';
 import "dart:io";
 
 import 'package:image_picker/image_picker.dart';
@@ -160,56 +161,188 @@ class _ImageSelectorState extends State<ImageSelector> {
                     itemCount: widget.images?.length,
                     itemBuilder: (context, index) => Card(
                       elevation: 5,
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          // color: Colors.white,
-                        ),
-                        child: Stack(
-                          children: [
-                            Image.file(
-                              File(widget.images!.elementAt(index).path),
-                              fit: BoxFit.cover,
-                              height: size.height,
-                              width: size.width,
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.6),
-                                      blurRadius: 10.0,
-                                      spreadRadius: -6.0,
-                                    ),
-                                  ],
-                                  // image: DecorationImage(
-                                  //   colorFilter: ColorFilter.mode(
-                                  //     Colors.black.withOpacity(0.5),
-                                  //     BlendMode.multiply,
-                                  //   ),
-                                  //   image: ),
-                                  //   fit: BoxFit.cover,
-                                  // ),
-                                ),
-                                margin: const EdgeInsets.all(5),
-                                child: IconButton(
-                                  iconSize: 30,
-                                  onPressed: () {
-                                    setState(() {
-                                      widget.images!.removeAt(index);
-                                    });
-                                  },
-                                  icon: const Icon(Icons.delete),
-                                ),
+                      child: InkWell(
+                        onTap: () {
+                          Get.bottomSheet(
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white,
                               ),
-                            )
-                          ],
+                              //could change this to Color(0xFF737373),
+                              //so you don't have to change MaterialApp canvasColor
+                              child: Column(
+                                children: [
+                                  // Container(
+                                  //   height: size.height,
+                                  //   width: size.width,
+                                  //   padding: const EdgeInsets.all(20),
+                                  //   margin: const EdgeInsets.all(20),
+                                  //   decoration: BoxDecoration(
+                                  //     color: Colors.white,
+                                  //     borderRadius:
+                                  //         BorderRadius.all(Radius.circular(10)),
+                                  //     boxShadow: [
+                                  //       BoxShadow(
+                                  //         color: Colors.black.withOpacity(0.6),
+                                  //         blurRadius: 10.0,
+                                  //         spreadRadius: -6.0,
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  //   child:
+                                  // ),
+                                  Expanded(
+                                    child: CustomScrollView(
+                                      slivers: [
+                                        const SliverAppBar(
+                                          backgroundColor: Colors.white,
+                                          shape: ContinuousRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight:
+                                                      Radius.circular(30))),
+                                          flexibleSpace: FlexibleSpaceBar(
+                                            titlePadding: EdgeInsets.fromLTRB(
+                                                50, 10, 0, 10),
+                                            title: Text(
+                                              "Selected image",
+                                              textAlign: TextAlign.left,
+                                              textDirection: TextDirection.ltr,
+                                              style: TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.normal,
+                                                fontFamily: "OpenSans-Regular",
+                                              ),
+                                            ),
+                                          ),
+                                          pinned: true,
+                                        ),
+                                        SliverList(
+                                          delegate: SliverChildListDelegate(
+                                            [
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                margin:
+                                                    const EdgeInsets.all(20),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black
+                                                          .withOpacity(0.6),
+                                                      blurRadius: 10.0,
+                                                      spreadRadius: -6.0,
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Image.file(
+                                                  File(widget.images!
+                                                      .elementAt(index)
+                                                      .path),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // showModalBottomSheet(
+                            //       context: context,
+                            //       builder: (builder) {
+                            //         return Container(
+                            //           height: 350.0,
+                            //           color: Colors
+                            //               .transparent, //could change this to Color(0xFF737373),
+                            //           //so you don't have to change MaterialApp canvasColor
+                            //           child: Container(
+                            //             decoration: const BoxDecoration(
+                            //                 color: Colors.white,
+                            //                 borderRadius: BorderRadius.only(
+                            //                     topLeft: Radius.circular(10.0),
+                            //                     topRight: Radius.circular(10.0))),
+                            //             child: Image.file(
+                            //               File(widget.images!
+                            //                   .elementAt(index)
+                            //                   .path),
+                            //               fit: BoxFit.cover,
+                            //               height: size.height,
+                            //               width: size.width,
+                            //             ),
+                            //           ),
+                            // );
+                            // }
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.6),
+                                blurRadius: 10.0,
+                                spreadRadius: -6.0,
+                              ),
+                            ],
+                          ),
+                          child: Stack(
+                            children: [
+                              Image.file(
+                                File(widget.images!.elementAt(index).path),
+                                fit: BoxFit.cover,
+                                height: size.height,
+                                width: size.width,
+                              ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.6),
+                                        blurRadius: 10.0,
+                                        spreadRadius: -6.0,
+                                      ),
+                                    ],
+                                    // image: DecorationImage(
+                                    //   colorFilter: ColorFilter.mode(
+                                    //     Colors.black.withOpacity(0.5),
+                                    //     BlendMode.multiply,
+                                    //   ),
+                                    //   image: ),
+                                    //   fit: BoxFit.cover,
+                                    // ),
+                                  ),
+                                  margin: const EdgeInsets.all(5),
+                                  child: IconButton(
+                                    iconSize: 20,
+                                    onPressed: () {
+                                      setState(() {
+                                        widget.images!.removeAt(index);
+                                      });
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
