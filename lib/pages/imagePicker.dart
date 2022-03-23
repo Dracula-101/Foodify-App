@@ -309,6 +309,8 @@ class _ImageSelectorState extends State<ImageSelector> {
                               Align(
                                 alignment: Alignment.topRight,
                                 child: Container(
+                                  height: size.height * 0.05,
+                                  width: size.width * 0.1,
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(15)),
@@ -329,7 +331,7 @@ class _ImageSelectorState extends State<ImageSelector> {
                                     //   fit: BoxFit.cover,
                                     // ),
                                   ),
-                                  margin: const EdgeInsets.all(5),
+                                  margin: const EdgeInsets.all(3),
                                   child: IconButton(
                                     iconSize: 20,
                                     onPressed: () {
