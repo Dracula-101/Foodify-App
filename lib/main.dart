@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodify/models/removebg.dart';
+import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:get/get.dart';
@@ -245,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // );
 
     Get.to(() {
-      return Prediction(images: _imageFileList, recognitions: res);
+      return ImageSelector(images: _imageFileList, recognitions: res);
     }, transition: Transition.upToDown);
   }
 
