@@ -47,6 +47,7 @@ dependencies:
   tflite: ^1.1.2
   basic_utils: ^4.2.0
   fading_edge_scrollview: ^2.0.1
+  getwidget: ^2.0.5
 
 dev_dependencies:
   flutter_test:

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
       ),
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
@@ -85,13 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Icon(
                 Icons.camera_alt_outlined,
                 size: 37,
-                color: Colors.blue,
+                color: Colors.amber,
               ),
             ),
             inActiveIcon: Container(
               padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
-                  color: Colors.blue, shape: BoxShape.circle),
+                  color: Colors.amber, shape: BoxShape.circle),
               child: IconButton(
                 padding: const EdgeInsets.all(0),
                 icon: const Icon(
@@ -107,14 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             text: ""),
-        activeColor: Colors.blue,
+        activeColor: Colors.amber,
         navBarBackgroundColor: Colors.white,
         inActiveColor: Colors.black45,
         appBarItems: [
           FABBottomAppBarItem(
               activeIcon: const Icon(
                 Icons.house_outlined,
-                color: Colors.blue,
+                color: Colors.amber,
               ),
               inActiveIcon: const Icon(
                 Icons.house_outlined,
@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
           FABBottomAppBarItem(
               activeIcon: const Icon(
                 Icons.favorite_border,
-                color: Colors.blue,
+                color: Colors.amber,
               ),
               inActiveIcon: const Icon(
                 Icons.favorite_border,
@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           FABBottomAppBarItem(
               activeIcon: const Icon(
                 Icons.format_list_bulleted_sharp,
-                color: Colors.blue,
+                color: Colors.amber,
               ),
               inActiveIcon: const Icon(
                 Icons.format_list_bulleted_sharp,
@@ -144,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
           FABBottomAppBarItem(
               activeIcon: const Icon(
                 Icons.settings_outlined,
-                color: Colors.blue,
+                color: Colors.amber,
               ),
               inActiveIcon: const Icon(
                 Icons.settings_outlined,
@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
   selectFromImagePicker() async {
     print('aaaa');
     ImagePicker imagepick = ImagePicker();
-    ximage = await imagepick.pickImage(source: ImageSource.gallery);
+    ximage = await imagepick.pickImage(source: ImageSource.camera);
 
     image = convertToFile(ximage!);
     print('image picked is ' + image!.path);
@@ -259,7 +259,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final List<XFile>? pickedFileList = await _picker?.pickMultiImage(
         // maxWidth: maxWidth,
         // maxHeight: maxHeight,
-        imageQuality: 1,
+        imageQuality: 100,
       );
       setState(() {
         _imageFileList = pickedFileList;

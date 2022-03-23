@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:foodify/constants/key.dart';
 import 'package:foodify/pages/MyList/controller/mylist_controller.dart';
+import 'package:foodify/constants/key.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class MyList extends GetWidget<MyListController> {
+class MyList extends StatelessWidget {
   // ignore: prefer_final_fields
   MyListController listController = Get.put(MyListController());
 
-  late final GlobalKey<AnimatedListState> _listKey;
+  late GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   @override
   Widget _addItemButton(String item) {
     return FloatingActionButton(
@@ -97,7 +97,6 @@ class MyList extends GetWidget<MyListController> {
       // A method to build the Card widget.
       return _buildItem(removedItem, animation, removeAt);
     };
-
     _listKey.currentState!.removeItem(removeIndex, builder);
   }
 
@@ -106,15 +105,14 @@ class MyList extends GetWidget<MyListController> {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: Obx(() => AnimatedList(
-                itemBuilder: (context, index, animation) {
-                  return _buildItem(data[index], animation, index);
-                },
-                key: _listKey,
-                initialItemCount: data.length,
-              )),
-        ),
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: AnimatedList(
+              itemBuilder: (context, index, animation) {
+                return _buildItem(data[index], animation, index);
+              },
+              key: _listKey,
+              initialItemCount: data.length,
+            )),
         Positioned(
           bottom: 70,
           right: 15,

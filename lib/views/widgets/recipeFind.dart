@@ -1,3 +1,4 @@
+import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodify/models/recipeFind.api.dart';
@@ -40,6 +41,8 @@ class _RecipeFindClassState extends State<RecipeFindClass> {
     });
   }
 
+  final _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,24 +71,27 @@ class _RecipeFindClassState extends State<RecipeFindClass> {
                       ),
                     ]),
                     Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(0.0),
-                        itemCount: _recipes.length,
-                        itemBuilder: (context, index) {
-                          return RecipeFindCard(
-                            id: _recipes[index].id,
-                            title: _recipes[index].title,
-                            image: _recipes[index].image,
-                            likes: _recipes[index].usedIngredientCount,
-                            missedIngredientCount:
-                                _recipes[index].missedIngredientCount,
-                            usedIngredientCount:
-                                _recipes[index].usedIngredientCount,
-                            missedIngredients:
-                                _recipes[index].missedIngredients,
-                            usedIngredients: _recipes[index].usedIngredients,
-                          );
-                        },
+                      child: FadingEdgeScrollView.fromScrollView(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(0.0),
+                          controller: _controller,
+                          itemCount: _recipes.length,
+                          itemBuilder: (context, index) {
+                            return RecipeFindCard(
+                              id: _recipes[index].id,
+                              title: _recipes[index].title,
+                              image: _recipes[index].image,
+                              likes: _recipes[index].usedIngredientCount,
+                              missedIngredientCount:
+                                  _recipes[index].missedIngredientCount,
+                              usedIngredientCount:
+                                  _recipes[index].usedIngredientCount,
+                              missedIngredients:
+                                  _recipes[index].missedIngredients,
+                              usedIngredients: _recipes[index].usedIngredients,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
