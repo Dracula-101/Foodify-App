@@ -49,10 +49,14 @@ class _MyHomePageState extends State<MyHomePage> {
   XFile? ximage;
   String? name, confidence;
 
+  List<XFile>? _imageFileList;
+  dynamic _pickImageError;
+  ImagePicker? _picker;
+
   @override
   initState() {
     super.initState();
-
+    _picker = ImagePicker();
     loadModel().then((val) {
       print('Model Loaded');
     });
@@ -95,7 +99,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   size: 37,
                   color: Colors.white,
                 ),
-                onPressed: selectFromImagePicker,
+                // onPressed: selectFromImagePicker,
+                onPressed: () {
+                  _onImageButtonPressed(ImageSource.gallery,
+                      context: context, isMultiImage: true);
+                },
               ),
             ),
             text: ""),
@@ -237,11 +245,32 @@ class _MyHomePageState extends State<MyHomePage> {
     // );
 
     Get.to(() {
-      return Prediction(image: Image.file(file), recognitions: res);
+      return Prediction(images: _imageFileList, recognitions: res);
     }, transition: Transition.upToDown);
   }
 
   File convertToFile(XFile xFile) {
     return File(xFile.path);
+  }
+
+  _onImageButtonPressed(ImageSource source,
+      {BuildContext? context, bool isMultiImage = false}) async {
+    try {
+      final List<XFile>? pickedFileList = await _picker?.pickMultiImage(
+        // maxWidth: maxWidth,
+        // maxHeight: maxHeight,
+        imageQuality: 1,
+      );
+      setState(() {
+        _imageFileList = pickedFileList;
+      });
+    } catch (e) {
+      setState(() {
+        _pickImageError = e;
+      });
+    }
+    Get.to(() {
+      return Prediction(images: _imageFileList);
+    }, transition: Transition.upToDown);
   }
 }
