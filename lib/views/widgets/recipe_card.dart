@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodify/models/recipeDetails.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
+import 'package:foodify/pages/Favourites/favourites.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class RecipeCard extends StatelessWidget {
+class RecipeCard extends StatefulWidget {
   final int id;
   final String title;
   final String rating;
@@ -15,17 +16,25 @@ class RecipeCard extends StatelessWidget {
   final String caloriesUnit;
   final String description;
 
-  RecipeCard({
-    required this.id,
-    required this.title,
-    required this.cookTime,
-    required this.rating,
-    required this.thumbnailUrl,
-    required this.description,
-    required this.vegetarian,
-    required this.calories,
-    required this.caloriesUnit,
-  });
+  RecipeCard(
+      {Key? key,
+      required this.id,
+      required this.title,
+      required this.rating,
+      required this.cookTime,
+      required this.thumbnailUrl,
+      required this.vegetarian,
+      required this.calories,
+      required this.caloriesUnit,
+      required this.description})
+      : super(key: key);
+
+  State<RecipeCard> createState() => _RecipeCardState();
+}
+
+class _RecipeCardState extends State<RecipeCard> {
+  bool isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -40,7 +49,7 @@ class RecipeCard extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               CachedNetworkImage(
-                imageUrl: thumbnailUrl,
+                imageUrl: widget.thumbnailUrl,
                 imageBuilder: (context, imageProvider) => Container(
                   width: 80.0,
                   height: 80.0,
@@ -63,7 +72,7 @@ class RecipeCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: Text(
-                    title,
+                    widget.title,
                     style: TextStyle(fontSize: 19, color: HexColor("#ffffff")),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
@@ -71,6 +80,58 @@ class RecipeCard extends StatelessWidget {
                   ),
                 ),
                 alignment: Alignment.center,
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: () {
+                    if (!isLiked) {
+                      Favourites.addFavourites(
+                          widget.title,
+                          widget.id.toString(),
+                          widget.thumbnailUrl,
+                          widget.rating,
+                          widget.cookTime);
+                    }
+
+                    setState(() {
+                      isLiked = !isLiked;
+                    });
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            !isLiked
+                                ? const Icon(
+                                    CupertinoIcons.heart,
+                                    color: Colors.redAccent,
+                                    size: 18,
+                                  )
+                                : const Icon(
+                                    CupertinoIcons.heart_solid,
+                                    color: Colors.red,
+                                    size: 18,
+                                  ),
+                            const SizedBox(width: 6),
+                            Text(
+                              "Like  ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  color: HexColor("#ffffff")),
+                            ),
+                          ])),
+                ),
               ),
               Align(
                 child: Row(
@@ -92,13 +153,13 @@ class RecipeCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 7),
                             Text(
-                              rating,
+                              widget.rating,
                               style: TextStyle(
                                   fontSize: 12, color: HexColor("#ffffff")),
                             ),
                           ],
                         )),
-                    description == "search"
+                    widget.description == "search"
                         ? Container(
                             padding: const EdgeInsets.all(5),
                             margin: const EdgeInsets.all(10),
@@ -116,7 +177,7 @@ class RecipeCard extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 9),
                                   Text(
-                                    calories + " " + caloriesUnit,
+                                    widget.calories + " " + widget.caloriesUnit,
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: HexColor("#ffffff")),
@@ -139,7 +200,7 @@ class RecipeCard extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 9),
                                   Text(
-                                    cookTime,
+                                    widget.cookTime,
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: HexColor("#ffffff")),
@@ -168,7 +229,7 @@ class RecipeCard extends StatelessWidget {
                         ]),
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3, vertical: 7),
-                      child: vegetarian
+                      child: widget.vegetarian
                           ? Image.asset(
                               'assets/images/veg.png',
                               height: 40,

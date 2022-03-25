@@ -41,6 +41,8 @@ class _RandomRecipeState extends State<RandomRecipe> {
           ? Center(child: Loader())
           : FadingEdgeScrollView.fromScrollView(
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(
+                    parent: BouncingScrollPhysics()),
                 controller: _controller,
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
                 itemCount: _recipes.length,

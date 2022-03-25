@@ -34,15 +34,15 @@ class LoginPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              bool loggedIn = await login();
-              if (loggedIn) {
-                // Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyHomePage()),
+              );
+              // bool loggedIn = await login();
+              // if (loggedIn) {
+              //   // Navigator.pop(context);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MyHomePage()),
-                );
-              }
+              // }
             },
             child: Text('Submit'),
           ),
