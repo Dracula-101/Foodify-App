@@ -66,14 +66,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 20,
-        title: const Center(
-          child: Text(
-            'Foodify',
-          ),
-        ),
+        backgroundColor: Colors.amber[500],
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.restaurant,
+                color: Colors.black,
+              ),
+              SizedBox(width: 5),
+              Text(
+                'Foodify',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: "oswaldlight300",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ]),
       ),
       body: CurvedNavBar(
         actionButton: CurvedActionBar(

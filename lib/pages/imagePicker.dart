@@ -26,7 +26,7 @@ class _ImageSelectorState extends State<ImageSelector> {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           title: const Text(
             "Food recognition",
             style: TextStyle(
@@ -37,6 +37,7 @@ class _ImageSelectorState extends State<ImageSelector> {
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Padding(
             //   padding: const EdgeInsets.all(30.0),
@@ -157,6 +158,8 @@ class _ImageSelectorState extends State<ImageSelector> {
               child: Container(
                   margin: const EdgeInsets.all(20),
                   child: GridView.builder(
+                    physics: BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     dragStartBehavior: DragStartBehavior.start,
                     itemCount: widget.images?.length,
                     itemBuilder: (context, index) => Card(
