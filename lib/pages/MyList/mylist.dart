@@ -21,7 +21,7 @@ class MyList extends StatelessWidget {
 
   void _insertSingleUndoItem() {
     if (deletedData != null && deletedData.isNotEmpty) {
-      String deletedItem = deletedData.elementAt(0);
+      String deletedItem = deletedData.last;
       data.add(deletedItem);
       deletedData.remove(deletedItem);
       _listKey.currentState!.insertItem(data.length - 1);

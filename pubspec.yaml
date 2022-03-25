@@ -48,6 +48,8 @@ dependencies:
   basic_utils: ^4.2.0
   fading_edge_scrollview: ^2.0.1
   getwidget: ^2.0.5
+  firebase_auth: ^3.3.11
+  firebase_core: ^1.13.1
 
 dev_dependencies:
   flutter_test:

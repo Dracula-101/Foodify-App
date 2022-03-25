@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodify/models/removebg.dart';
+import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
@@ -16,13 +17,48 @@ import 'package:flutter/src/widgets/image.dart' as img;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  static Widget? LandingPage;
+
+  // @override
+  // initState() {
+  //   WidgetsBinding.instance!.addPostFrameCallback((_) async {
+  //     FirebaseApp firebaseApp = await Firebase.initializeApp();
+  //     User? user = await FirebaseAuth.instance.currentUser;
+  //
+  //     LandingPage = user != null ? const MyHomePage() : LoginPage();
+  //     print('$LandingPage is 2');
+  //     await check();
+  //   });
+  //   // await _MyAppState.checkUser();
+
+  //   super.initState();
+  // }
+  //
+  // static check() async {
+  //   await checkUser();
+  // }
+
+  static Future<Widget> checkUser() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    User? user = FirebaseAuth.instance.currentUser;
+
+    return user != null ? const MyHomePage() : LoginPage();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +67,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const MyHomePage(),
+      // home: const MyHomePage(),
+      // home: LandingPage,
+      home: FutureBuilder<Widget>(
+        future: checkUser(), // async work
+        builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return CircularProgressIndicator();
+            default:
+              return snapshot.hasError ? Container() : snapshot.data!;
+          }
+        },
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
