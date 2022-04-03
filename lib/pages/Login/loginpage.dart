@@ -62,18 +62,18 @@ class LoginPage extends StatelessWidget {
                                     horizontal: 20.0),
                                 child: Icon(
                                   FontAwesomeIcons.envelope,
-                                  size: 28,
+                                  size: 27,
                                   color: Colors.white,
                                 ),
                               ),
                               hintText: 'Email',
                               hintStyle: TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.white,
+                                  fontSize: 21,
+                                  color: Colors.white54,
                                   height: 1.5),
                             ),
                             style: TextStyle(
-                                fontSize: 22, color: Colors.white, height: 1.5),
+                                fontSize: 21, color: Colors.white, height: 1.5),
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
                             onChanged: (text) {
@@ -101,19 +101,19 @@ class LoginPage extends StatelessWidget {
                                     horizontal: 20.0),
                                 child: Icon(
                                   FontAwesomeIcons.lock,
-                                  size: 28,
+                                  size: 25,
                                   color: Colors.white,
                                 ),
                               ),
                               hintText: 'Password',
                               hintStyle: TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.white,
+                                  fontSize: 21,
+                                  color: Colors.white54,
                                   height: 1.5),
                             ),
                             obscureText: true,
                             style: TextStyle(
-                                fontSize: 22, color: Colors.white, height: 1.5),
+                                fontSize: 21, color: Colors.white, height: 1.5),
                             keyboardType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.done,
                             onChanged: (text) {
@@ -134,6 +134,14 @@ class LoginPage extends StatelessWidget {
                         color: Colors.blue,
                       ),
                       child: TextButton(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              height: 1.5,
+                              fontWeight: FontWeight.bold),
+                        ),
                         onPressed: () async {
                           bool loggedIn = await login();
                           if (loggedIn) {
@@ -145,14 +153,6 @@ class LoginPage extends StatelessWidget {
                             );
                           }
                         },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              height: 1.5,
-                              fontWeight: FontWeight.bold),
-                        ),
                       ),
                     ),
                     SizedBox(
@@ -171,7 +171,10 @@ class LoginPage extends StatelessWidget {
                     child: Text(
                       'Create New Account',
                       style: TextStyle(
-                          fontSize: 22, color: Colors.black, height: 1.5),
+                        fontSize: 20,
+                        color: Colors.black,
+                        height: 1.5,
+                      ),
                     ),
                     decoration: BoxDecoration(
                       border: Border(

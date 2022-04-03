@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodify/models/removebg.dart';
+import 'package:foodify/pages/DrawerItems/AboutUs.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
@@ -19,6 +21,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fancy_drawer/fancy_drawer.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,7 +58,8 @@ class _MyAppState extends State<MyApp> {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     User? user = FirebaseAuth.instance.currentUser;
 
-    return user != null ? const MyHomePage() : LoginPage();
+    // return user != null ? const MyHomePage() : LoginPage();
+    return user != null ? const HomeDrawer() : LoginPage();
   }
 
   @override
@@ -81,6 +85,200 @@ class _MyAppState extends State<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
     );
+  }
+}
+
+class HomeDrawer extends StatefulWidget {
+  const HomeDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<HomeDrawer> createState() => _HomeDrawerState();
+}
+
+class _HomeDrawerState extends State<HomeDrawer>
+    with SingleTickerProviderStateMixin {
+  late FancyDrawerController _controller;
+  List<Widget> screens = [MyHomePage(), AboutUs()];
+
+  Widget selectedWidget = MyHomePage();
+
+  setSelectedWidget(int i) {
+    setState(() {
+      selectedWidget = screens[i];
+      _controller.close();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = FancyDrawerController(
+        vsync: this, duration: Duration(milliseconds: 250))
+      ..addListener(() {
+        setState(() {}); // Must call setState
+      }); // This chunk of code is important
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: FancyDrawerWrapper(
+        backgroundColor: const Color.fromRGBO(47, 48, 68, 1),
+        controller: _controller,
+        itemGap: 13,
+        cornerRadius: 15,
+        drawerItems: <Widget>[
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              height: 55,
+              width: 200,
+              child: FittedBox(
+                child: ElevatedButton(
+                  child: Text(
+                    "Home",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.purple.shade700,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    setSelectedWidget(0);
+                  },
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              height: 55,
+              width: 200,
+              child: FittedBox(
+                child: ElevatedButton(
+                  child: Text(
+                    "Our Products",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.purple.shade700,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    setSelectedWidget(0);
+                  },
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              height: 55,
+              width: 200,
+              child: FittedBox(
+                child: ElevatedButton(
+                  child: Text(
+                    "Support Us",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.purple.shade700,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    setSelectedWidget(0);
+                  },
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              height: 55,
+              width: 200,
+              child: FittedBox(
+                child: ElevatedButton(
+                  child: Text(
+                    "About Us",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.purple.shade700,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    setSelectedWidget(0);
+                  },
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              height: 55,
+              width: 200,
+              child: FittedBox(
+                child: ElevatedButton(
+                  child: Text(
+                    "Log Out",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.purple.shade700,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    logout();
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 4.0,
+            title: Text(
+              "Foodify",
+              style: TextStyle(
+                fontSize: 25,
+                fontFamily: "OpenSans",
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                _controller.toggle();
+              },
+            ),
+          ),
+          body: selectedWidget,
+        ),
+      ),
+    );
+  }
+
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+      return LoginPage();
+    }), (route) => false);
   }
 }
 
@@ -114,22 +312,22 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 5,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: const Center(
-          child: Text(
-            'Foodify',
-            style: TextStyle(
-              fontSize: 30,
-              fontFamily: "OpenSans",
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   elevation: 5,
+      //   backgroundColor: Colors.white,
+      //   automaticallyImplyLeading: false,
+      //   title: const Center(
+      //     child: Text(
+      //       'Foodify',
+      //       style: TextStyle(
+      //         fontSize: 30,
+      //         fontFamily: "OpenSans",
+      //         fontWeight: FontWeight.bold,
+      //         color: Colors.black,
+      //       ),
+      //     ),
+      //   ),
+      // ),
       body: CurvedNavBar(
         actionButton: CurvedActionBar(
             activeIcon: Container(

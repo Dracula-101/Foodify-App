@@ -54,6 +54,8 @@ dependencies:
   cloud_firestore_web: ^2.6.10
   font_awesome_flutter: ^10.1.0
   url_launcher: ^6.0.20
+  share_plus: ^4.0.3
+  fancy_drawer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
