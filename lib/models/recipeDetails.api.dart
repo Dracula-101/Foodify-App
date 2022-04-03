@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';
 
 class RecipeDetailsAPI {
-  static Future<List<RecipeDetails>> getRecipeDetails(String Id) async {
+  static Future<dynamic> getRecipeDetails(String Id) async {
     var uri = Uri.https(BASE_URL, '/recipes/' + Id + '/information', {
       "apiKey": API_KEY,
     });

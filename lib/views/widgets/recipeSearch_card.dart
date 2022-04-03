@@ -33,29 +33,43 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _isLoading
-          ? Center(child: Loader())
-          : FadingEdgeScrollView.fromScrollView(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _recipes.length,
-                controller: _controller,
-                itemBuilder: (context, index) {
-                  return RecipeCard(
-                    id: _recipes[index].id,
-                    title: _recipes[index].title,
-                    cookTime: _recipes[index].cookTime.toString() + " mins ",
-                    thumbnailUrl: _recipes[index].image,
-                    rating: _recipes[index].rating.toString() + " ",
-                    vegetarian: _recipes[index].vegetarian,
-                    calories: _recipes[index].calories,
-                    caloriesUnit: _recipes[index].caloriesUnit,
-                    description: "search",
-                  );
-                },
-              ),
-            ),
+    return Scaffold(
+      appBar: AppBar(title: Text("Recipes for " + widget.title)),
+      body: Container(
+        child: _isLoading
+            ? Center(child: Loader())
+            : _recipes.isEmpty
+                ? const Text(
+                    "No recipes found",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  )
+                : FadingEdgeScrollView.fromScrollView(
+                    child: ListView.builder(
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    shrinkWrap: true,
+                    itemCount: _recipes.length,
+                    controller: _controller,
+                    itemBuilder: (context, index) {
+                      return RecipeCard(
+                        id: _recipes[index].id,
+                        title: _recipes[index].title,
+                        cookTime:
+                            _recipes[index].cookTime.toString() + " mins ",
+                        thumbnailUrl: _recipes[index].image,
+                        rating: _recipes[index].rating.toString() + " ",
+                        vegetarian: _recipes[index].vegetarian,
+                        calories: _recipes[index].calories,
+                        caloriesUnit: _recipes[index].caloriesUnit,
+                        description: "search",
+                      );
+                    },
+                  )),
+      ),
     );
   }
 }

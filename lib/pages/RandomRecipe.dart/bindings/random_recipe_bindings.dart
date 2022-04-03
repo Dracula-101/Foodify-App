@@ -1,4 +1,4 @@
-import 'package:foodify/pages/RandomRecipe.dart/randomRecipe.dart';
+import 'package:foodify/pages/RandomRecipe.dart/random_recipe.dart';
 import 'package:get/get.dart';
 
 class RandomRecipeBinding extends Bindings {

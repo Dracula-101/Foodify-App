@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_const
 
 import 'package:flutter/material.dart';
-import 'package:foodify/pages/RandomRecipe.dart/randomRecipe.dart';
+import 'package:foodify/pages/RandomRecipe.dart/random_recipe.dart';
 import 'package:foodify/views/widgets/searchbar.dart';
+import 'package:foodify/views/widgets/trending.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,75 +12,18 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-          // child:
-          // TextField(
-          //   controller: !searched
-          //       ? TextEditingController(
-          //           text: '',
-          //         )
-          //       : null,
-          //   decoration: InputDecoration(
-          //     suffixIcon: searched
-          //         ? IconButton(
-          //             icon: const Icon(
-          //               Icons.cancel,
-          //             ),
-          //             onPressed: () {
-          //               setState(() {
-          //                 searched = false;
-          //                 print('Recipe cancelled');
-          //               });
-          //             },
-          //           )
-          //         : const Icon(
-          //             Icons.search,
-          //           ),
-          //     border: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(20.0),
-          //     ),
-          //     hintText: 'Search',
-          //   ),
-          //   onSubmitted: (value) {
-          //     setState(() {
-          //       searched = true;
-          //       searchedRecipe = value;
-          //       print('Recipe Searched');
-          //     });
-          //   },
-          // ),
+        //
+        SearchBar(
+          text: "Recipes for you",
         ),
-        Align(
-          child: Stack(
+        Expanded(
+          child: ListView(
             children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(80, 10, 10, 20),
-                child: Align(
-                  child: Text(
-                    "Recipes for you",
-                    textDirection: TextDirection.ltr,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: "lorabold700",
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontSize: 30,
-                      // decorationThickness: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  alignment: Alignment.centerLeft,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(7, 0, 0, 5),
-                child: Align(child: SearchBar(), alignment: Alignment.topLeft),
-              ),
+              const TrendingWidget(),
+              const RandomRecipe(),
             ],
           ),
-          alignment: Alignment.topLeft,
-        ),
-        const RandomRecipe()
+        )
       ],
     );
   }

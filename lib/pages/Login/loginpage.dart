@@ -19,6 +19,7 @@ class LoginPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
             controller: emailController,
@@ -34,15 +35,15 @@ class LoginPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MyHomePage()),
-              );
-              // bool loggedIn = await login();
-              // if (loggedIn) {
-              //   // Navigator.pop(context);
+              bool loggedIn = await login();
+              if (loggedIn) {
+                // Navigator.pop(context);
 
-              // }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
+                );
+              }
             },
             child: Text('Submit'),
           ),

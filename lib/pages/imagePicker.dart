@@ -222,30 +222,33 @@ class _ImageSelectorState extends State<ImageSelector> {
                                         SliverList(
                                           delegate: SliverChildListDelegate(
                                             [
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(20),
-                                                margin:
-                                                    const EdgeInsets.all(20),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(10)),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.6),
-                                                      blurRadius: 10.0,
-                                                      spreadRadius: -6.0,
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Image.file(
-                                                  File(widget.images!
-                                                      .elementAt(index)
-                                                      .path),
-                                                  fit: BoxFit.cover,
+                                              InteractiveViewer(
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.all(20),
+                                                  margin:
+                                                      const EdgeInsets.all(20),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.black
+                                                            .withOpacity(0.6),
+                                                        blurRadius: 10.0,
+                                                        spreadRadius: -6.0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Image.file(
+                                                    File(widget.images!
+                                                        .elementAt(index)
+                                                        .path),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                               ),
                                             ],

@@ -28,77 +28,87 @@ class FavouritesCard extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.fromLTRB(110, 20, 25, 20),
-          child: Container(
-            padding: const EdgeInsets.all(0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 20, top: 5),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                  child: Text(
-                    recipeName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontFamily: "OpenSans",
-                      fontStyle: FontStyle.normal,
+          child: InkWell(
+            onTap: () {
+              Get.snackbar(
+                recipeName,
+                "Rating : $rating\tCooktime : $cooktime",
+                icon: Icon(Icons.person, color: Colors.white),
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: const EdgeInsets.only(left: 20, top: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                    child: Text(
+                      recipeName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontFamily: "OpenSans",
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 9),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
-                          const Icon(Icons.schedule, size: 20),
-                          Text(
-                            cooktime.toString(),
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: "OpenSans",
-                              fontStyle: FontStyle.normal,
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 9),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            const Icon(Icons.schedule, size: 20),
+                            Text(
+                              cooktime.toString(),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontFamily: "OpenSans",
+                                fontStyle: FontStyle.normal,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          const Icon(Icons.rate_review, size: 20),
-                          Text(
-                            rating.toString(),
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: "OpenSans",
-                              fontStyle: FontStyle.normal,
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Icon(Icons.star_border, size: 20),
+                            Text(
+                              rating.toString(),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontFamily: "OpenSans",
+                                fontStyle: FontStyle.normal,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Icon(Icons.star_border, size: 20),
-                          Text(
-                            "4.5",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "OpenSans",
-                              fontStyle: FontStyle.normal,
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Icon(Icons.rate_review, size: 20),
+                            Text(
+                              "4.5",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: "OpenSans",
+                                fontStyle: FontStyle.normal,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           decoration: BoxDecoration(
@@ -160,9 +170,12 @@ class FavouritesCard extends StatelessWidget {
         Align(
           alignment: Alignment.topRight,
           child: InkWell(
+            onTap: () {
+              controller.removeFavourite(id);
+            },
             child: Container(
-                margin: const EdgeInsets.only(right: 20, top: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                // margin: const EdgeInsets.only(right: 20, top: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
                 child: Icon(
                   CupertinoIcons.xmark_circle_fill,
                   color: Colors.red,

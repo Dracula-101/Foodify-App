@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:foodify/models/recipeSearch.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';
+import 'package:foodify/constants/parameters.dart';
 
 class RecipeSearchApi {
   static Future<List<RecipeSearch>> getRecipe(String title) async {
@@ -11,6 +12,8 @@ class RecipeSearchApi {
       "sort": "calories",
       "sortDirection": "asc",
       "titleMatch": title,
+      "instructionsRequired": "true",
+      "tags": cuisine + "," + getVeg(),
       "apiKey": API_KEY,
     });
 

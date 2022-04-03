@@ -92,6 +92,15 @@ class _RecipeCardState extends State<RecipeCard> {
                           widget.thumbnailUrl,
                           widget.rating,
                           widget.cookTime);
+                      Favourites.updateFavourites(
+                        widget.title,
+                        widget.id.toString(),
+                        widget.cookTime,
+                        widget.rating,
+                        widget.thumbnailUrl,
+                      );
+                    } else {
+                      Favourites.removeFavourites(widget.id.toString());
                     }
 
                     setState(() {
@@ -247,10 +256,10 @@ class _RecipeCardState extends State<RecipeCard> {
           ),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(15)),
-            color: Colors.black,
+            // color: Colors.black,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.white.withOpacity(0.6),
                 offset: const Offset(
                   0.0,
                   10.0,

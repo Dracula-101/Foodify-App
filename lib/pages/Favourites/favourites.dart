@@ -77,8 +77,18 @@ class Favourites extends StatelessWidget {
             child: Text('Log Out'),
           ),
         ),
+        SizedBox(height: 20),
       ],
     ));
+  }
+
+  static void removeFavourites(String string) {
+    controller.removeFavourite(string);
+  }
+
+  static void updateFavourites(String recipeName, String id, String imageUrl,
+      String rating, String cooktime) async {
+    await controller.addToDatabase(recipeName, id, imageUrl, rating, cooktime);
   }
 }
 

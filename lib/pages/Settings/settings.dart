@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
@@ -8,8 +9,15 @@ import 'package:tflite/tflite.dart';
 const String ssd = "SSD MobileNet";
 const String yolo = "Tiny Yolov2";
 
-class Settings extends StatelessWidget {
-  String _model = ssd;
+class Settings extends StatefulWidget {
+  const Settings({Key? key}) : super(key: key);
+
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  String _model = yolo;
   File? _image;
 
   double? _imageWidth;
@@ -21,14 +29,12 @@ class Settings extends StatelessWidget {
 
   @override
   void initState() {
-    // super.initState();
-    // _busy = true;
-
-    // loadModel().then((val) {
-    //   setState(() {
-    //     _busy = false;
-    //   });
-    // });
+    super.initState();
+    _busy = true;
+    print("Loaded mode");
+    loadModel().then((val) {
+      _busy = false;
+    });
   }
 
   loadModel() async {
@@ -42,30 +48,30 @@ class Settings extends StatelessWidget {
         ))!;
       } else {
         res = (await Tflite.loadModel(
-          model: "assets/tflite/ssd_mobilenet.tflite",
-          labels: "assets/tflite/ssd_mobilenet.txt",
+          model: "assets/tflite/model.tflite",
+          labels: "assets/tflite/dict.txt",
         ))!;
       }
       // print(res);
     } on PlatformException {
-      print("Failed to load the model");
+      if (kDebugMode) {
+        print("Failed to load the model");
+      }
     }
   }
 
   selectFromImagePicker() async {
-    ImagePicker imagepick = new ImagePicker();
-    image = await imagepick.pickImage(source: ImageSource.camera);
+    ImagePicker imagepick = ImagePicker();
+    image = await imagepick.pickImage(source: ImageSource.gallery);
     if (image == null) return;
-    // setState(() {
-    //   _busy = true;
-    // });
-    _busy = true;
+    setState(() {
+      _busy = true;
+    });
+    // _busy = true;
     predictImage(File(image!.path));
   }
 
   predictImage(File image) async {
-    if (image == null) return;
-
     if (_model == yolo) {
       await yolov2Tiny(image);
     } else {
@@ -73,7 +79,7 @@ class Settings extends StatelessWidget {
     }
 
     FileImage(image)
-        .resolve(ImageConfiguration())
+        .resolve(const ImageConfiguration())
         .addListener((ImageStreamListener((ImageInfo info, bool _) {
           // setState(() {
           //   _imageWidth = info.image.width.toDouble();
@@ -83,12 +89,12 @@ class Settings extends StatelessWidget {
           _imageHeight = info.image.height.toDouble();
         })));
 
-    // setState(() {
-    //   _image = image;
-    //   _busy = false;
-    // });
-    _image = image;
-    _busy = false;
+    setState(() {
+      _image = image;
+      _busy = false;
+    });
+    // _image = image;
+    // _busy = false;
   }
 
   yolov2Tiny(File image) async {
@@ -100,20 +106,20 @@ class Settings extends StatelessWidget {
         imageStd: 255.0,
         numResultsPerClass: 1);
 
-    // setState(() {
-    //   _recognitions = recognitions!;
-    // });
-    _recognitions = recognitions!;
+    setState(() {
+      _recognitions = recognitions!;
+    });
+    // _recognitions = recognitions!;
   }
 
   ssdMobileNet(File image) async {
     var recognitions = await Tflite.detectObjectOnImage(
         path: image.path, numResultsPerClass: 1);
 
-    // setState(() {
-    //   _recognitions = recognitions!;
-    // });
-    _recognitions = recognitions!;
+    setState(() {
+      _recognitions = recognitions!;
+    });
+    // _recognitions = recognitions!;
   }
 
   List<Widget> renderBoxes(Size screen) {
@@ -123,7 +129,7 @@ class Settings extends StatelessWidget {
     double factorX = screen.width;
     double factorY = _imageHeight! / _imageHeight! * screen.width;
 
-    Color appColour = Color.fromARGB(255, 241, 169, 1);
+    Color appColour = const Color.fromARGB(255, 241, 169, 1);
 
     return _recognitions!.map((re) {
       return Positioned(
@@ -153,46 +159,39 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const RecipeSearchCard(
-        title: 'Mac and Cheese',
-      ),
-    );
+    Size size = MediaQuery.of(context).size;
+
+    List<Widget> stackChildren = [];
+
+    stackChildren.add(Positioned(
+      top: 0.0,
+      left: 0.0,
+      width: size.width,
+      child: _image == null
+          ? const Text("No Image Selected")
+          : Image.file(_image!),
+    ));
+
+    stackChildren.addAll(renderBoxes(size));
+
+    if (_busy) {
+      stackChildren.add(const Center(
+        child: CircularProgressIndicator(),
+      ));
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("Food recognition."),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.image),
+          tooltip: "Pick Image from gallery",
+          onPressed: selectFromImagePicker,
+        ),
+        // body: (_image != null) ? Image.file(_image!) : Text("No Image"));
+        body: Stack(
+          children: stackChildren,
+        ));
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   Size size = MediaQuery.of(context).size;
-
-  //   List<Widget> stackChildren = [];
-
-  //   stackChildren.add(Positioned(
-  //     top: 0.0,
-  //     left: 0.0,
-  //     width: size.width,
-  //     child: _image == null ? Text("No Image Selected") : Image.file(_image!),
-  //   ));
-
-  //   stackChildren.addAll(renderBoxes(size));
-
-  //   if (_busy) {
-  //     stackChildren.add(Center(
-  //       child: CircularProgressIndicator(),
-  //     ));
-  //   }
-
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text("Food recognition."),
-  //     ),
-  //     floatingActionButton: FloatingActionButton(
-  //       child: Icon(Icons.image),
-  //       tooltip: "Pick Image from gallery",
-  //       onPressed: selectFromImagePicker,
-  //     ),
-  //     body: Stack(
-  //       children: stackChildren,
-  //     ),
-  //   );
-  // }
 }
