@@ -34,56 +34,59 @@ class _TrendingWidgetState extends State<TrendingWidget> {
   Widget build(BuildContext context) {
     return _isLoading!
         ? const Center(child: Loader())
-        : ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            physics:
-                const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
-            itemCount: 3,
-            itemBuilder: (context, index) {
-              return Card(
-                clipBehavior: Clip.antiAlias,
-                margin: const EdgeInsets.all(10),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        clipBehavior: Clip.antiAlias,
-                        child: CachedNetworkImage(
-                          imageUrl: _recipes[index].image,
-                          placeholder: (context, url) =>
-                              ShimmerWidget.rectangular(
-                                  height: 180, br: BorderRadius.circular(15)),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          fit: BoxFit.cover,
+        : Container(
+            height: 320,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              physics:
+                  const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return Card(
+                  clipBehavior: Clip.antiAlias,
+                  margin: const EdgeInsets.all(10),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
+                          clipBehavior: Clip.antiAlias,
+                          child: CachedNetworkImage(
+                            imageUrl: _recipes[index].image,
+                            placeholder: (context, url) =>
+                                ShimmerWidget.rectangular(
+                                    height: 180, br: BorderRadius.circular(15)),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                blurRadius: 10,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              blurRadius: 10,
-                              offset: Offset(0, 5),
-                            ),
-                          ],
+                        const SizedBox(height: 10),
+                        Text(
+                          _recipes[index].title,
+                          style: Theme.of(context).textTheme.headline6,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        _recipes[index].title,
-                        style: Theme.of(context).textTheme.headline6,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
   }
 
