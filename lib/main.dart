@@ -32,8 +32,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static Widget? LandingPage;
-
   // @override
   // initState() {
   //   WidgetsBinding.instance!.addPostFrameCallback((_) async {
@@ -119,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         elevation: 5,
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
         title: const Center(
           child: Text(
             'Foodify',
