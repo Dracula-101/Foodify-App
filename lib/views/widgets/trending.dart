@@ -35,7 +35,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
     return _isLoading!
         ? const Center(child: Loader())
         : Container(
-            height: 320,
+            height: 350,
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -44,7 +44,6 @@ class _TrendingWidgetState extends State<TrendingWidget> {
               itemCount: 3,
               itemBuilder: (context, index) {
                 return Card(
-                  clipBehavior: Clip.antiAlias,
                   margin: const EdgeInsets.all(10),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -54,15 +53,15 @@ class _TrendingWidgetState extends State<TrendingWidget> {
                         Container(
                           margin: const EdgeInsets.all(10),
                           padding: const EdgeInsets.all(10),
-                          clipBehavior: Clip.antiAlias,
                           child: CachedNetworkImage(
                             imageUrl: _recipes[index].image,
-                            placeholder: (context, url) =>
-                                ShimmerWidget.rectangular(
-                                    height: 180, br: BorderRadius.circular(15)),
+                            placeholder: (context, url) {
+                              return ShimmerWidget.rectangular(
+                                  height: 267, br: BorderRadius.circular(15));
+                            },
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
@@ -75,7 +74,6 @@ class _TrendingWidgetState extends State<TrendingWidget> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
                         Text(
                           _recipes[index].title,
                           style: Theme.of(context).textTheme.headline6,

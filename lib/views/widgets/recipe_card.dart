@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:foodify/pages/Favourites/favourites.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class RecipeCard extends StatefulWidget {
@@ -39,7 +41,12 @@ class _RecipeCardState extends State<RecipeCard> {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () async {
-          // getRecipeDetails(id.toString());
+          Get.to(() {
+            return ProcedurePage(id: widget.id.toString());
+          },
+              transition: Transition.cupertino,
+              duration: Duration(seconds: 1),
+              curve: Curves.fastOutSlowIn);
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),

@@ -7,12 +7,12 @@ class RecipeDetails {
   bool? cheap;
   bool? veryPopular;
   // bool? sustainable;
-  // int? weightWatcherSmartPoints;
+  // double? weightWatcherSmartPodoubles;
   String? gaps;
   bool? lowFodmap;
   int? aggregateLikes;
-  int? spoonacularScore;
-  int? healthScore;
+  double? spoonacularScore;
+  double? healthScore;
   // String? creditsText;
   // String? license;
   String? sourceName;
@@ -45,7 +45,7 @@ class RecipeDetails {
       this.cheap,
       this.veryPopular,
       // this.sustainable,
-      // this.weightWatcherSmartPoints,
+      // this.weightWatcherSmartPodoubles,
       this.gaps,
       this.lowFodmap,
       this.aggregateLikes,
@@ -83,7 +83,7 @@ class RecipeDetails {
     cheap = json['cheap'];
     veryPopular = json['veryPopular'];
     // sustainable = json['sustainable'];
-    // weightWatcherSmartPoints = json['weightWatcherSmartPoints'];
+    // weightWatcherSmartPodoubles = json['weightWatcherSmartPodoubles'];
     gaps = json['gaps'];
     lowFodmap = json['lowFodmap'];
     aggregateLikes = json['aggregateLikes'];
@@ -152,7 +152,7 @@ class RecipeDetails {
     data['cheap'] = cheap;
     data['veryPopular'] = veryPopular;
     // data['sustainable'] = sustainable;
-    // data['weightWatcherSmartPoints'] = weightWatcherSmartPoints;
+    // data['weightWatcherSmartPodoubles'] = weightWatcherSmartPodoubles;
     data['gaps'] = gaps;
     data['lowFodmap'] = lowFodmap;
     data['aggregateLikes'] = aggregateLikes;
@@ -201,7 +201,8 @@ class RecipeDetails {
 
   static RecipeDetails recipesFromSnapshotDetails(dynamic snapshot) {
     return RecipeDetails(
-      vegetarian: snapshot['vegetarian'],
+      vegetarian: true,
+
       // vegan: snapshot['vegan'],
       // glutenFree: snapshot['glutenFree'],
       // dairyFree: snapshot['dairyFree'],
@@ -209,7 +210,7 @@ class RecipeDetails {
       cheap: snapshot['cheap'],
       veryPopular: snapshot['veryPopular'],
       // sustainable: snapshot['sustainable'],
-      // weightWatcherSmartPoints: snapshot['weightWatcherSmartPoints'],
+      // weightWatcherSmartPodoubles: snapshot['weightWatcherSmartPodoubles'],
       gaps: snapshot['gaps'],
       lowFodmap: snapshot['lowFodmap'],
       aggregateLikes: snapshot['aggregateLikes'],
@@ -499,7 +500,7 @@ class Properties {
 }
 
 class Ingredients {
-  int? id;
+  double? id;
   String? name;
   double? amount;
   String? unit;
@@ -556,7 +557,7 @@ class CaloricBreakdown {
 }
 
 class WeightPerServing {
-  int? amount;
+  double? amount;
   String? unit;
 
   WeightPerServing({this.amount, this.unit});

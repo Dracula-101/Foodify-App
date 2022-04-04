@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodify/models/removebg.dart';
 import 'package:foodify/pages/DrawerItems/AboutUs.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
+import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
@@ -35,25 +36,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // @override
-  // initState() {
-  //   WidgetsBinding.instance!.addPostFrameCallback((_) async {
-  //     FirebaseApp firebaseApp = await Firebase.initializeApp();
-  //     User? user = await FirebaseAuth.instance.currentUser;
-  //
-  //     LandingPage = user != null ? const MyHomePage() : LoginPage();
-  //     print('$LandingPage is 2');
-  //     await check();
-  //   });
-  //   // await _MyAppState.checkUser();
-
-  //   super.initState();
-  // }
-  //
-  // static check() async {
-  //   await checkUser();
-  // }
-
   static Future<Widget> checkUser() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     User? user = FirebaseAuth.instance.currentUser;
@@ -121,7 +103,6 @@ class _HomeDrawerState extends State<HomeDrawer>
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -172,7 +153,10 @@ class _HomeDrawerState extends State<HomeDrawer>
                     ),
                   ),
                   onPressed: () {
-                    setSelectedWidget(0);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => ProcedurePage()),
+                    // );
                   },
                 ),
               ),
@@ -290,22 +274,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // File? image;
-  // List? recognitions;
-  // XFile? ximage;
-  // String? name, confidence;
+  File? image;
+  List? recognitions;
+  XFile? ximage;
+  String? name, confidence;
 
-  // List<XFile>? _imageFileList;
-  // dynamic _pickImageError;
-  // ImagePicker? _picker;
+  List<XFile>? _imageFileList;
+  dynamic _pickImageError;
+  ImagePicker? _picker;
 
   @override
   initState() {
     super.initState();
-    // _picker = ImagePicker();
-    // loadModel().then((val) {
-    //   print('Model Loaded');
-    // });
+    _picker = ImagePicker();
+    loadModel().then((val) {
+      print('Model Loaded');
+    });
   }
 
   @override
@@ -355,8 +339,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 // onPressed: selectFromImagePicker,
                 onPressed: () {
-                  // _onImageButtonPressed(ImageSource.gallery,
-                  //     context: context, isMultiImage: true);
+                  _onImageButtonPressed(ImageSource.gallery,
+                      context: context, isMultiImage: true);
                 },
               ),
             ),
@@ -420,113 +404,113 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-//   loadModel() async {
-//     Tflite.close();
-//     print('Loadmodel called 2');
-//     try {
-//       String res;
+  loadModel() async {
+    Tflite.close();
+    print('Loadmodel called 2');
+    try {
+      String res;
 
-//       res = (await Tflite.loadModel(
-//         model: "assets/tflite/model_unquant.tflite",
-//         labels: "assets/tflite/labels.txt",
-//       ))!;
-//       print('Result is $res');
+      res = (await Tflite.loadModel(
+        model: "assets/tflite/model_unquant.tflite",
+        labels: "assets/tflite/labels.txt",
+      ))!;
+      print('Result is $res');
 
-//       print(res);
-//       debugPrint('Model Loaded, res is ' + res);
-//     } on PlatformException {
-//       print("Failed to load the model");
-//     }
-//   }
+      print(res);
+      debugPrint('Model Loaded, res is ' + res);
+    } on PlatformException {
+      print("Failed to load the model");
+    }
+  }
 
-//   selectFromImagePicker() async {
-//     print('aaaa');
-//     ImagePicker imagepick = ImagePicker();
-//     ximage = await imagepick.pickImage(source: ImageSource.camera);
+  selectFromImagePicker() async {
+    print('aaaa');
+    ImagePicker imagepick = ImagePicker();
+    ximage = await imagepick.pickImage(source: ImageSource.camera);
 
-//     image = convertToFile(ximage!);
-//     print('image picked is ' + image!.path);
-//     // RemoveBgAPI.getImage(image!);
-//     predictImage(File(image!.path));
-//   }
+    image = convertToFile(ximage!);
+    print('image picked is ' + image!.path);
+    // RemoveBgAPI.getImage(image!);
+    predictImage(File(image!.path));
+  }
 
-//   predictImage(File image) async {
-//     print('Predict image called');
+  predictImage(File image) async {
+    print('Predict image called');
 
-//     await applyModel(image);
+    await applyModel(image);
 
-//     // FileImage(image).resolve(ImageConfiguration()).addListener(
-//     //       (ImageStreamListener(
-//     //         (ImageInfo info, bool _) {
-//     //           // setState(() {
-//     //           //   _imageWidth = info.image.width.toDouble();
-//     //           //   _imageHeight = info.image.height.toDouble();
-//     //           // });
-//     //           _imageWidth = info.image.width.toDouble();
-//     //           _imageHeight = info.image.height.toDouble();
-//     //         },
-//     //       )),
-//     //     );
-//   }
+    // FileImage(image).resolve(ImageConfiguration()).addListener(
+    //       (ImageStreamListener(
+    //         (ImageInfo info, bool _) {
+    //           // setState(() {
+    //           //   _imageWidth = info.image.width.toDouble();
+    //           //   _imageHeight = info.image.height.toDouble();
+    //           // });
+    //           _imageWidth = info.image.width.toDouble();
+    //           _imageHeight = info.image.height.toDouble();
+    //         },
+    //       )),
+    //     );
+  }
 
-//   applyModel(File file) async {
-//     print('get Image called7');
-//     var res = await Tflite.runModelOnImage(
-//       path: file.path,
-//       numResults: 5,
-//       threshold: 0.7,
-//       imageMean: 0.0,
-//       imageStd: 255.0,
-//     );
-//     print('reached mount');
-//     if (!mounted) return;
-//     print('Setstate true');
+  applyModel(File file) async {
+    print('get Image called7');
+    var res = await Tflite.runModelOnImage(
+      path: file.path,
+      numResults: 5,
+      threshold: 0.7,
+      imageMean: 0.0,
+      imageStd: 255.0,
+    );
+    print('reached mount');
+    if (!mounted) return;
+    print('Setstate true');
 
-//     if (res!.isEmpty) {
-//       print('returning 0');
-//       return;
-//     }
-//     String str = res[0]['label'];
-//     name = str.substring(2);
-//     double a = res[0]['confidence'] * 100.0;
-//     confidence = (a.toString().substring(0, 2)) + '%';
-//     print(res);
-//     // Get.to(
-//     //   () {
-//     //     Prediction(image: file, recognitions: res);
-//     //   },
-//     //   transition: Transition.upToDown,
-//     // );
+    if (res!.isEmpty) {
+      print('returning 0');
+      return;
+    }
+    String str = res[0]['label'];
+    name = str.substring(2);
+    double a = res[0]['confidence'] * 100.0;
+    confidence = (a.toString().substring(0, 2)) + '%';
+    print(res);
+    // Get.to(
+    //   () {
+    //     Prediction(image: file, recognitions: res);
+    //   },
+    //   transition: Transition.upToDown,
+    // );
 
-//     Get.to(() {
-//       return ImageSelector(images: _imageFileList, recognitions: res);
-//     }, transition: Transition.upToDown);
-//   }
+    Get.to(() {
+      return ImageSelector(images: _imageFileList, recognitions: res);
+    }, transition: Transition.upToDown);
+  }
 
-//   File convertToFile(XFile xFile) {
-//     return File(xFile.path);
-//   }
+  File convertToFile(XFile xFile) {
+    return File(xFile.path);
+  }
 
-//   _onImageButtonPressed(ImageSource source,
-//       {BuildContext? context, bool isMultiImage = false}) async {
-//     try {
-//       final List<XFile>? pickedFileList = await _picker?.pickMultiImage(
-//         // maxWidth: maxWidth,
-//         // maxHeight: maxHeight,
-//         imageQuality: 100,
-//       );
-//       setState(() {
-//         _imageFileList = pickedFileList;
-//       });
-//     } catch (e) {
-//       setState(() {
-//         _pickImageError = e;
-//       });
-//     }
-//     Get.to(() {
-//       return ImageSelector(
-//         images: _imageFileList,
-//       );
-//     }, transition: Transition.upToDown);
-//   }
+  _onImageButtonPressed(ImageSource source,
+      {BuildContext? context, bool isMultiImage = false}) async {
+    try {
+      final List<XFile>? pickedFileList = await _picker?.pickMultiImage(
+        // maxWidth: maxWidth,
+        // maxHeight: maxHeight,
+        imageQuality: 100,
+      );
+      setState(() {
+        _imageFileList = pickedFileList;
+      });
+    } catch (e) {
+      setState(() {
+        _pickImageError = e;
+      });
+    }
+    Get.to(() {
+      return ImageSelector(
+        images: _imageFileList,
+      );
+    }, transition: Transition.upToDown);
+  }
 }

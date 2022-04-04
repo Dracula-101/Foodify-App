@@ -25,7 +25,7 @@ class RecipeApi {
     for (var i in data['recipes']) {
       _temp.add(i);
     }
-    // print(_temp);
+    print(_temp);
     return Recipe.recipesFromSnapshot(_temp);
   }
 

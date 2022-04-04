@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:foodify/models/recipeDetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';
 
 class RecipeDetailsAPI {
-  static Future<dynamic> getRecipeDetails(String Id) async {
+  static Future<RecipeDetails> getRecipeDetails(String Id) async {
     var uri = Uri.https(BASE_URL, '/recipes/' + Id + '/information', {
       "apiKey": API_KEY,
     });
@@ -14,12 +15,9 @@ class RecipeDetailsAPI {
 
     Map data = jsonDecode(response.body);
     List _temp = [];
+    print(data);
+    log("THis is the APi" + data.toString());
 
-    for (var i in data['']) {
-      _temp.add(i);
-    }
-    print(_temp);
-
-    return RecipeDetails.recipesFromSnapshotDetails(_temp);
+    return RecipeDetails.recipesFromSnapshotDetails(data);
   }
 }

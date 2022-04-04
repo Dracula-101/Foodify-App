@@ -35,11 +35,9 @@ dependencies:
   get: ^4.6.1
   cupertino_icons: ^1.0.2
   image_picker: ^0.8.4+9
-  google_nav_bar: ^5.0.5
   fluid_action_card: ^1.0.0+4
   video_player: ^2.2.19
   hexcolor: ^2.0.6
-  dio: ^4.0.4
   transparent_image: ^2.0.0
   cached_network_image: ^3.2.0
   shimmer: ^2.0.0
