@@ -145,10 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //   },
     //   transition: Transition.upToDown,
     // );
-
-    Get.to(() {
-      return ImageSelector(images: _imageFileList, recognitions: res);
-    }, transition: Transition.upToDown);
   }
 
   File convertToFile(XFile xFile) {

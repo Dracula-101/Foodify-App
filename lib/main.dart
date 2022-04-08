@@ -279,7 +279,6 @@ class _MyHomePageState extends State<MyHomePage> {
   XFile? ximage;
   String? name, confidence;
 
-  List<XFile>? _imageFileList;
   dynamic _pickImageError;
   ImagePicker? _picker;
 
@@ -481,10 +480,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //   },
     //   transition: Transition.upToDown,
     // );
-
-    Get.to(() {
-      return ImageSelector(images: _imageFileList, recognitions: res);
-    }, transition: Transition.upToDown);
   }
 
   File convertToFile(XFile xFile) {
@@ -493,23 +488,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _onImageButtonPressed(ImageSource source,
       {BuildContext? context, bool isMultiImage = false}) async {
+    List<XFile>? images;
     try {
-      final List<XFile>? pickedFileList = await _picker?.pickMultiImage(
+      images = await _picker?.pickMultiImage(
         // maxWidth: maxWidth,
         // maxHeight: maxHeight,
         imageQuality: 100,
       );
-      setState(() {
-        _imageFileList = pickedFileList;
-      });
     } catch (e) {
       setState(() {
         _pickImageError = e;
       });
     }
+    print("Hello this is a point");
     Get.to(() {
       return ImageSelector(
-        images: _imageFileList,
+        images: images,
       );
     }, transition: Transition.upToDown);
   }

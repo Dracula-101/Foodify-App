@@ -45,7 +45,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
         "Couldn't launch URL",
         "Please check your Internet connection",
         duration: const Duration(seconds: 2),
-        icon: Icon(FontAwesomeIcons.triangleExclamation, color: Colors.white),
+        icon: const Icon(FontAwesomeIcons.triangleExclamation,
+            color: Colors.white),
         snackPosition: SnackPosition.BOTTOM,
       );
     }
@@ -58,7 +59,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
         padding: const EdgeInsets.all(20),
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             color: Colors.black,
           ),
@@ -138,13 +139,14 @@ class _ProcedurePageState extends State<ProcedurePage> {
                         placeholder: (context, url) =>
                             ShimmerWidget.rectangular(
                                 height: 300, br: BorderRadius.circular(0)),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       )
                     : buildShimmer(
                         context, 300, MediaQuery.of(context).size.width, 0.0),
                 Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 220,
                     ),
                     Padding(
@@ -174,11 +176,11 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                               fontWeight: FontWeight.bold,
                                               overflow: TextOverflow.ellipsis)),
                                     ),
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     Text(details.extendedIngredients!.length
                                             .toString() +
                                         " Ingredients"),
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -194,7 +196,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             Icon(FontAwesomeIcons.clock,
                                                 size: 25,
                                                 color: HexColor("#b88c09")),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 5,
                                             ),
                                             Text(
@@ -225,7 +227,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             Icon(FontAwesomeIcons.star,
                                                 size: 25,
                                                 color: HexColor("#b88c09")),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 5,
                                             ),
                                             Text(
@@ -247,7 +249,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             Icon(FontAwesomeIcons.bowlFood,
                                                 size: 25,
                                                 color: HexColor("#b88c09")),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 5,
                                             ),
                                             Text('${details.servings} serves',
@@ -266,8 +268,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 )
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
                 'Ingredients',
                 style: TextStyle(
@@ -276,11 +278,11 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Text(
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
+              child: const Text(
                 'Cooking Instructions',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

@@ -21,7 +21,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
   }
 
   late List<Recipe> _recipes;
-  bool? _isLoading = true;
+  bool _isLoading = true;
 
   Future<void> getRecipes() async {
     _recipes = await RecipeApi.getTrending();
@@ -32,7 +32,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading!
+    return _isLoading
         ? const Center(child: Loader())
         : Container(
             height: 350,
