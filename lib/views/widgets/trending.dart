@@ -32,60 +32,61 @@ class _TrendingWidgetState extends State<TrendingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? const Center(child: Loader())
-        : Container(
-            height: 350,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              physics:
-                  const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.all(10),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(10),
-                          child: CachedNetworkImage(
-                            imageUrl: _recipes[index].image,
-                            placeholder: (context, url) {
-                              return ShimmerWidget.rectangular(
-                                  height: 267, br: BorderRadius.circular(15));
-                            },
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                            fit: BoxFit.fill,
+    if (_isLoading) {
+      return SizedBox(
+        height: 350,
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return Card(
+              margin: const EdgeInsets.all(10),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
+                      child: CachedNetworkImage(
+                        imageUrl: _recipes[index].image,
+                        placeholder: (context, url) {
+                          return ShimmerWidget.rectangular(
+                              height: 267, br: BorderRadius.circular(15));
+                        },
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                        fit: BoxFit.fill,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
                           ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          _recipes[index].title,
-                          style: Theme.of(context).textTheme.headline6,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          );
+                    Text(
+                      _recipes[index].title,
+                      style: Theme.of(context).textTheme.headline6,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget buildShimmer(BuildContext context) => Container(

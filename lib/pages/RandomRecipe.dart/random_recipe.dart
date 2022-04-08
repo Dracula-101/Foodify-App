@@ -33,31 +33,31 @@ class _RandomRecipeState extends State<RandomRecipe> {
   final _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? Center(child: Loader())
-        : FadingEdgeScrollView.fromScrollView(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics:
-                  const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
-              controller: _controller,
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
-              itemCount: _recipes.length,
-              itemBuilder: (context, index) {
-                return RecipeCard(
-                  id: _recipes[index].id,
-                  title: _recipes[index].title,
-                  cookTime:
-                      _recipes[index].readyInMinutes.toString() + " mins ",
-                  rating: _recipes[index].rating.toString() + " ",
-                  thumbnailUrl: _recipes[index].image,
-                  description: "random",
-                  calories: "-1",
-                  caloriesUnit: "cal",
-                  vegetarian: _recipes[index].vegetarian,
-                );
-              },
-            ),
-          );
+    if (_isLoading) {
+      return FadingEdgeScrollView.fromScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
+          controller: _controller,
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
+          itemCount: _recipes.length,
+          itemBuilder: (context, index) {
+            return RecipeCard(
+              id: _recipes[index].id,
+              title: _recipes[index].title,
+              cookTime: _recipes[index].readyInMinutes.toString() + " mins ",
+              rating: _recipes[index].rating.toString() + " ",
+              thumbnailUrl: _recipes[index].image,
+              description: "random",
+              calories: "-1",
+              caloriesUnit: "cal",
+              vegetarian: _recipes[index].vegetarian,
+            );
+          },
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }
