@@ -278,6 +278,133 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 ),
               ),
             ),
+            Wrap(
+              children: [
+                for (var i = 0; i < details.extendedIngredients!.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.amberAccent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              details.extendedIngredients![i].original!
+                                  .toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              details.extendedIngredients![i].measures!.us!
+                                      .amount
+                                      .toString() +
+                                  ' ' +
+                                  details.extendedIngredients![i].measures!.us!
+                                      .unitShort
+                                      .toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      details.veryHealthy ?? false
+                          ? const Icon(
+                              CupertinoIcons.checkmark_alt_circle_fill,
+                              color: Colors.green,
+                              size: 15,
+                            )
+                          : const Icon(
+                              CupertinoIcons.clear_thick_circled,
+                              color: Colors.red,
+                              size: 15,
+                            ),
+                      const SizedBox(width: 10),
+                      Text(
+                        details.veryHealthy ?? false
+                            ? ' Very Healthy'
+                            : 'Not Healthy',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(children: [
+                    details.cheap ?? false
+                        ? const Icon(
+                            CupertinoIcons.checkmark_alt_circle_fill,
+                            color: Colors.green,
+                            size: 15,
+                          )
+                        : const Icon(
+                            CupertinoIcons.clear_thick_circled,
+                            color: Colors.red,
+                            size: 15,
+                          ),
+                    const SizedBox(width: 10),
+                    Text(
+                      details.cheap ?? false ? ' Ketogenic' : 'Not Ketogenic',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ]),
+                  Row(children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 7),
+                      child: details.vegetarian ?? false
+                          ? Image.asset(
+                              'assets/images/veg.png',
+                              height: 20,
+                              width: 20,
+                            )
+                          : Image.asset(
+                              'assets/images/non-veg.png',
+                              height: 20,
+                              width: 20,
+                            ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      details.vegetarian ?? false
+                          ? ' Ketogenic'
+                          : 'Not Ketogenic',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.0),
               child: const Text(
@@ -298,10 +425,6 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 controller: controller,
                 children: stepsCard!,
               ),
-            ),
-            Container(
-              height: 600,
-              color: Colors.black,
             ),
           ],
         ),

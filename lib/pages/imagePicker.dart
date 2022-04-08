@@ -7,8 +7,8 @@ import "dart:io";
 import 'package:image_picker/image_picker.dart';
 
 class ImageSelector extends StatefulWidget {
-  List<XFile>? images;
-  ImageSelector({Key? key, required this.images}) : super(key: key);
+  final List<XFile>? images;
+  const ImageSelector({Key? key, required this.images}) : super(key: key);
 
   @override
   State<ImageSelector> createState() => _ImageSelectorState();
