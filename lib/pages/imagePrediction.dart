@@ -21,7 +21,7 @@ class Prediction extends StatefulWidget {
 }
 
 class _PredictionState extends State<Prediction> {
-  List<dynamic>? recognitions;
+  List recognitions = [];
   bool isLoading = true;
   @override
   initState() {
@@ -46,9 +46,11 @@ class _PredictionState extends State<Prediction> {
       print(res);
       debugPrint('Model Loaded, res is ' + res);
       predictImage();
-      setState(() {
-        isLoading = false;
-      });
+      //
+      // setState(() {
+      //   print("Hwllo");
+      //   isLoading = false;
+      // });
     } on PlatformException {
       print("Failed to load the model");
     }
@@ -68,9 +70,16 @@ class _PredictionState extends State<Prediction> {
         imageMean: 0,
         imageStd: 255.0,
       );
-      recognitions?.add(rec);
+      print('recccc is ');
       print(rec);
+
+      recognitions.add(rec);
     }
+    print("THe recognition is : ");
+    print(recognitions);
+    setState(() {
+      isLoading = false;
+    });
 
     // FileImage(image).resolve(ImageConfiguration()).addListener(
     //       (ImageStreamListener(
@@ -130,87 +139,13 @@ class _PredictionState extends State<Prediction> {
           elevation: 0.0,
           backgroundColor: Colors.white,
         ),
-        body: !isLoading
+        body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            :
-            //  SizedBox(
-            //     height: size.height,
-            //     width: size.width,
-            //     child: ListView.builder(
-            //       itemCount: widget.images!.isNotEmpty && recognitions != null
-            //           ? recognitions?.length
-            //           : 0,
-            //       itemBuilder: (context, index) {
-            //         return GestureDetector(
-            //           onTap: () {
-            //             print('Tapped');
-            //             // Get.to(
-            //             //   () {
-            //             //     Prediction(image: convertToFile(widget.images![index]));
-            //             //   },
-            //             //   transition: Transition.upToDown,
-            //             // );
-            //           },
-            //           child: Stack(
-            //             children: [
-            //               SizedBox(
-            //                 height: size.height * 0.3,
-            //                 width: size.width * 0.9,
-            //                 child: Image.file(
-            //                   File(widget.images!.elementAt(index).path),
-            //                   fit: BoxFit.cover,
-            //                   height: size.height,
-            //                   width: size.width,
-            //                 ),
-            //               ),
-            //               Positioned(
-            //                 top: size.height * 0.3,
-            //                 left: size.width * 0.05,
-            //                 child: SizedBox(
-            //                   height: size.height * 0.2,
-            //                   width: size.width * 0.9,
-            //                   child: Column(
-            //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //                     children: <Widget>[
-            //                       Text(
-            //                         'Predicted Label: ' +
-            //                             recognitions?[index][0]['label']
-            //                                 .substring(2),
-            //                         style: const TextStyle(
-            //                           fontSize: 15,
-            //                           fontWeight: FontWeight.bold,
-            //                         ),
-            //                       ),
-            //                       const SizedBox(
-            //                         height: 5,
-            //                       ),
-            //                       Text(
-            //                         'Predicted Confidence: ' +
-            //                             (recognitions?[index][0]['confidence'] *
-            //                                     100)
-            //                                 .toString()
-            //                                 .substring(0, 2) +
-            //                             '%',
-            //                         style: const TextStyle(
-            //                           fontSize: 15,
-            //                           fontWeight: FontWeight.bold,
-            //                         ),
-            //                       ),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            ListView.builder(
+            : ListView.builder(
                 itemCount: widget.images!.isNotEmpty && recognitions != null
-                    ? recognitions?.length
+                    ? recognitions.length
                     : 0,
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -223,11 +158,11 @@ class _PredictionState extends State<Prediction> {
                       //   transition: Transition.upToDown,
                       // );
                     },
-                    child: Stack(
+                    child: Column(
                       children: [
                         SizedBox(
-                          height: size.height * 0.3,
-                          width: size.width * 0.9,
+                          height: 300,
+                          width: size.width * 0.8,
                           child: Image.file(
                             File(widget.images!.elementAt(index).path),
                             fit: BoxFit.cover,
@@ -235,19 +170,22 @@ class _PredictionState extends State<Prediction> {
                             width: size.width,
                           ),
                         ),
-                        Positioned(
-                          top: size.height * 0.3,
-                          left: size.width * 0.05,
-                          child: SizedBox(
-                            height: size.height * 0.2,
-                            width: size.width * 0.9,
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Container(
+                            alignment: Alignment.bottomLeft,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey.shade200.withOpacity(0.8)),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
                                   'Predicted Label: ' +
-                                      recognitions?[index][0]['label']
-                                          .substring(2),
+                                      recognitions[index][0]['label'],
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -258,7 +196,7 @@ class _PredictionState extends State<Prediction> {
                                 ),
                                 Text(
                                   'Predicted Confidence: ' +
-                                      (recognitions?[index][0]['confidence'] *
+                                      (recognitions[index][0]['confidence'] *
                                               100)
                                           .toString()
                                           .substring(0, 2) +
@@ -277,11 +215,82 @@ class _PredictionState extends State<Prediction> {
                   );
                 },
               ));
+
+    //  SizedBox(
+    //     height: size.height,
+    //     width: size.width,
+    //     child: ListView.builder(
+    //       itemCount: widget.images!.isNotEmpty && recognitions != null
+    //           ? recognitions?.length
+    //           : 0,
+    //       itemBuilder: (context, index) {
+    //         return GestureDetector(
+    //           onTap: () {
+    //             print('Tapped');
+    //             // Get.to(
+    //             //   () {
+    //             //     Prediction(image: convertToFile(widget.images![index]));
+    //             //   },
+    //             //   transition: Transition.upToDown,
+    //             // );
+    //           },
+    //           child: Stack(
+    //             children: [
+    //               SizedBox(
+    //                 height: size.height * 0.3,
+    //                 width: size.width * 0.9,
+    //                 child: Image.file(
+    //                   File(widget.images!.elementAt(index).path),
+    //                   fit: BoxFit.cover,
+    //                   height: size.height,
+    //                   width: size.width,
+    //                 ),
+    //               ),
+    //               Positioned(
+    //                 top: size.height * 0.3,
+    //                 left: size.width * 0.05,
+    //                 child: SizedBox(
+    //                   height: size.height * 0.2,
+    //                   width: size.width * 0.9,
+    //                   child: Column(
+    //                     crossAxisAlignment: CrossAxisAlignment.start,
+    //                     children: <Widget>[
+    //                       Text(
+    //                         'Predicted Label: ' +
+    //                             recognitions?[index][0]['label']
+    //                                 .substring(2),
+    //                         style: const TextStyle(
+    //                           fontSize: 15,
+    //                           fontWeight: FontWeight.bold,
+    //                         ),
+    //                       ),
+    //                       const SizedBox(
+    //                         height: 5,
+    //                       ),
+    //                       Text(
+    //                         'Predicted Confidence: ' +
+    //                             (recognitions?[index][0]['confidence'] *
+    //                                     100)
+    //                                 .toString()
+    //                                 .substring(0, 2) +
+    //                             '%',
+    //                         style: const TextStyle(
+    //                           fontSize: 15,
+    //                           fontWeight: FontWeight.bold,
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         );
+    //       },
+    //     ),
+    //   ),
   }
 }
-
-
-
 
 // TextButton(
 //                   child: Text("Add to cart".toUpperCase(),

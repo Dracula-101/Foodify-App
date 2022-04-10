@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/models/removebg.dart';
 import 'package:foodify/pages/DrawerItems/AboutUs.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
@@ -301,6 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //   automaticallyImplyLeading: false,
       //   title: const Center(
       //     child: Text(
+      //       'Foodify',
       //       'Foodify',
       //       style: TextStyle(
       //         fontSize: 30,

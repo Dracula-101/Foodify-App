@@ -33,7 +33,7 @@ class _RandomRecipeState extends State<RandomRecipe> {
   final _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    if (!_isLoading) {
       return FadingEdgeScrollView.fromScrollView(
         child: ListView.builder(
           shrinkWrap: true,

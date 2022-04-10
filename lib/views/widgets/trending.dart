@@ -32,7 +32,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    if (!_isLoading) {
       return SizedBox(
         height: 350,
         child: ListView.builder(

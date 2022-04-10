@@ -28,7 +28,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
   List<Widget>? stepsCard;
   String? sourceUrl;
   Widget? web;
-
+  int? imageWidth;
+  double? imageHeight;
   bool isLoading = true;
 
   Future<void> getRecipeDetails(String id) async {
@@ -45,8 +46,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
         "Couldn't launch URL",
         "Please check your Internet connection",
         duration: const Duration(seconds: 2),
-        icon: const Icon(FontAwesomeIcons.triangleExclamation,
-            color: Colors.white),
+        icon: Icon(FontAwesomeIcons.triangleExclamation, color: Colors.white),
         snackPosition: SnackPosition.BOTTOM,
       );
     }
@@ -59,7 +59,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
         padding: const EdgeInsets.all(20),
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             color: Colors.black,
           ),
@@ -89,6 +89,12 @@ class _ProcedurePageState extends State<ProcedurePage> {
         ),
       ),
     );
+  }
+
+  scrollListener() {
+    if (controller.offset >= 0 && controller.offset < 300) {
+      setState(() {});
+    }
   }
 
   @override
@@ -128,7 +134,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 !isLoading
                     ? CachedNetworkImage(
                         imageUrl: details.image!,
-                        height: 300,
+                        height: imageHeight,
                         imageBuilder: (context, imageProvider) => Container(
                           height: 300.0,
                           decoration: BoxDecoration(
@@ -139,14 +145,13 @@ class _ProcedurePageState extends State<ProcedurePage> {
                         placeholder: (context, url) =>
                             ShimmerWidget.rectangular(
                                 height: 300, br: BorderRadius.circular(0)),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       )
                     : buildShimmer(
                         context, 300, MediaQuery.of(context).size.width, 0.0),
                 Column(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 220,
                     ),
                     Padding(
@@ -176,11 +181,11 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                               fontWeight: FontWeight.bold,
                                               overflow: TextOverflow.ellipsis)),
                                     ),
-                                    const SizedBox(height: 15),
+                                    SizedBox(height: 15),
                                     Text(details.extendedIngredients!.length
                                             .toString() +
                                         " Ingredients"),
-                                    const SizedBox(height: 15),
+                                    SizedBox(height: 15),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -196,7 +201,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             Icon(FontAwesomeIcons.clock,
                                                 size: 25,
                                                 color: HexColor("#b88c09")),
-                                            const SizedBox(
+                                            SizedBox(
                                               height: 5,
                                             ),
                                             Text(
@@ -227,11 +232,12 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             Icon(FontAwesomeIcons.star,
                                                 size: 25,
                                                 color: HexColor("#b88c09")),
-                                            const SizedBox(
+                                            SizedBox(
                                               height: 5,
                                             ),
                                             Text(
-                                                ((details.healthScore!) / 20.0)
+                                                ((details.spoonacularScore!) /
+                                                            20.0)
                                                         .toString() +
                                                     ' Stars',
                                                 style: const TextStyle(
@@ -249,7 +255,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             Icon(FontAwesomeIcons.bowlFood,
                                                 size: 25,
                                                 color: HexColor("#b88c09")),
-                                            const SizedBox(
+                                            SizedBox(
                                               height: 5,
                                             ),
                                             Text('${details.servings} serves',
@@ -268,8 +274,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 )
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
                 'Ingredients',
                 style: TextStyle(
@@ -278,11 +284,11 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: const Text(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Text(
                 'Cooking Instructions',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
