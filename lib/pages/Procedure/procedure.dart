@@ -23,7 +23,7 @@ class ProcedurePage extends StatefulWidget {
 }
 
 class _ProcedurePageState extends State<ProcedurePage> {
-  late RecipeDetails details;
+  RecipeDetails? details;
   PageController controller = PageController();
   List<Widget>? stepsCard;
   String? sourceUrl;
@@ -102,7 +102,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
     ];
 
     sourceUrl =
-    'https://fullbellysisters.blogspot.com/2012/06/pasta-with-garlic-scallions-cauliflower.html';
+        'https://fullbellysisters.blogspot.com/2012/06/pasta-with-garlic-scallions-cauliflower.html';
   }
 
   @override
@@ -118,7 +118,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
         ),
       ),
       floatingActionButtonLocation:
-      FloatingActionButtonLocation.miniCenterFloat,
+          FloatingActionButtonLocation.miniCenterFloat,
       body: Container(
         child: ListView(
           children: [
@@ -127,23 +127,23 @@ class _ProcedurePageState extends State<ProcedurePage> {
               children: [
                 !isLoading
                     ? CachedNetworkImage(
-                  imageUrl: details.image!,
-                  height: 300,
-                  imageBuilder: (context, imageProvider) => Container(
-                    height: 300.0,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.cover),
-                    ),
-                  ),
-                  placeholder: (context, url) =>
-                      ShimmerWidget.rectangular(
-                          height: 300, br: BorderRadius.circular(0)),
-                  errorWidget: (context, url, error) =>
-                  const Icon(Icons.error),
-                )
+                        imageUrl: details!.image!,
+                        height: 300,
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 300.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover),
+                          ),
+                        ),
+                        placeholder: (context, url) =>
+                            ShimmerWidget.rectangular(
+                                height: 300, br: BorderRadius.circular(0)),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )
                     : buildShimmer(
-                    context, 300, MediaQuery.of(context).size.width, 0.0),
+                        context, 300, MediaQuery.of(context).size.width, 0.0),
                 Column(
                   children: [
                     const SizedBox(
@@ -159,110 +159,110 @@ class _ProcedurePageState extends State<ProcedurePage> {
                           ),
                           child: isLoading
                               ? ShimmerWidget.rectangular(
-                              height: 200, br: BorderRadius.circular(20))
+                                  height: 200, br: BorderRadius.circular(20))
                               : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 1),
-                                alignment: Alignment.topCenter,
-                                child: Text(details.title.toString(),
-                                    maxLines: 2,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        fontSize: 27,
-                                        fontWeight: FontWeight.bold,
-                                        overflow: TextOverflow.ellipsis)),
-                              ),
-                              const SizedBox(height: 15),
-                              Text(details.extendedIngredients!.length
-                                  .toString() +
-                                  " Ingredients"),
-                              const SizedBox(height: 15),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(FontAwesomeIcons.clock,
-                                          size: 25,
-                                          color: HexColor("#b88c09")),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                          details.readyInMinutes!
-                                              .toInt() <
-                                              60
-                                              ? details.readyInMinutes
-                                              .toString() +
-                                              " mins"
-                                              : (details.readyInMinutes!
-                                              .toDouble() /
-                                              60.0)
-                                              .toPrecision(1)
-                                              .toString() +
-                                              " Hrs",
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 1),
+                                      alignment: Alignment.topCenter,
+                                      child: Text(details!.title.toString(),
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
                                           style: const TextStyle(
+                                              fontSize: 27,
                                               fontWeight: FontWeight.bold,
-                                              overflow:
-                                              TextOverflow.ellipsis)),
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(FontAwesomeIcons.star,
-                                          size: 25,
-                                          color: HexColor("#b88c09")),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                          ((details.healthScore!) / 20.0)
-                                              .toString() +
-                                              ' Stars',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              overflow:
-                                              TextOverflow.ellipsis)),
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(FontAwesomeIcons.bowlFood,
-                                          size: 25,
-                                          color: HexColor("#b88c09")),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text('${details.servings} serves',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              overflow:
-                                              TextOverflow.ellipsis)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
+                                              overflow: TextOverflow.ellipsis)),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Text(details!.extendedIngredients!.length
+                                            .toString() +
+                                        " Ingredients"),
+                                    const SizedBox(height: 15),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(FontAwesomeIcons.clock,
+                                                size: 25,
+                                                color: HexColor("#b88c09")),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                                details!.readyInMinutes!
+                                                            .toInt() <
+                                                        60
+                                                    ? details!.readyInMinutes
+                                                            .toString() +
+                                                        " mins"
+                                                    : (details!.readyInMinutes!
+                                                                    .toDouble() /
+                                                                60.0)
+                                                            .toPrecision(1)
+                                                            .toString() +
+                                                        " Hrs",
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    overflow:
+                                                        TextOverflow.ellipsis)),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(FontAwesomeIcons.star,
+                                                size: 25,
+                                                color: HexColor("#b88c09")),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                                ((details!.healthScore!) / 20.0)
+                                                        .toString() +
+                                                    ' Stars',
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    overflow:
+                                                        TextOverflow.ellipsis)),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(FontAwesomeIcons.bowlFood,
+                                                size: 25,
+                                                color: HexColor("#b88c09")),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text('${details!.servings} serves',
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    overflow:
+                                                        TextOverflow.ellipsis)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )),
                     ),
                   ],
                 )
@@ -278,138 +278,147 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 ),
               ),
             ),
-            Wrap(
-              children: [
-                for (var i = 0; i < details.extendedIngredients!.length; i++)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.amberAccent,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              details.extendedIngredients![i].original!
-                                  .toString(),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+            isLoading
+                ? Container()
+                : Wrap(
+                    children: [
+                      for (var i = 0;
+                          i < details!.extendedIngredients!.length;
+                          i++)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.amberAccent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    details!.extendedIngredients![i].original!
+                                        .toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    details!.extendedIngredients![i].measures!
+                                            .us!.amount
+                                            .toString() +
+                                        ' ' +
+                                        details!.extendedIngredients![i]
+                                            .measures!.us!.unitShort
+                                            .toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 5),
+                          ),
+                        ),
+                    ],
+                  ),
+            isLoading
+                ? Container()
+                : Container(
+                    margin: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            details!.veryHealthy ?? false
+                                ? const Icon(
+                                    CupertinoIcons.checkmark_alt_circle_fill,
+                                    color: Colors.green,
+                                    size: 15,
+                                  )
+                                : const Icon(
+                                    CupertinoIcons.clear_thick_circled,
+                                    color: Colors.red,
+                                    size: 15,
+                                  ),
+                            const SizedBox(width: 10),
                             Text(
-                              details.extendedIngredients![i].measures!.us!
-                                  .amount
-                                  .toString() +
-                                  ' ' +
-                                  details.extendedIngredients![i].measures!.us!
-                                      .unitShort
-                                      .toString(),
+                              details!.veryHealthy ?? false
+                                  ? ' Very Healthy'
+                                  : 'Not Healthy',
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
-                      ),
+                        Row(children: [
+                          details!.cheap ?? false
+                              ? const Icon(
+                                  CupertinoIcons.checkmark_alt_circle_fill,
+                                  color: Colors.green,
+                                  size: 15,
+                                )
+                              : const Icon(
+                                  CupertinoIcons.clear_thick_circled,
+                                  color: Colors.red,
+                                  size: 15,
+                                ),
+                          const SizedBox(width: 10),
+                          Text(
+                            details!.cheap ?? false
+                                ? ' Ketogenic'
+                                : 'Not Ketogenic',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ]),
+                        Row(children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 7),
+                            child: details!.vegetarian ?? false
+                                ? Image.asset(
+                                    'assets/images/veg.png',
+                                    height: 20,
+                                    width: 20,
+                                  )
+                                : Image.asset(
+                                    'assets/images/non-veg.png',
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            details!.vegetarian ?? false
+                                ? ' Ketogenic'
+                                : 'Not Ketogenic',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ]),
+                      ],
                     ),
                   ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.all(10.0),
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      details.veryHealthy ?? false
-                          ? const Icon(
-                        CupertinoIcons.checkmark_alt_circle_fill,
-                        color: Colors.green,
-                        size: 15,
-                      )
-                          : const Icon(
-                        CupertinoIcons.clear_thick_circled,
-                        color: Colors.red,
-                        size: 15,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        details.veryHealthy ?? false
-                            ? ' Very Healthy'
-                            : 'Not Healthy',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(children: [
-                    details.cheap ?? false
-                        ? const Icon(
-                      CupertinoIcons.checkmark_alt_circle_fill,
-                      color: Colors.green,
-                      size: 15,
-                    )
-                        : const Icon(
-                      CupertinoIcons.clear_thick_circled,
-                      color: Colors.red,
-                      size: 15,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      details.cheap ?? false ? ' Ketogenic' : 'Not Ketogenic',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ]),
-                  Row(children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 7),
-                      child: details.vegetarian ?? false
-                          ? Image.asset(
-                        'assets/images/veg.png',
-                        height: 20,
-                        width: 20,
-                      )
-                          : Image.asset(
-                        'assets/images/non-veg.png',
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      details.vegetarian ?? false
-                          ? ' Ketogenic'
-                          : 'Not Ketogenic',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ]),
-                ],
-              ),
-            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: const Text(
+              child: Text(
                 'Cooking Instructions',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
