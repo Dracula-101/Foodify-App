@@ -54,6 +54,7 @@ dependencies:
   url_launcher: ^6.0.20
   share_plus: ^4.0.3
   fancy_drawer: ^2.0.0
+  flutter_html: ^2.2.1
 
 dev_dependencies:
   flutter_test:

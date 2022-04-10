@@ -1,7 +1,8 @@
-String API_KEY = "d8905056f5f34351bf953b33a8964733";
+String API_KEY = "92741f886d064d45808dfbd157c066c1";
 String removeBgKey = "itagkENup4Fr747E4crTGrmV";
 String other_api_key = "d9ec84e453654268984a928a88645819";
 const String BASE_URL = "api.spoonacular.com";
+const String Image_URL = "https://spoonacular.com/cdn/ingredients_250x250/";
 final items = 25;
 List<dynamic> data = [
   "Cabbage",

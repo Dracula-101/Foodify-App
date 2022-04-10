@@ -1,9 +1,9 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:foodify/constants/key.dart';
 import 'package:foodify/models/recipeDetails.api.dart';
 import 'package:foodify/models/recipeDetails.dart';
 import 'package:get/get.dart';
@@ -108,12 +108,27 @@ class _ProcedurePageState extends State<ProcedurePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
-        onPressed: launchURL,
-        child: const Text(
-          'Get Procedure',
-          style: TextStyle(
-            fontSize: 20,
+      floatingActionButton: Container(
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.6),
+              blurRadius: 10.0,
+              spreadRadius: -20.0,
+            ),
+          ],
+        ),
+        child: ElevatedButton(
+          onPressed: launchURL,
+          child: const Text(
+            'Get Procedure',
+            style: TextStyle(
+              fontSize: 25,
+            ),
           ),
         ),
       ),
@@ -127,7 +142,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
               children: [
                 !isLoading
                     ? CachedNetworkImage(
-                        imageUrl: details!.image!,
+                        imageUrl: details?.image ??
+                            'https://bitsofco.de/content/images/2018/12/broken-1.png',
                         height: 300,
                         imageBuilder: (context, imageProvider) => Container(
                           height: 300.0,
@@ -273,144 +289,288 @@ class _ProcedurePageState extends State<ProcedurePage> {
               child: Text(
                 'Ingredients',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             isLoading
-                ? Container()
-                : Wrap(
-                    children: [
-                      for (var i = 0;
-                          i < details!.extendedIngredients!.length;
-                          i++)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.amberAccent,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                ? Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 10.0),
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: ShimmerWidget.rectangular(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        br: BorderRadius.circular(20)),
+                  )
+                : Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 17.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var i = 0;
+                            i < details!.extendedIngredients!.length;
+                            i++)
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Row(
                                 children: [
-                                  Text(
-                                    details!.extendedIngredients![i].original!
-                                        .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                                  CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors.white,
+                                    child: CachedNetworkImage(
+                                      imageUrl: Image_URL +
+                                          details!.extendedIngredients![i].image
+                                              .toString(),
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.contain),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) =>
+                                          ShimmerWidget.rectangular(
+                                              height: 180,
+                                              br: BorderRadius.circular(50)),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
                                     ),
                                   ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    details!.extendedIngredients![i].measures!
-                                            .us!.amount
-                                            .toString() +
-                                        ' ' +
-                                        details!.extendedIngredients![i]
-                                            .measures!.us!.unitShort
-                                            .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      details!.extendedIngredients![i].original
+                                          .toString(),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
                                   ),
                                 ],
-                              ),
-                            ),
+                              )
+                            ],
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
             isLoading
-                ? Container()
+                ? Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 10.0),
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: ShimmerWidget.rectangular(
+                        height: 200, br: BorderRadius.circular(20)),
+                  )
                 : Container(
-                    margin: const EdgeInsets.all(10.0),
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
+                    margin: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            details!.veryHealthy ?? false
-                                ? const Icon(
-                                    CupertinoIcons.checkmark_alt_circle_fill,
-                                    color: Colors.green,
-                                    size: 15,
-                                  )
-                                : const Icon(
-                                    CupertinoIcons.clear_thick_circled,
-                                    color: Colors.red,
-                                    size: 15,
+                            Row(
+                              children: [
+                                details!.veryHealthy ?? false
+                                    ? const Icon(
+                                        CupertinoIcons
+                                            .checkmark_alt_circle_fill,
+                                        color: Colors.green,
+                                        size: 30,
+                                      )
+                                    : const Icon(
+                                        CupertinoIcons.clear_thick_circled,
+                                        color: Colors.red,
+                                        size: 30,
+                                      ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  details!.veryHealthy ?? false
+                                      ? ' Very Healthy'
+                                      : 'Not Healthy',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
                                   ),
-                            const SizedBox(width: 10),
-                            Text(
-                              details!.veryHealthy ?? false
-                                  ? ' Very Healthy'
-                                  : 'Not Healthy',
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                ),
+                              ],
                             ),
+                            Row(children: [
+                              details!.cheap ?? false
+                                  ? const Icon(
+                                      CupertinoIcons.checkmark_alt_circle_fill,
+                                      color: Colors.green,
+                                      size: 30,
+                                    )
+                                  : const Icon(
+                                      CupertinoIcons.clear_thick_circled,
+                                      color: Colors.red,
+                                      size: 30,
+                                    ),
+                              const SizedBox(width: 10),
+                              Text(
+                                details!.cheap ?? false
+                                    ? ' Ketogenic'
+                                    : 'Not Ketogenic',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ]),
+                            Row(children: [
+                              details!.vegetarian ?? false
+                                  ? Image.asset(
+                                      'assets/images/veg.png',
+                                      height: 30,
+                                      width: 30,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/non-veg.png',
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                              const SizedBox(width: 4),
+                              Text(
+                                details!.vegetarian ?? false
+                                    ? ' Vegetarian'
+                                    : 'Non Vegetarian',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ]),
                           ],
                         ),
-                        Row(children: [
-                          details!.cheap ?? false
-                              ? const Icon(
-                                  CupertinoIcons.checkmark_alt_circle_fill,
-                                  color: Colors.green,
-                                  size: 15,
-                                )
-                              : const Icon(
-                                  CupertinoIcons.clear_thick_circled,
-                                  color: Colors.red,
-                                  size: 15,
-                                ),
-                          const SizedBox(width: 10),
-                          Text(
-                            details!.cheap ?? false
-                                ? ' Ketogenic'
-                                : 'Not Ketogenic',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Row(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 3, vertical: 7),
-                            child: details!.vegetarian ?? false
-                                ? Image.asset(
-                                    'assets/images/veg.png',
-                                    height: 20,
-                                    width: 20,
-                                  )
-                                : Image.asset(
-                                    'assets/images/non-veg.png',
-                                    height: 20,
-                                    width: 20,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Row(
+                              children: [
+                                details!.dairyFree ?? false
+                                    ? const Icon(
+                                        CupertinoIcons
+                                            .checkmark_alt_circle_fill,
+                                        color: Colors.green,
+                                        size: 30,
+                                      )
+                                    : const Icon(
+                                        CupertinoIcons.clear_thick_circled,
+                                        color: Colors.red,
+                                        size: 30,
+                                      ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  details!.dairyFree ?? false
+                                      ? ' Dairy Free'
+                                      : 'Not Dairy Free',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
                                   ),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            details!.vegetarian ?? false
-                                ? ' Ketogenic'
-                                : 'Not Ketogenic',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                                ),
+                              ],
                             ),
-                          ),
-                        ]),
+                            Row(
+                              children: [
+                                details!.glutenFree ?? false
+                                    ? const Icon(
+                                        CupertinoIcons
+                                            .checkmark_alt_circle_fill,
+                                        color: Colors.green,
+                                        size: 30,
+                                      )
+                                    : const Icon(
+                                        CupertinoIcons.clear_thick_circled,
+                                        color: Colors.red,
+                                        size: 30,
+                                      ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  details!.glutenFree ?? false
+                                      ? ' Gluten Free'
+                                      : 'Not Gluten Free',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                details!.vegan ?? false
+                                    ? const Icon(
+                                        CupertinoIcons
+                                            .checkmark_alt_circle_fill,
+                                        color: Colors.green,
+                                        size: 30,
+                                      )
+                                    : const Icon(
+                                        CupertinoIcons.clear_thick_circled,
+                                        color: Colors.red,
+                                        size: 30,
+                                      ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  details!.vegan ?? false
+                                      ? ' Vegan'
+                                      : 'Non Vegan',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -435,6 +595,38 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 children: stepsCard!,
               ),
             ),
+            Container(
+              margin: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Summary',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Html(
+                      data: details?.summary ?? 'Summary not available',
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

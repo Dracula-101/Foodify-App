@@ -5,7 +5,9 @@ import 'dart:ffi';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodify/models/recipeDetails.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
+import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
 
@@ -30,11 +32,13 @@ class FavouritesCard extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(110, 20, 25, 20),
           child: InkWell(
             onTap: () {
-              Get.snackbar(
-                recipeName,
-                "Rating : $rating\tCooktime : $cooktime",
-                icon: Icon(Icons.person, color: Colors.white),
-                snackPosition: SnackPosition.BOTTOM,
+              Get.to(
+                () {
+                  return ProcedurePage(
+                    id: id.toString(),
+                  );
+                },
+                transition: Transition.cupertino,
               );
             },
             child: Container(

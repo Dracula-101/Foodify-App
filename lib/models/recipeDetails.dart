@@ -1,8 +1,8 @@
 class RecipeDetails {
   bool? vegetarian;
-  // bool? vegan;
-  // bool? glutenFree;
-  // bool? dairyFree;
+  bool? vegan;
+  bool? glutenFree;
+  bool? dairyFree;
   bool? veryHealthy;
   bool? cheap;
   bool? veryPopular;
@@ -38,9 +38,9 @@ class RecipeDetails {
 
   RecipeDetails(
       {this.vegetarian,
-      // this.vegan,
-      // this.glutenFree,
-      // this.dairyFree,
+      this.vegan,
+      this.glutenFree,
+      this.dairyFree,
       this.veryHealthy,
       this.cheap,
       this.veryPopular,
@@ -76,9 +76,9 @@ class RecipeDetails {
 
   RecipeDetails.fromJson(Map<String, dynamic> json) {
     vegetarian = json['vegetarian'];
-    // vegan = json['vegan'];
-    // glutenFree = json['glutenFree'];
-    // dairyFree = json['dairyFree'];
+    vegan = json['vegan'];
+    glutenFree = json['glutenFree'];
+    dairyFree = json['dairyFree'];
     veryHealthy = json['veryHealthy'];
     cheap = json['cheap'];
     veryPopular = json['veryPopular'];
@@ -145,9 +145,9 @@ class RecipeDetails {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['vegetarian'] = vegetarian;
-    // data['vegan'] = vegan;
-    // data['glutenFree'] = glutenFree;
-    // data['dairyFree'] = dairyFree;
+    data['vegan'] = vegan;
+    data['glutenFree'] = glutenFree;
+    data['dairyFree'] = dairyFree;
     data['veryHealthy'] = veryHealthy;
     data['cheap'] = cheap;
     data['veryPopular'] = veryPopular;
@@ -202,10 +202,9 @@ class RecipeDetails {
   static RecipeDetails recipesFromSnapshotDetails(dynamic snapshot) {
     return RecipeDetails(
       vegetarian: true,
-
-      // vegan: snapshot['vegan'],
-      // glutenFree: snapshot['glutenFree'],
-      // dairyFree: snapshot['dairyFree'],
+      vegan: snapshot['vegan'],
+      glutenFree: snapshot['glutenFree'],
+      dairyFree: snapshot['dairyFree'],
       veryHealthy: snapshot['veryHealthy'],
       cheap: snapshot['cheap'],
       veryPopular: snapshot['veryPopular'],
@@ -250,7 +249,7 @@ class RecipeDetails {
 
   @override
   String toString() {
-    return 'RecipeDetails{vegetarian: $vegetarian, veryHealthy: $veryHealthy, cheap: $cheap, veryPopular: $veryPopular, gaps: $gaps, lowFodmap: $lowFodmap, aggregateLikes: $aggregateLikes, spoonacularScore: $spoonacularScore, healthScore: $healthScore, sourceName: $sourceName, pricePerServing: $pricePerServing, extendedIngredients: $extendedIngredients, id: $id, title: $title, readyInMinutes: $readyInMinutes, servings: $servings, sourceUrl: $sourceUrl, image: $image, nutrition: $nutrition, summary: $summary, cuisines: $cuisines, dishTypes: $dishTypes, diets: $diets, occasions: $occasions, winePairing: $winePairing, instructions: $instructions, analyzedInstructions: $analyzedInstructions, spoonacularSourceUrl: $spoonacularSourceUrl}';
+    return 'RecipeDetails{vegetarian: $vegetarian, vegan: $vegan, glutenFree: $glutenFree, dairyFree: $dairyFree, veryHealthy: $veryHealthy, cheap: $cheap, veryPopular: $veryPopular, gaps: $gaps, lowFodmap: $lowFodmap, aggregateLikes: $aggregateLikes, spoonacularScore: $spoonacularScore, healthScore: $healthScore, sourceName: $sourceName, pricePerServing: $pricePerServing, extendedIngredients: $extendedIngredients, id: $id, title: $title, readyInMinutes: $readyInMinutes, servings: $servings, sourceUrl: $sourceUrl, image: $image, nutrition: $nutrition, summary: $summary, cuisines: $cuisines, dishTypes: $dishTypes, diets: $diets}';
   }
 }
 
