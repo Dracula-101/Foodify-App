@@ -14,9 +14,8 @@ class RecipeDetailsAPI {
         .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
 
     Map data = jsonDecode(response.body);
-    List _temp = [];
     // print(data);
-    log("THis is the APi" + data.toString());
+    // log("THis is the APi" + data.toString());
 
     return RecipeDetails.recipesFromSnapshotDetails(data);
   }

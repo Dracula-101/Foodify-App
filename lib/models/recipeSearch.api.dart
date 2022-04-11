@@ -27,4 +27,26 @@ class RecipeSearchApi {
     }
     return RecipeSearch.recipeSearchFromSnapshot(_temp);
   }
+
+  static Future<List<RecipeSearch>> getCuisine(String cuisine) async {
+    var uri = Uri.https(BASE_URL, '/recipes/complexSearch', {
+      "number": "30",
+      "addRecipeNutrition": "true",
+      "sort": "calories",
+      "sortDirection": "asc",
+      "instructionsRequired": "true",
+      "cuisine": cuisine,
+      "apiKey": API_KEY,
+    });
+
+    final response = await http.get(uri, headers: {"useQueryString": "true"});
+
+    Map data = jsonDecode(response.body);
+    List _temp = [];
+
+    for (var i in data['results']) {
+      _temp.add(i);
+    }
+    return RecipeSearch.recipeSearchFromSnapshot(_temp);
+  }
 }

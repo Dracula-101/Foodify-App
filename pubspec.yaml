@@ -69,6 +69,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/images/cuisine/
     - assets/fonts/
     - assets/tflite/ssd_mobilenet.tflite
     - assets/tflite/ssd_mobilenet.txt

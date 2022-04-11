@@ -69,8 +69,10 @@ class _SearchBarState extends State<SearchBar> {
                                     // },
                                     onSubmitted: (value) {
                                       setState(() {
-                                        Get.to(() =>
-                                            RecipeSearchCard(title: value));
+                                        Get.to(() => RecipeSearchCard(
+                                              title: value,
+                                              isCuisine: false,
+                                            ));
                                       });
                                     },
                                   )

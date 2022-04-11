@@ -1,4 +1,4 @@
-String API_KEY = "92741f886d064d45808dfbd157c066c1";
+String API_KEY = "d8905056f5f34351bf953b33a8964733";
 String removeBgKey = "itagkENup4Fr747E4crTGrmV";
 String other_api_key = "d9ec84e453654268984a928a88645819";
 const String BASE_URL = "api.spoonacular.com";
@@ -41,5 +41,21 @@ void changeAPiKey() {
   other_api_key = temp;
 }
 
-final String imagenotfound =
+const String imagenotfound =
     "https://bitsofco.de/content/images/2018/12/broken-1.png";
+
+List<String> cuisines = [
+  "American",
+  "British",
+  "Chinese",
+  "European",
+  "French",
+  "Indian",
+  "Italian",
+  "Japanese",
+  "Korean",
+  "Mexican",
+  "Spanish",
+  "Thai",
+  "Vietnamese",
+];

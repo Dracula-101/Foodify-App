@@ -7,7 +7,12 @@ import 'package:foodify/views/widgets/recipe_card.dart';
 
 class RecipeSearchCard extends StatefulWidget {
   final String title;
-  const RecipeSearchCard({Key? key, required this.title}) : super(key: key);
+  final bool isCuisine;
+  const RecipeSearchCard({
+    Key? key,
+    required this.title,
+    required this.isCuisine,
+  }) : super(key: key);
 
   @override
   State<RecipeSearchCard> createState() => _RecipeSearchCardState();
@@ -19,11 +24,22 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
   @override
   void initState() {
     super.initState();
-    getRecipes();
+    if (widget.isCuisine) {
+      getCuisine();
+    } else {
+      getRecipes();
+    }
   }
 
   Future<void> getRecipes() async {
     _recipes = await RecipeSearchApi.getRecipe(widget.title);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> getCuisine() async {
+    _recipes = await RecipeSearchApi.getCuisine(widget.title);
     setState(() {
       _isLoading = false;
     });
@@ -34,7 +50,11 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Recipes for " + widget.title)),
+      appBar: AppBar(
+        backgroundColor: Colors.white24,
+        title: Text("Recipes for " + widget.title),
+        elevation: 0.0,
+      ),
       body: Container(
         child: _isLoading
             ? Center(child: Loader())

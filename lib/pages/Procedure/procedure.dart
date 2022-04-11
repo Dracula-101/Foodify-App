@@ -52,53 +52,49 @@ class _ProcedurePageState extends State<ProcedurePage> {
     }
   }
 
-  textContainer(String text) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
-        ),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.6),
-              offset: const Offset(
-                0.0,
-                10.0,
-              ),
-              blurRadius: 10.0,
-              spreadRadius: -6.0,
-            ),
-          ],
-          // image: DecorationImage(
-          //   colorFilter: ColorFilter.mode(
-          //     Colors.black.withOpacity(0.5),
-          //     BlendMode.multiply,
-          //   ),
-          //   image: NetworkImage(thumbnailUrl),
-          //   fit: BoxFit.cover,
-          // ),
-        ),
-      ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
     getRecipeDetails(widget.id);
     stepsCard = [
-      textContainer('Pg 1'),
-      textContainer('Pg 2'),
-      textContainer('Pg 3'),
+      if (details?.analyzedInstructions != null)
+        for (int i = 0; i < details!.analyzedInstructions!.length.toInt(); i++)
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                details?.analyzedInstructions![i]?.step,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.6),
+                    offset: const Offset(
+                      0.0,
+                      10.0,
+                    ),
+                    blurRadius: 10.0,
+                    spreadRadius: -6.0,
+                  ),
+                ],
+                // image: DecorationImage(
+                //   colorFilter: ColorFilter.mode(
+                //     Colors.black.withOpacity(0.5),
+                //     BlendMode.multiply,
+                //   ),
+                //   image: NetworkImage(thumbnailUrl),
+                //   fit: BoxFit.cover,
+                // ),
+              ),
+            ),
+          ),
     ];
 
     sourceUrl =
@@ -109,11 +105,11 @@ class _ProcedurePageState extends State<ProcedurePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Container(
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(horizontal: 70),
         padding: const EdgeInsets.all(15),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(50),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.6),
@@ -140,6 +136,14 @@ class _ProcedurePageState extends State<ProcedurePage> {
             Stack(
               fit: StackFit.passthrough,
               children: [
+                IconButton(
+                    onPressed: () {
+                      return Get.back();
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.arrowLeft,
+                      color: Colors.black,
+                    )),
                 !isLoading
                     ? CachedNetworkImage(
                         imageUrl: details?.image ??
@@ -148,6 +152,14 @@ class _ProcedurePageState extends State<ProcedurePage> {
                         imageBuilder: (context, imageProvider) => Container(
                           height: 300.0,
                           decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.6),
+                                blurRadius: 30.0,
+                                spreadRadius: -5.0,
+                                offset: Offset(0.0, 40.0),
+                              ),
+                            ],
                             image: DecorationImage(
                                 image: imageProvider, fit: BoxFit.cover),
                           ),
@@ -168,7 +180,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Container(
-                          height: 200,
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Colors.amberAccent,
                             borderRadius: BorderRadius.circular(20),
@@ -180,17 +193,18 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 1),
-                                      alignment: Alignment.topCenter,
-                                      child: Text(details!.title.toString(),
-                                          maxLines: 2,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontSize: 27,
-                                              fontWeight: FontWeight.bold,
-                                              overflow: TextOverflow.ellipsis)),
+                                    Flex(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Flexible(
+                                          child: Text(details!.title.toString(),
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 27,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
+                                      ],
                                     ),
                                     const SizedBox(height: 15),
                                     Text(details!.extendedIngredients!.length
@@ -316,7 +330,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
@@ -329,7 +344,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                             i++)
                           Column(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 2,
                               ),
                               Row(
@@ -356,10 +371,10 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                               height: 180,
                                               br: BorderRadius.circular(50)),
                                       errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                          const Icon(Icons.error),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Flexible(
@@ -392,7 +407,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 : Container(
                     margin: const EdgeInsets.all(20.0),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10.0),
+                        horizontal: 5.0, vertical: 10.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -401,7 +416,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
@@ -412,6 +428,32 @@ class _ProcedurePageState extends State<ProcedurePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Row(children: [
+                              details!.vegetarian ?? false
+                                  ? Image.asset(
+                                      'assets/images/veg.png',
+                                      height: 30,
+                                      width: 30,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/non-veg.png',
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                              const SizedBox(width: 4),
+                              Text(
+                                details!.vegetarian ?? false
+                                    ? ' Vegetarian'
+                                    : 'Non Vegetarian',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ]),
+                            const SizedBox(
+                              height: 5,
+                            ),
                             Row(
                               children: [
                                 details!.veryHealthy ?? false
@@ -438,6 +480,9 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                 ),
                               ],
                             ),
+                            const SizedBox(
+                              height: 3,
+                            ),
                             Row(children: [
                               details!.cheap ?? false
                                   ? const Icon(
@@ -455,29 +500,6 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                 details!.cheap ?? false
                                     ? ' Ketogenic'
                                     : 'Not Ketogenic',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ]),
-                            Row(children: [
-                              details!.vegetarian ?? false
-                                  ? Image.asset(
-                                      'assets/images/veg.png',
-                                      height: 30,
-                                      width: 30,
-                                    )
-                                  : Image.asset(
-                                      'assets/images/non-veg.png',
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                              const SizedBox(width: 4),
-                              Text(
-                                details!.vegetarian ?? false
-                                    ? ' Vegetarian'
-                                    : 'Non Vegetarian',
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.normal,
@@ -517,6 +539,9 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                 ),
                               ],
                             ),
+                            const SizedBox(
+                              height: 3,
+                            ),
                             Row(
                               children: [
                                 details!.glutenFree ?? false
@@ -542,6 +567,9 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                   ),
                                 ),
                               ],
+                            ),
+                            const SizedBox(
+                              height: 3,
                             ),
                             Row(
                               children: [
@@ -574,27 +602,87 @@ class _ProcedurePageState extends State<ProcedurePage> {
                       ],
                     ),
                   ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: Text(
-                'Cooking Instructions',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+            if (details?.dishTypes != null)
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: (Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Dish Types',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Wrap(
+                        children: details!.dishTypes!.map((dishType) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Colors.amberAccent,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7, // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: Center(
+                                child: Text(
+                                  dishType,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ])),
               ),
-            ),
-            Container(
-              width: double.infinity,
-              height: 250,
-              padding: const EdgeInsets.all(8.0),
-              child: PageView(
-                /// [PageView.scrollDirection] defaults to [Axis.horizontal].
-                /// Use [Axis.vertical] to scroll vertically.
-                controller: controller,
-                children: stepsCard!,
-              ),
-            ),
+            if (details?.analyzedInstructions != null)
+              (Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Text(
+                      'Cooking Instructions',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 250,
+                    padding: const EdgeInsets.all(8.0),
+                    child: PageView(
+                      /// [PageView.scrollDirection] defaults to [Axis.horizontal].
+                      /// Use [Axis.vertical] to scroll vertically.
+                      controller: controller,
+                      children: stepsCard!,
+                    ),
+                  ),
+                ],
+              )),
             Container(
               margin: const EdgeInsets.all(20.0),
               padding: const EdgeInsets.all(10.0),
@@ -606,13 +694,13 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Summary',
                     style: TextStyle(
                       fontSize: 30,
