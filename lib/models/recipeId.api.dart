@@ -7,12 +7,15 @@ class RecipeIDApi {
   static Future<List<recipeID>> getRecipe() async {
     var uri = Uri.https(BASE_URL, '/recipes/random', {
       "number": items.toString(),
-      "apiKey": API_KEY,
+      "apiKey": apiKey.first,
     });
 
-    final response = await http
-        .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
-
+    final response = await http.get(uri,
+        headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
+    if (response.statusCode != 200) {
+      changeAPiKey();
+      return getRecipe();
+    }
     Map data = jsonDecode(response.body);
     List _temp = [];
 

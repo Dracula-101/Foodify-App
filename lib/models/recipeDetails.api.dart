@@ -7,12 +7,16 @@ import 'package:foodify/constants/key.dart';
 class RecipeDetailsAPI {
   static Future<RecipeDetails> getRecipeDetails(String Id) async {
     var uri = Uri.https(BASE_URL, '/recipes/' + Id + '/information', {
-      "apiKey": API_KEY,
+      "apiKey": apiKey.first,
     });
 
-    final response = await http
-        .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
+    final response = await http.get(uri,
+        headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
+    if (response.statusCode != 200) {
+      changeAPiKey();
+      return getRecipeDetails(Id);
+    }
     Map data = jsonDecode(response.body);
     // print(data);
     // log("THis is the APi" + data.toString());

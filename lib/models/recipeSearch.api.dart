@@ -14,11 +14,14 @@ class RecipeSearchApi {
       "titleMatch": title,
       "instructionsRequired": "true",
       "tags": cuisine + "," + getVeg(),
-      "apiKey": API_KEY,
+      "apiKey": apiKey.first,
     });
 
     final response = await http.get(uri, headers: {"useQueryString": "true"});
-
+    if (response.statusCode != 200) {
+      changeAPiKey();
+      return getRecipe(title);
+    }
     Map data = jsonDecode(response.body);
     List _temp = [];
 
@@ -36,11 +39,14 @@ class RecipeSearchApi {
       "sortDirection": "asc",
       "instructionsRequired": "true",
       "cuisine": cuisine,
-      "apiKey": API_KEY,
+      "apiKey": apiKey.first,
     });
 
     final response = await http.get(uri, headers: {"useQueryString": "true"});
-
+    if (response.statusCode != 200) {
+      changeAPiKey();
+      return getCuisine(cuisine);
+    }
     Map data = jsonDecode(response.body);
     List _temp = [];
 

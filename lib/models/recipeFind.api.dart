@@ -12,12 +12,16 @@ class RecipeFindApi {
       "ingredients": ingredients,
       "ranking": ranking,
       "pantry": pantry == true ? "true" : "false",
-      "apiKey": API_KEY,
+      "apiKey": apiKey.first,
     });
 
-    final response = await http
-        .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
+    final response = await http.get(uri,
+        headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
     // print(jsonDecode(response.body));
+    if (response.statusCode != 200) {
+      changeAPiKey();
+      return getRecipe(ingredients, ranking, pantry);
+    }
     List data = jsonDecode(response.body);
     List _temp = [];
 

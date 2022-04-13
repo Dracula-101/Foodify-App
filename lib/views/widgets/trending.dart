@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
@@ -34,58 +35,104 @@ class _TrendingWidgetState extends State<TrendingWidget> {
   Widget build(BuildContext context) {
     if (!_isLoading) {
       return SizedBox(
-        height: 350,
+        height: 400,
+        child: ListView.separated(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                  child: CachedNetworkImage(
+                    filterQuality: FilterQuality.high,
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: 400,
+                      height: MediaQuery.of(context).size.width * 0.8,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(0, 4),
+                              color: Colors.black.withOpacity(0.5),
+                              spreadRadius: 4,
+                              blurRadius: 10)
+                        ],
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.cover),
+                      ),
+                    ),
+                    imageUrl: _recipes[index].image,
+                    placeholder: (context, url) {
+                      return ShimmerWidget.rectangular(
+                          height: 400, br: BorderRadius.circular(15));
+                    },
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 66),
+                    padding: const EdgeInsets.all(10),
+                    // height: 50,
+                    // alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15)),
+                        color: Colors.grey.shade200.withOpacity(0.7)),
+                    child: Text(_recipes[index].title,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "PlayfairDisplay")),
+                  ),
+                ),
+              ],
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return SizedBox(width: 10);
+          },
+        ),
+      );
+    } else {
+      return SizedBox(
+        height: 400,
         child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
           itemCount: 3,
           itemBuilder: (context, index) {
-            return Card(
-              margin: const EdgeInsets.all(10),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(10),
-                      child: CachedNetworkImage(
-                        imageUrl: _recipes[index].image,
-                        placeholder: (context, url) {
-                          return ShimmerWidget.rectangular(
-                              height: 267, br: BorderRadius.circular(15));
-                        },
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                        fit: BoxFit.fill,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            blurRadius: 10,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      _recipes[index].title,
-                      style: Theme.of(context).textTheme.headline6,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
+            return Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.grey.shade200.withOpacity(0.9),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 10.0,
+                        spreadRadius: -6.0,
+                        color: Colors.white60)
+                  ]),
             );
           },
         ),
       );
-    } else {
-      return Container();
     }
   }
 
@@ -111,3 +158,28 @@ class _TrendingWidgetState extends State<TrendingWidget> {
         ),
       );
 }
+
+// Positioned(
+//                   child: Align(
+//                     alignment: Alignment.bottomCenter,
+//                     child: Container(
+//                       margin: const EdgeInsets.symmetric(
+//                           horizontal: 19.5, vertical: 66),
+//                       padding: const EdgeInsets.all(10),
+//                       // height: 50,
+//                       // alignment: Alignment.center,
+//                       width: MediaQuery.of(context).size.width * 0.75,
+//                       decoration: BoxDecoration(
+//                           borderRadius: BorderRadius.only(
+//                               bottomLeft: Radius.circular(15),
+//                               bottomRight: Radius.circular(15)),
+//                           color: Colors.grey.shade200.withOpacity(0.7)),
+//                       child: Text(
+//                           "Bruh this is the Title now\nBruh this is the Title now",
+//                           style: TextStyle(
+//                               fontSize: 15,
+//                               fontWeight: FontWeight.bold,
+//                               fontFamily: "PlayfairDisplay")),
+//                     ),
+//                   ),
+//                 ),

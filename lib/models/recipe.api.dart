@@ -9,14 +9,14 @@ class RecipeApi {
     var uri = Uri.https(BASE_URL, '/recipes/random', {
       "number": "10",
       // "tags": cuisine + "," + getVeg(),
-      "apiKey": API_KEY,
+      "apiKey": apiKey.first,
     });
 
-    final response = await http
-        .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
+    final response = await http.get(uri,
+        headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
     Map data = jsonDecode(response.body);
-    if (data['code'] == 402) {
+    if (data['code'] != 200) {
       changeAPiKey();
       return getRecipe();
     }
@@ -34,14 +34,14 @@ class RecipeApi {
       "number": "10",
       // "sort": "asc",
       // "tags": cuisine + "," + getVeg(),
-      "apiKey": API_KEY,
+      "apiKey": apiKey[0],
     });
 
-    final response = await http
-        .get(uri, headers: {"x-api-key": API_KEY, "useQueryString": "true"});
+    final response = await http.get(uri,
+        headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
     Map data = jsonDecode(response.body);
-    if (data['code'] == 402) {
+    if (data['code'] != 200) {
       changeAPiKey();
       return getRecipe();
     }

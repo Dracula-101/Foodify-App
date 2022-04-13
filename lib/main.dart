@@ -232,7 +232,8 @@ class _HomeDrawerState extends State<HomeDrawer>
         ],
         child: Scaffold(
           appBar: AppBar(
-            elevation: 4.0,
+            centerTitle: true,
+            elevation: 0.0,
             title: Text(
               "Foodify",
               style: TextStyle(

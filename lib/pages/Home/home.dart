@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
           child: ListView(
             children: [
               const TrendingWidget(),
-              const RandomRecipe(),
+              // const RandomRecipe(),
             ],
           ),
         )
