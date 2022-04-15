@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 class FavouritesController extends GetxController with StateMixin<dynamic> {
   var favouritesList = <FavouritesCard>[].obs;
   var isLoading = true.obs;
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void onReady() {
@@ -59,12 +60,17 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
   Future<void> addToDatabase(String recipeName, String id, String cookTime,
       String rating, String imageUrl) async {
     print("Added to database");
-    FirebaseFirestore.instance.collection('users').add({
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('favourites')
+        .doc(id)
+        .set({
       'recipeName': recipeName,
       'id': id,
       'cookTime': cookTime,
       'rating': rating,
-      'imageUrl': imageUrl,
+      'imageUrl': imageUrl
     });
   }
 
@@ -75,15 +81,21 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
 
   Future<void> getFromDatabase() async {
     print("Getting from database");
-    FirebaseFirestore.instance.collection("users").get().then((value) {
-      for (var element in value.docs) {
-        favouritesList.add(FavouritesCard(
-            recipeName: element.data()["recipeName"],
-            id: element.data()["id"],
-            imageUrl: element.data()["imageUrl"],
-            rating: element.data()["rating"],
-            cooktime: element.data()["cookTime"]));
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('favourites')
+        .get()
+        .then((value) {
+      for (int i = 0; i < value.docs.length; i++) {
+        favouritesList.value.add(FavouritesCard(
+            recipeName: value.docs[i].data()['recipeName'],
+            id: value.docs[i].data()['id'],
+            imageUrl: value.docs[i].data()['imageUrl'],
+            rating: value.docs[i].data()['rating'],
+            cooktime: value.docs[i].data()['cookTime']));
       }
+      favouritesList = favouritesList.toSet().toList().obs;
       update();
     });
   }

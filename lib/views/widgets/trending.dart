@@ -26,9 +26,11 @@ class _TrendingWidgetState extends State<TrendingWidget> {
 
   Future<void> getRecipes() async {
     _recipes = await RecipeApi.getTrending();
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -36,7 +38,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
     if (!_isLoading) {
       return SizedBox(
         height: 400,
-        child: ListView.separated(
+        child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
@@ -45,62 +47,82 @@ class _TrendingWidgetState extends State<TrendingWidget> {
             return Stack(
               children: [
                 Container(
-                  margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
-                  child: CachedNetworkImage(
-                    filterQuality: FilterQuality.high,
-                    imageBuilder: (context, imageProvider) => Container(
-                      width: 400,
-                      height: MediaQuery.of(context).size.width * 0.8,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              offset: const Offset(0, 4),
-                              color: Colors.black.withOpacity(0.5),
-                              spreadRadius: 4,
-                              blurRadius: 10)
-                        ],
-                        borderRadius: BorderRadius.circular(15),
-                        image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.cover),
+                  margin: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.6),
+                        // offset: const Offset(
+                        //   0.0,
+                        //   10.0,
+                        // ),
+                        blurRadius: 10.0,
+                        spreadRadius: -8.0,
                       ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      height: 400,
+                      width: 300,
+                      imageUrl: _recipes[index].image,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => ShimmerWidget.rectangular(
+                        height: 400,
+                        br: BorderRadius.circular(15),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
-                    imageUrl: _recipes[index].image,
-                    placeholder: (context, url) {
-                      return ShimmerWidget.rectangular(
-                          height: 400, br: BorderRadius.circular(15));
-                    },
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    fit: BoxFit.cover,
                   ),
                 ),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 66),
-                  padding: const EdgeInsets.all(10),
-                  // height: 50,
-                  // alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          bottomLeft: const Radius.circular(15),
+                Positioned(
+                  left: 20,
+                  bottom: 20,
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15)),
-                      color: Colors.grey.shade200.withOpacity(0.7)),
-                  child: Text(_recipes[index].title,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "PlayfairDisplay")),
+                    ),
+                    child: ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          width: MediaQuery.of(context).size.width * 0.764,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white70,
+                                Colors.white70.withOpacity(0.1)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              stops: const [0.1, 0.95],
+                            ),
+                          ),
+                          child: Text(
+                            _recipes[index].title,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withOpacity(0.6),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(width: 10);
           },
         ),
       );

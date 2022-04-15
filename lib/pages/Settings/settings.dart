@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
+import 'package:foodify/views/widgets/scrolling_parallax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
@@ -181,17 +182,17 @@ class _SettingsState extends State<Settings> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Food recognition."),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.image),
-          tooltip: "Pick Image from gallery",
-          onPressed: selectFromImagePicker,
-        ),
-        // body: (_image != null) ? Image.file(_image!) : Text("No Image"));
-        body: Stack(
-          children: stackChildren,
-        ));
+      appBar: AppBar(
+        title: Text("Settings"),
+      ),
+      body: Stack(
+        children: stackChildren,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: selectFromImagePicker,
+        tooltip: "Pick Image",
+        child: Icon(Icons.add_a_photo),
+      ),
+    );
   }
 }

@@ -4,6 +4,7 @@ import 'package:foodify/constants/parameters.dart';
 import 'package:foodify/pages/MyList/controller/mylist_controller.dart';
 import 'package:foodify/constants/key.dart';
 import 'package:foodify/views/widgets/cuisine.dart';
+import 'package:foodify/views/widgets/scrolling_parallax.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -132,22 +133,9 @@ import 'package:hexcolor/hexcolor.dart';
 // }
 class MyList extends StatelessWidget {
   MyList({Key? key}) : super(key: key);
-  final _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    return FadingEdgeScrollView.fromScrollView(
-        child: ListView.builder(
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
-      controller: _controller,
-      itemCount: cuisines.length,
-      itemBuilder: (context, index) {
-        return Cuisines(
-            cuisine: cuisines.elementAt(index),
-            cuisineImage:
-                "assets/images/cuisine/" + cuisines.elementAt(index) + ".jpg");
-      },
-    ));
+    return const ScrollingParallax();
   }
 }

@@ -393,10 +393,10 @@ class _MyHomePageState extends State<MyHomePage> {
               text: 'Settings'),
         ],
         bodyItems: [
-          Home(),
+          const Home(),
           Favourites(),
           MyList(),
-          Settings(),
+          const Settings(),
         ],
         // actionBarView: Container(
         //   height: MediaQuery.of(context).size.height,
