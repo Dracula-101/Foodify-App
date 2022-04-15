@@ -16,7 +16,9 @@ class RecipeApi {
         headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
     Map data = jsonDecode(response.body);
-    if (data['code'] != 200) {
+    // print(data);
+
+    if (data['code'] == 402) {
       changeAPiKey();
       return getRecipe();
     }
@@ -34,16 +36,17 @@ class RecipeApi {
       "number": "10",
       // "sort": "asc",
       // "tags": cuisine + "," + getVeg(),
-      "apiKey": apiKey[0],
+      "apiKey": apiKey.first,
     });
 
     final response = await http.get(uri,
         headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
     Map data = jsonDecode(response.body);
-    if (data['code'] != 200) {
+    // print(data);
+    if (data['code'] == 402) {
       changeAPiKey();
-      return getRecipe();
+      return getTrending();
     }
     List _temp = [];
 

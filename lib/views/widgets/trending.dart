@@ -58,7 +58,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                              offset: Offset(0, 4),
+                              offset: const Offset(0, 4),
                               color: Colors.black.withOpacity(0.5),
                               spreadRadius: 4,
                               blurRadius: 10)
@@ -78,32 +78,29 @@ class _TrendingWidgetState extends State<TrendingWidget> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 66),
-                    padding: const EdgeInsets.all(10),
-                    // height: 50,
-                    // alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            bottomRight: Radius.circular(15)),
-                        color: Colors.grey.shade200.withOpacity(0.7)),
-                    child: Text(_recipes[index].title,
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "PlayfairDisplay")),
-                  ),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 66),
+                  padding: const EdgeInsets.all(10),
+                  // height: 50,
+                  // alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: const Radius.circular(15),
+                          bottomRight: Radius.circular(15)),
+                      color: Colors.grey.shade200.withOpacity(0.7)),
+                  child: Text(_recipes[index].title,
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "PlayfairDisplay")),
                 ),
               ],
             );
           },
           separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(width: 10);
+            return const SizedBox(width: 10);
           },
         ),
       );
@@ -121,9 +118,10 @@ class _TrendingWidgetState extends State<TrendingWidget> {
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white70, width: 5),
                   borderRadius: BorderRadius.circular(20.0),
                   color: Colors.grey.shade200.withOpacity(0.9),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                         blurRadius: 10.0,
                         spreadRadius: -6.0,

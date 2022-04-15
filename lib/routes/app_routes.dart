@@ -1,6 +1,6 @@
 import 'package:foodify/models/recipeFind.dart';
-import 'package:foodify/pages/RandomRecipe.dart/bindings/random_recipe_bindings.dart';
-import 'package:foodify/pages/RandomRecipe.dart/random_recipe.dart';
+import 'package:foodify/pages/RandomRecipe/bindings/random_recipe_bindings.dart';
+import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:get/get.dart';
 
 class AppRoutes {

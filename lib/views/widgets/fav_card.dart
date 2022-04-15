@@ -5,11 +5,13 @@ import 'dart:ffi';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:foodify/models/recipeDetails.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 
 class FavouritesCard extends StatelessWidget {
   String recipeName, id, imageUrl, rating, cooktime;
@@ -57,7 +59,7 @@ class FavouritesCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: "OpenSans",
                         fontStyle: FontStyle.normal,
                       ),
@@ -71,20 +73,16 @@ class FavouritesCard extends StatelessWidget {
                       children: [
                         Column(
                           children: [
-                            const Icon(Icons.schedule, size: 20),
-                            Text(
-                              cooktime.toString(),
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontFamily: "OpenSans",
-                                fontStyle: FontStyle.normal,
+                            RatingBarIndicator(
+                              rating: double.parse(rating),
+                              itemBuilder: (context, index) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
                               ),
+                              itemCount: 5,
+                              itemSize: 20.0,
+                              direction: Axis.horizontal,
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            const Icon(Icons.star_border, size: 20),
                             Text(
                               rating.toString(),
                               style: const TextStyle(
@@ -96,11 +94,11 @@ class FavouritesCard extends StatelessWidget {
                           ],
                         ),
                         Column(
-                          children: const [
-                            Icon(Icons.rate_review, size: 20),
+                          children: [
+                            const Icon(Icons.schedule, size: 20),
                             Text(
-                              "4.5",
-                              style: TextStyle(
+                              cooktime.toString(),
+                              style: const TextStyle(
                                 fontSize: 15,
                                 fontFamily: "OpenSans",
                                 fontStyle: FontStyle.normal,
@@ -163,7 +161,7 @@ class FavouritesCard extends StatelessWidget {
               ),
               placeholder: (context, url) => ShimmerWidget.rectangular(
                   height: 180, br: BorderRadius.circular(15)),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
@@ -174,13 +172,36 @@ class FavouritesCard extends StatelessWidget {
         Align(
           alignment: Alignment.topRight,
           child: InkWell(
+            radius: 20,
+            borderRadius: BorderRadius.circular(50),
             onTap: () {
-              controller.removeFavourite(id);
+              const AlertDialog(
+                title: Text(
+                  "Are you sure you want to delete this recipe?",
+                  style: TextStyle(
+                    fontFamily: "OpenSans",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 20,
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
             },
             child: Container(
                 // margin: const EdgeInsets.only(right: 20, top: 5),
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
-                child: Icon(
+                child: const Icon(
                   CupertinoIcons.xmark_circle_fill,
                   color: Colors.red,
                   size: 35,

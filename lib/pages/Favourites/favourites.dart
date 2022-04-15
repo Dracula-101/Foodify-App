@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodify/loading/loadingPlate.dart';
 import 'package:foodify/main.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
@@ -39,45 +40,83 @@ class Favourites extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
-          child: Container(
-            child: GetX<FavouritesController>(
-              init: FavouritesController(),
-              builder: (controller) {
-                return ListView.builder(
-                  physics: const BouncingScrollPhysics(
-                      parent: BouncingScrollPhysics()),
-                  itemCount: controller.favouritesList.length,
-                  itemBuilder: (context, index) {
-                    return FavouritesCard(
-                      recipeName:
-                          controller.favouritesList.elementAt(index).recipeName,
-                      id: controller.favouritesList.elementAt(index).id,
-                      imageUrl:
-                          controller.favouritesList.elementAt(index).imageUrl,
-                      rating: controller.favouritesList.elementAt(index).rating,
-                      cooktime:
-                          controller.favouritesList.elementAt(index).cooktime,
-                    );
-                  },
-                );
-              },
+        if (controller.favouritesList.isEmpty)
+          (Center(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width * 0.6,
+              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    offset: Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.emoji_food_beverage_outlined,
+                      size: 100,
+                      color: Colors.amberAccent,
+                    ),
+                    Text(
+                      "Add Favourites to see your recipes here",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "lorabold700",
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 20,
+                        // decorationThickness: 10,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    )
+                  ]),
             ),
-          ),
-        ),
-        Center(
-          child: ElevatedButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            child: Text('Log Out'),
-          ),
-        ),
-        SizedBox(height: 20),
+          ))
+        else
+          (GetX<FavouritesController>(
+              init: FavouritesController(),
+              builder: (controller) => controller.isLoading.value
+                  ? const Center(child: LoadingPlate())
+                  : Expanded(
+                      child: GetX<FavouritesController>(
+                        init: FavouritesController(),
+                        builder: (controller) {
+                          return ListView.builder(
+                            physics: const BouncingScrollPhysics(
+                                parent: BouncingScrollPhysics()),
+                            itemCount: controller.favouritesList.length,
+                            itemBuilder: (context, index) {
+                              return FavouritesCard(
+                                recipeName: controller.favouritesList
+                                    .elementAt(index)
+                                    .recipeName,
+                                id: controller.favouritesList
+                                    .elementAt(index)
+                                    .id,
+                                imageUrl: controller.favouritesList
+                                    .elementAt(index)
+                                    .imageUrl,
+                                rating: controller.favouritesList
+                                    .elementAt(index)
+                                    .rating,
+                                cooktime: controller.favouritesList
+                                    .elementAt(index)
+                                    .cooktime,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ))),
       ],
     ));
   }
@@ -96,17 +135,32 @@ class Favourites extends StatelessWidget {
 
 
 
-  //
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Stack(children: const [
-  //     Image(image: AssetImage('assets/images/img_veggieimage.png')),
-  //     ElevatedButton(
-  //       onPressed: () {
-  //         await FirebaseAuth.instance.signOut();
-  //       },
-  //       child: Text('Create Account'),
-  //     )
-  //   ]);
-  // }
+// Expanded(
+//                 child: GetX<FavouritesController>(
+//                   init: FavouritesController(),
+//                   builder: (controller) {
+//                     return ListView.builder(
+//                       physics: const BouncingScrollPhysics(
+//                           parent: BouncingScrollPhysics()),
+//                       itemCount: controller.favouritesList.length,
+//                       itemBuilder: (context, index) {
+//                         return FavouritesCard(
+//                           recipeName: controller.favouritesList
+//                               .elementAt(index)
+//                               .recipeName,
+//                           id: controller.favouritesList.elementAt(index).id,
+//                           imageUrl: controller.favouritesList
+//                               .elementAt(index)
+//                               .imageUrl,
+//                           rating:
+//                               controller.favouritesList.elementAt(index).rating,
+//                           cooktime: controller.favouritesList
+//                               .elementAt(index)
+//                               .cooktime,
+//                         );
+//                       },
+//                     );
+//                   },
+//                 ),
+//               ))
 

@@ -52,6 +52,19 @@ class _ProcedurePageState extends State<ProcedurePage> {
     }
   }
 
+  void urlLaucher(String url) async {
+    if (!await launch(url, forceWebView: true, enableJavaScript: true)) {
+      Get.snackbar(
+        "Couldn't launch URL",
+        "Please check your Internet connection",
+        duration: const Duration(seconds: 2),
+        icon: const Icon(FontAwesomeIcons.triangleExclamation,
+            color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -314,7 +327,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                         horizontal: 30.0, vertical: 10.0),
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: ShimmerWidget.rectangular(
-                        height: MediaQuery.of(context).size.height * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.4,
                         br: BorderRadius.circular(20)),
                   )
                 : Container(
@@ -709,6 +722,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                   ),
                   SingleChildScrollView(
                     child: Html(
+                      onLinkTap: (url, context, attributes, element) =>
+                          urlLaucher(url!),
                       data: details?.summary ?? 'Summary not available',
                     ),
                   ),

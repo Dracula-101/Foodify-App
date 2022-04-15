@@ -41,8 +41,8 @@ class _LoadingPlateState extends State<LoadingPlate>
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(
-            'assets/images/plate.png',
-            scale: 0.2,
+            'assets/images/loadingplate.png',
+            scale: 0.01,
           ),
         ),
       ),

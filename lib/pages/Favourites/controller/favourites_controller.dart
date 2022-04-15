@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 class FavouritesController extends GetxController with StateMixin<dynamic> {
   var favouritesList = <FavouritesCard>[].obs;
+  var isLoading = true.obs;
 
   @override
   void onReady() {
@@ -22,7 +23,7 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
   @override
   void onInit() {
     super.onInit();
-    getFromDatabase();
+    getFromDatabase().then((value) => changeLoading());
   }
 
   void deleteDuplicates() {
@@ -65,6 +66,11 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
       'rating': rating,
       'imageUrl': imageUrl,
     });
+  }
+
+  void changeLoading() {
+    isLoading.value = false;
+    update();
   }
 
   Future<void> getFromDatabase() async {
