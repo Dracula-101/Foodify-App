@@ -175,28 +175,7 @@ class FavouritesCard extends StatelessWidget {
             radius: 20,
             borderRadius: BorderRadius.circular(50),
             onTap: () {
-              const AlertDialog(
-                title: Text(
-                  "Are you sure you want to delete this recipe?",
-                  style: TextStyle(
-                    fontFamily: "OpenSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 20,
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'OK'),
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
+              controller.removeFavourite(id);
             },
             child: Container(
                 // margin: const EdgeInsets.only(right: 20, top: 5),
