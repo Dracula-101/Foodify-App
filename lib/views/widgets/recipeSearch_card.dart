@@ -70,7 +70,7 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
                 : FadingEdgeScrollView.fromScrollView(
                     child: ListView.builder(
                     physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
+                        parent: BouncingScrollPhysics()),
                     shrinkWrap: true,
                     itemCount: _recipes.length,
                     controller: _controller,

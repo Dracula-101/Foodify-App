@@ -393,7 +393,7 @@ class _MyHomePageState extends State<MyHomePage> {
               text: 'Settings'),
         ],
         bodyItems: [
-          const Home(),
+          Home(),
           Favourites(),
           MyList(),
           const Settings(),

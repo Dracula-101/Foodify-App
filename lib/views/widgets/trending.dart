@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
+import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 
 class TrendingWidget extends StatefulWidget {
@@ -44,84 +46,97 @@ class _TrendingWidgetState extends State<TrendingWidget> {
           physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
           itemCount: 3,
           itemBuilder: (context, index) {
-            return Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.6),
-                        // offset: const Offset(
-                        //   0.0,
-                        //   10.0,
-                        // ),
-                        blurRadius: 10.0,
-                        spreadRadius: -8.0,
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                      height: 400,
-                      width: 300,
-                      imageUrl: _recipes[index].image,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => ShimmerWidget.rectangular(
-                        height: 400,
-                        br: BorderRadius.circular(15),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 20,
-                  bottom: 20,
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
+            return InkWell(
+              onTap: () {
+                Get.to(
+                  () {
+                    return ProcedurePage(
+                      id: _recipes[index].id.toString(),
+                    );
+                  },
+                  transition: Transition.cupertino,
+                );
+              },
+              child: Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15)),
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.6),
+                          // offset: const Offset(
+                          //   0.0,
+                          //   10.0,
+                          // ),
+                          blurRadius: 10.0,
+                          spreadRadius: -8.0,
+                        ),
+                      ],
                     ),
-                    child: ClipRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          width: MediaQuery.of(context).size.width * 0.764,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.white70,
-                                Colors.white70.withOpacity(0.1)
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              stops: const [0.1, 0.95],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: CachedNetworkImage(
+                        height: 400,
+                        width: 300,
+                        imageUrl: _recipes[index].image,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            ShimmerWidget.rectangular(
+                          height: 400,
+                          br: BorderRadius.circular(15),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 20,
+                    bottom: 20,
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15)),
+                      ),
+                      child: ClipRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            width: MediaQuery.of(context).size.width * 0.764,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white70,
+                                  Colors.white70.withOpacity(0.1)
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: const [0.1, 0.95],
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            _recipes[index].title,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black.withOpacity(0.6),
+                            child: Text(
+                              _recipes[index].title,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black.withOpacity(0.6),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),

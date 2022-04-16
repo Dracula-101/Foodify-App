@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodify/pages/Favourites/models/favourites_model.dart';
 import 'package:foodify/views/widgets/fav_card.dart';
 import 'package:get/get.dart';
 
