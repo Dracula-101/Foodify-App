@@ -134,11 +134,29 @@ class _PredictionState extends State<Prediction> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('Image Prediction'),
           elevation: 0.0,
           backgroundColor: Colors.white,
         ),
+        floatingActionButton: ElevatedButton(
+          style: ButtonStyle(
+              elevation: MaterialStateProperty.all(4),
+              padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9.0),
+                      side: BorderSide(color: Colors.amber)))),
+          onPressed: () {},
+          child: const Text(
+            'Get Recipes',
+            style: TextStyle(
+              fontSize: 23,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -160,56 +178,83 @@ class _PredictionState extends State<Prediction> {
                     },
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 300,
-                          width: size.width * 0.8,
-                          child: Image.file(
-                            File(widget.images!.elementAt(index).path),
-                            fit: BoxFit.cover,
-                            height: size.height,
-                            width: size.width,
-                          ),
+                        const SizedBox(
+                          height: 20,
                         ),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            alignment: Alignment.bottomLeft,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.grey.shade200.withOpacity(0.8)),
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Predicted Label: ' +
-                                      recognitions[index][0]['label'],
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
+                        Stack(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.zero,
+                              height: 280,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: SizedBox(
+                                  height: 280,
+                                  width: size.width * 0.8,
+                                  child: Image.file(
+                                    File(widget.images!.elementAt(index).path),
+                                    fit: BoxFit.cover,
+                                    height: size.height,
+                                    width: size.width,
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  'Predicted Confidence: ' +
-                                      (recognitions[index][0]['confidence'] *
-                                              100)
-                                          .toString()
-                                          .substring(0, 2) +
-                                      '%',
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.1),
+                              height: 280,
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Container(
+                                  height: 70,
+                                  alignment: Alignment.bottomLeft,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.grey.shade200
+                                          .withOpacity(0.8)),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 20),
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        'Predicted Label: ' +
+                                            recognitions[index][0]['label'],
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        'Predicted Confidence: ' +
+                                            (recognitions[index][0]
+                                                        ['confidence'] *
+                                                    100)
+                                                .toString()
+                                                .substring(0, 4) +
+                                            '%',
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(
+                          height: 50,
+                        )
                       ],
                     ),
                   );

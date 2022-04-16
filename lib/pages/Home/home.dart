@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_const
-
 import 'package:flutter/material.dart';
 import 'package:foodify/loading/loadingPlate.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
@@ -22,6 +20,8 @@ class Home extends StatelessWidget {
     "Paneer Tikka",
   ];
   TextEditingController searchController = TextEditingController();
+  Widget? trendingRecipes = const TrendingWidget(),
+      randomRecipes = const RandomRecipe();
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +140,7 @@ class Home extends StatelessWidget {
                 ),
               ),
             ),
-            const TrendingWidget(),
+            trendingRecipes!,
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Text(
@@ -152,7 +152,7 @@ class Home extends StatelessWidget {
                 ),
               ),
             ),
-            const RandomRecipe(),
+            randomRecipes!,
           ],
         ),
       )

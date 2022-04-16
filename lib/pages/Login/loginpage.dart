@@ -8,7 +8,7 @@ import 'package:foodify/pages/Signup/signup.dart';
 import '../../main.dart';
 
 class LoginPage extends StatelessWidget {
-  static String? _email = '', _password = '';
+  static String _email = '', _password = '';
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -145,12 +145,10 @@ class LoginPage extends StatelessWidget {
                         onPressed: () async {
                           bool loggedIn = await login();
                           if (loggedIn) {
-                            // Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomeDrawer()),
-                            );
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                              return HomeDrawer();
+                            }), (route) => false);
                           }
                         },
                       ),
@@ -220,7 +218,7 @@ class LoginPage extends StatelessWidget {
 
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: _email!, password: _password!);
+          .signInWithEmailAndPassword(email: _email, password: _password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Get.snackbar(
@@ -250,11 +248,28 @@ class LoginPage extends StatelessWidget {
           snackPosition: SnackPosition.BOTTOM,
         );
         print('Wrong password provided for that user.');
+      } else if (e.code == 'invalid-email') {
+        Get.snackbar(
+          "Invalid Email",
+          "Please recheck your Email",
+          duration: Duration(seconds: 2),
+          icon: Icon(Icons.person, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        print('Wrong password provided for that user.');
       }
 
       print('User !logged in ...${e.code}');
       return false;
     }
+    Get.snackbar(
+      "Login successful",
+      "Redirecting to Home Page",
+      colorText: Colors.black,
+      duration: Duration(seconds: 2),
+      icon: Icon(Icons.person, color: Colors.white),
+      snackPosition: SnackPosition.BOTTOM,
+    );
     print('User logged in ...');
     return true;
   }

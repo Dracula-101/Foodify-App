@@ -8,8 +8,6 @@ import 'package:foodify/models/recipeDetails.api.dart';
 import 'package:foodify/models/recipeDetails.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../views/widgets/shimmer_widget.dart';
@@ -335,7 +333,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                               )),
                   ),
                 ],
-              )
+              ),
             ],
           ),
           const Padding(

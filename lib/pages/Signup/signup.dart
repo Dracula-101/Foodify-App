@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class SignupPage extends StatelessWidget {
   SignupPage({Key? key}) : super(key: key);
 
-  String? _email, _password, _confirmpassword;
+  String _email = '', _password = '', _confirmpassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -254,16 +254,69 @@ class SignupPage extends StatelessWidget {
                         ),
                         child: TextButton(
                           onPressed: () async {
+                            if (_email == '') {
+                              Get.snackbar(
+                                "Email field empty",
+                                "Please enter your Details",
+                                colorText: Colors.black,
+                                duration: Duration(seconds: 2),
+                                icon: Icon(Icons.person, color: Colors.white),
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                              return;
+                            }
+                            if (_password == '') {
+                              Get.snackbar(
+                                "Password field empty",
+                                "Please enter your Details",
+                                colorText: Colors.black,
+                                duration: Duration(seconds: 2),
+                                icon: Icon(Icons.person, color: Colors.white),
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                              return;
+                            }
+                            if (_confirmpassword == '') {
+                              Get.snackbar(
+                                "Confirm Password Empty",
+                                "Please enter your Password again",
+                                colorText: Colors.black,
+                                duration: Duration(seconds: 2),
+                                icon: Icon(Icons.person, color: Colors.white),
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                              return;
+                            }
                             if (_password == _confirmpassword) {
                               bool userCreated = await createUser();
                               if (userCreated) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MyHomePage()),
+                                Get.snackbar(
+                                  "Account created successfuly",
+                                  "Redirecting to Home Page",
+                                  colorText: Colors.black,
+                                  duration: Duration(seconds: 2),
+                                  icon: Icon(Icons.person, color: Colors.white),
+                                  snackPosition: SnackPosition.BOTTOM,
                                 );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => const MyHomePage()),
+                                // );
+                                Navigator.pushAndRemoveUntil(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return HomeDrawer();
+                                }), (route) => false);
                               }
                             } else {
+                              Get.snackbar(
+                                'Passwords don\'t match',
+                                "Please verify your passwords",
+                                colorText: Colors.black,
+                                duration: Duration(seconds: 2),
+                                icon: Icon(Icons.person, color: Colors.white),
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
                               print('Passwords don\'t match');
                             }
                           },
@@ -321,7 +374,7 @@ class SignupPage extends StatelessWidget {
   Future<bool> createUser() async {
     try {
       final newUser = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: _email!, password: _password!);
+          .createUserWithEmailAndPassword(email: _email, password: _password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         Get.snackbar(

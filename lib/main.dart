@@ -5,9 +5,11 @@ import 'package:foodify/models/removebg.dart';
 import 'package:foodify/pages/DrawerItems/AboutUs.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
+import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
+import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
@@ -24,6 +26,8 @@ import 'package:tflite/tflite.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fancy_drawer/fancy_drawer.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -60,7 +64,7 @@ class _MyAppState extends State<MyApp> {
         builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             default:
               return snapshot.hasError ? Container() : snapshot.data!;
           }
@@ -81,9 +85,12 @@ class HomeDrawer extends StatefulWidget {
 class _HomeDrawerState extends State<HomeDrawer>
     with SingleTickerProviderStateMixin {
   late FancyDrawerController _controller;
-  List<Widget> screens = [MyHomePage(), AboutUs()];
+  List<Widget> screens = [const MyHomePage(), const AboutUs()];
 
-  Widget selectedWidget = MyHomePage();
+  Widget selectedWidget = const MyHomePage();
+
+  String toMailId = 'projectapp2024@gmail.com',
+      subject = 'Feedback/Query on Foodify';
 
   setSelectedWidget(int i) {
     setState(() {
@@ -96,7 +103,7 @@ class _HomeDrawerState extends State<HomeDrawer>
   void initState() {
     super.initState();
     _controller = FancyDrawerController(
-        vsync: this, duration: Duration(milliseconds: 250))
+        vsync: this, duration: const Duration(milliseconds: 250))
       ..addListener(() {
         setState(() {}); // Must call setState
       }); // This chunk of code is important
@@ -171,37 +178,25 @@ class _HomeDrawerState extends State<HomeDrawer>
               child: FittedBox(
                 child: ElevatedButton(
                   child: Text(
-                    "Support Us",
+                    "Contact Us",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.purple.shade700,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onPressed: () {
-                    setSelectedWidget(0);
-                  },
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              height: 55,
-              width: 200,
-              child: FittedBox(
-                child: ElevatedButton(
-                  child: Text(
-                    "About Us",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.purple.shade700,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () {
-                    setSelectedWidget(0);
+                  onPressed: () async {
+                    String url = 'mailto:$toMailId?subject=$subject';
+                    if (!await launch(url, enableJavaScript: true)) {
+                      Get.snackbar(
+                        "Couldn't launch URL",
+                        "Please check your Internet connection",
+                        duration: const Duration(seconds: 2),
+                        icon: const Icon(FontAwesomeIcons.triangleExclamation,
+                            color: Colors.white),
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    }
                   },
                 ),
               ),
@@ -229,12 +224,37 @@ class _HomeDrawerState extends State<HomeDrawer>
               ),
             ),
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              color: Colors.transparent,
+              height: 55,
+              width: 200,
+              child: InkWell(
+                child: const Center(
+                  child: Text(
+                    "Close",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  print('closed');
+                  _controller.close();
+                },
+              ),
+            ),
+          ),
         ],
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
             elevation: 0.0,
-            title: Text(
+            title: const Text(
               "Foodify",
               style: TextStyle(
                 fontSize: 25,
@@ -245,7 +265,7 @@ class _HomeDrawerState extends State<HomeDrawer>
             ),
             backgroundColor: Colors.white,
             leading: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: Colors.black,
               ),
@@ -504,6 +524,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
     print("Hello this is a point");
+    if (images!.isEmpty) return;
     Get.to(() {
       return ImageSelector(
         images: images,
