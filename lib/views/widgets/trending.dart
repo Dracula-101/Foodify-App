@@ -58,6 +58,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
                 );
               },
               child: Stack(
+                clipBehavior: Clip.antiAlias,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(10),
@@ -94,41 +95,46 @@ class _TrendingWidgetState extends State<TrendingWidget> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 20,
-                    bottom: 20,
-                    child: Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            bottomRight: Radius.circular(15)),
-                      ),
-                      child: ClipRect(
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 15),
-                            width: MediaQuery.of(context).size.width * 0.764,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.white70,
-                                  Colors.white70.withOpacity(0.1)
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                stops: const [0.1, 0.95],
-                              ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15)),
+                    ),
+                    width: 300,
+                    margin: const EdgeInsets.all(20),
+                    child: ClipRect(
+                      // clipBehavior: Clip.antiAlias,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                        child: Container(
+                          // clipBehavior: Clip.hardEdge,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          width: 400,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white12,
+                              width: 2,
                             ),
-                            child: Text(
-                              _recipes[index].title,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(0.6),
-                              ),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white70,
+                                Colors.white70.withOpacity(0.1)
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              stops: const [0.1, 0.95],
+                            ),
+                          ),
+                          child: Text(
+                            _recipes[index].title,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withOpacity(0.6),
                             ),
                           ),
                         ),

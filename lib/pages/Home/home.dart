@@ -10,8 +10,14 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
-class Home extends StatelessWidget {
-  Home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   List<String> list = [
     "Chicken Tikka Masala",
     "Indian Chai",
@@ -22,6 +28,9 @@ class Home extends StatelessWidget {
   TextEditingController searchController = TextEditingController();
   Widget? trendingRecipes = const TrendingWidget(),
       randomRecipes = const RandomRecipe();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +165,7 @@ class Home extends StatelessWidget {
                 ),
               ),
             ),
-            randomRecipes!,
+            // randomRecipes!,
             // const RandomRecipe(),
           ],
         ),

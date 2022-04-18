@@ -9,6 +9,7 @@ import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/pages/VideoFinder/video_finder.dart';
 import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
+import 'package:foodify/routes/app_routes.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
@@ -60,6 +61,7 @@ class _MyAppState extends State<MyApp> {
       ),
       // home: const MyHomePage(),
       // home: LandingPage,
+      // getPages: AppRoutes.pages,
       home: FutureBuilder<Widget>(
         future: checkUser(), // async work
         builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
@@ -265,7 +267,7 @@ class _HomeDrawerState extends State<HomeDrawer>
                 color: Colors.black,
               ),
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.white12,
             leading: IconButton(
               icon: const Icon(
                 Icons.menu,
