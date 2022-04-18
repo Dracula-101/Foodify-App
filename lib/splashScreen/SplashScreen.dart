@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodify/views/widgets/VideoWidget.dart';
+import 'package:foodify/views/widgets/video_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,6 +11,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return VideoWidget();
+    return Container();
   }
 }

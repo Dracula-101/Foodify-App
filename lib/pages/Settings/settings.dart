@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/scrolling_parallax.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
@@ -158,6 +159,13 @@ class _SettingsState extends State<Settings> {
     }).toList();
   }
 
+  TextEditingController controller = TextEditingController();
+  List<String> list = [
+    "Chicken soup",
+    "Paneer tikka",
+    "Chicken tikka",
+  ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -181,18 +189,126 @@ class _SettingsState extends State<Settings> {
       ));
     }
 
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: Text("Settings"),
+    //   ),
+    //   body: Stack(
+    //     children: stackChildren,
+    //   ),
+    //   floatingActionButton: FloatingActionButton(
+    //     onPressed: selectFromImagePicker,
+    //     tooltip: "Pick Image",
+    //     child: Icon(Icons.add_a_photo),
+    //   ),
+    // );
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings"),
-      ),
-      body: Stack(
-        children: stackChildren,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: selectFromImagePicker,
-        tooltip: "Pick Image",
-        child: Icon(Icons.add_a_photo),
-      ),
-    );
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            GFSearchBar(
+              controller: controller,
+              searchList: list,
+              searchQueryBuilder: (query, list) {
+                return list
+                    .where((item) => item
+                        .toString()
+                        .toLowerCase()
+                        .contains(query.toLowerCase()))
+                    .toList();
+              },
+              noItemsFoundWidget: Container(),
+              overlaySearchListHeight: 200,
+              searchBoxInputDecoration: InputDecoration(
+                hintText: "Search Videos",
+                hintStyle: const TextStyle(color: Colors.white),
+                suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.amberAccent,
+                  ),
+                  onPressed: () async {
+                    // getVideos();
+                    list.add(controller.text);
+                    setState(() {
+                      // _isSearched = true;
+                    });
+                  },
+                ),
+              ),
+              overlaySearchListItemBuilder: (item) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    item.toString(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                );
+              },
+              onItemSelected: (item) {
+                setState(() {
+                  print('$item');
+                });
+              },
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: 100,
+                ),
+                Container(
+                  width: 300,
+                  height: 300,
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      image: const DecorationImage(
+                        image: AssetImage("assets/images/videofinder.png"),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(90)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        )
+                      ]),
+                ),
+              ],
+            )
+            // _isSearched
+            //     ? Container(
+            //         margin: const EdgeInsets.all(10),
+            //         padding: const EdgeInsets.all(10),
+            //         child: Image.asset(
+            //           'assets/images/videofinder.png',
+            //           fit: BoxFit.cover,
+            //         ))
+            //     : _isLoading
+            //         ? Center(
+            //             child: CircularProgressIndicator(),
+            //           )
+            //         : Expanded(
+            //             child: FadingEdgeScrollView.fromScrollView(
+            //                 child: ListView.builder(
+            //               shrinkWrap: true,
+            //               physics: const BouncingScrollPhysics(
+            //                   parent: BouncingScrollPhysics()),
+            //               itemCount: _videos.length,
+            //               itemBuilder: (context, index) {
+            //                 return VideoWidget(
+            //                   title: _videos[index].title,
+            //                   length: _videos[index].length,
+            //                   thumbnail: _videos[index].thumbnail,
+            //                   youtubeId: _videos[index].youtubeId,
+            //                   views: _videos[index].views,
+            //                 );
+            //               },
+            //             )),
+            //           ),
+          ],
+        ));
   }
 }

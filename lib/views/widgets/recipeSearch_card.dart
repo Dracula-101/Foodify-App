@@ -59,13 +59,39 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
         child: _isLoading
             ? Center(child: Loader())
             : _recipes.isEmpty
-                ? const Text(
-                    "No recipes found",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                ? Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 250,
+                            height: 250,
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                image: const DecorationImage(
+                                  image:
+                                      AssetImage("assets/images/notfound.jpg"),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
+                                  )
+                                ]),
+                          ),
+                          SizedBox(height: 30),
+                          Text("No recipes found for " + widget.title,
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                        ]),
                   )
                 : FadingEdgeScrollView.fromScrollView(
                     child: ListView.builder(

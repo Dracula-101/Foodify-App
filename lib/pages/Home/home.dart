@@ -41,6 +41,7 @@ class Home extends StatelessWidget {
         child: Row(
           children: <Widget>[
             IconButton(
+              splashRadius: 20,
               splashColor: Colors.grey,
               icon: const Icon(Icons.search),
               onPressed: () {},
@@ -58,6 +59,7 @@ class Home extends StatelessWidget {
                   title: value,
                   isCuisine: false,
                 ));
+                searchController.clear();
               },
               style: const TextStyle(
                 fontSize: 17,
@@ -78,6 +80,7 @@ class Home extends StatelessWidget {
               // },
             )),
             IconButton(
+              splashRadius: 20,
               splashColor: Colors.grey,
               icon: const Icon(Icons.close),
               onPressed: () {
@@ -141,6 +144,7 @@ class Home extends StatelessWidget {
               ),
             ),
             trendingRecipes!,
+            // const TrendingWidget(),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Text(
@@ -153,6 +157,7 @@ class Home extends StatelessWidget {
               ),
             ),
             randomRecipes!,
+            // const RandomRecipe(),
           ],
         ),
       )

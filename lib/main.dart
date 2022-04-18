@@ -6,6 +6,7 @@ import 'package:foodify/pages/DrawerItems/AboutUs.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
+import 'package:foodify/pages/VideoFinder/video_finder.dart';
 import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
@@ -85,7 +86,11 @@ class HomeDrawer extends StatefulWidget {
 class _HomeDrawerState extends State<HomeDrawer>
     with SingleTickerProviderStateMixin {
   late FancyDrawerController _controller;
-  List<Widget> screens = [const MyHomePage(), const AboutUs()];
+  List<Widget> screens = [
+    const MyHomePage(),
+    const VideoFinder(),
+    const AboutUs()
+  ];
 
   Widget selectedWidget = const MyHomePage();
 
@@ -153,7 +158,7 @@ class _HomeDrawerState extends State<HomeDrawer>
               child: FittedBox(
                 child: ElevatedButton(
                   child: Text(
-                    "Our Products",
+                    "Recipe Videos",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.purple.shade700,
@@ -161,10 +166,7 @@ class _HomeDrawerState extends State<HomeDrawer>
                     ),
                   ),
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => ProcedurePage()),
-                    // );
+                    setSelectedWidget(1);
                   },
                 ),
               ),
