@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,9 +25,22 @@ class LoginPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // BackgroundImage(
-          //   image: 'assets/images/login_bg.png',
-          // ),
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/bg.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
           Scaffold(
             backgroundColor: Colors.transparent,
             body: Column(

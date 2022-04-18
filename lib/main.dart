@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/models/removebg.dart';
 import 'package:foodify/pages/DrawerItems/AboutUs.dart';
@@ -95,10 +96,9 @@ class _HomeDrawerState extends State<HomeDrawer>
   ];
 
   Widget selectedWidget = const MyHomePage();
-
+  final PageStorageBucket bucket = PageStorageBucket();
   String toMailId = 'projectapp2024@gmail.com',
       subject = 'Feedback/Query on Foodify';
-
   setSelectedWidget(int i) {
     setState(() {
       selectedWidget = screens[i];
@@ -124,161 +124,175 @@ class _HomeDrawerState extends State<HomeDrawer>
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: FancyDrawerWrapper(
-        backgroundColor: const Color.fromRGBO(47, 48, 68, 1),
-        controller: _controller,
-        itemGap: 13,
-        cornerRadius: 15,
-        drawerItems: <Widget>[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              height: 55,
-              width: 200,
-              child: FittedBox(
-                child: ElevatedButton(
-                  child: Text(
-                    "Home",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.purple.shade700,
-                      fontWeight: FontWeight.bold,
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.amber, Colors.amberAccent],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.95],
+          ),
+        ),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          child: FancyDrawerWrapper(
+            backgroundColor: Colors.transparent,
+            controller: _controller,
+            itemGap: 13,
+            cornerRadius: 15,
+            drawerItems: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  height: 55,
+                  width: 200,
+                  child: FittedBox(
+                    child: ElevatedButton(
+                      child: Text(
+                        "Home",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.purple.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        setSelectedWidget(0);
+                      },
                     ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  height: 55,
+                  width: 200,
+                  child: FittedBox(
+                    child: ElevatedButton(
+                      child: Text(
+                        "Recipe Videos",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.purple.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        setSelectedWidget(1);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  height: 55,
+                  width: 200,
+                  child: FittedBox(
+                    child: ElevatedButton(
+                      child: Text(
+                        "Contact Us",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.purple.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () async {
+                        String url = 'mailto:$toMailId?subject=$subject';
+                        if (!await launch(url, enableJavaScript: true)) {
+                          Get.snackbar(
+                            "Couldn't launch URL",
+                            "Please check your Internet connection",
+                            duration: const Duration(seconds: 2),
+                            icon: const Icon(
+                                FontAwesomeIcons.triangleExclamation,
+                                color: Colors.white),
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  height: 55,
+                  width: 200,
+                  child: FittedBox(
+                    child: ElevatedButton(
+                      child: Text(
+                        "Log Out",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.purple.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        logout();
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  color: Colors.transparent,
+                  height: 55,
+                  width: 200,
+                  child: InkWell(
+                    child: const Center(
+                      child: Text(
+                        "Close",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      print('closed');
+                      _controller.close();
+                    },
+                  ),
+                ),
+              ),
+            ],
+            child: Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                elevation: 0.0,
+                title: const Text(
+                  "Foodify",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontFamily: "OpenSans",
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                backgroundColor: Colors.white12,
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.menu,
+                    color: Colors.black,
                   ),
                   onPressed: () {
-                    setSelectedWidget(0);
+                    _controller.toggle();
                   },
                 ),
               ),
+              body: selectedWidget,
             ),
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              height: 55,
-              width: 200,
-              child: FittedBox(
-                child: ElevatedButton(
-                  child: Text(
-                    "Recipe Videos",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.purple.shade700,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () {
-                    setSelectedWidget(1);
-                  },
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              height: 55,
-              width: 200,
-              child: FittedBox(
-                child: ElevatedButton(
-                  child: Text(
-                    "Contact Us",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.purple.shade700,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () async {
-                    String url = 'mailto:$toMailId?subject=$subject';
-                    if (!await launch(url, enableJavaScript: true)) {
-                      Get.snackbar(
-                        "Couldn't launch URL",
-                        "Please check your Internet connection",
-                        duration: const Duration(seconds: 2),
-                        icon: const Icon(FontAwesomeIcons.triangleExclamation,
-                            color: Colors.white),
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    }
-                  },
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              height: 55,
-              width: 200,
-              child: FittedBox(
-                child: ElevatedButton(
-                  child: Text(
-                    "Log Out",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.purple.shade700,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () {
-                    logout();
-                  },
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              color: Colors.transparent,
-              height: 55,
-              width: 200,
-              child: InkWell(
-                child: const Center(
-                  child: Text(
-                    "Close",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  print('closed');
-                  _controller.close();
-                },
-              ),
-            ),
-          ),
-        ],
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            elevation: 0.0,
-            title: const Text(
-              "Foodify",
-              style: TextStyle(
-                fontSize: 25,
-                fontFamily: "OpenSans",
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            backgroundColor: Colors.white12,
-            leading: IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                _controller.toggle();
-              },
-            ),
-          ),
-          body: selectedWidget,
         ),
       ),
     );
@@ -317,115 +331,102 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  final PageStorageBucket bucket = PageStorageBucket();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   elevation: 5,
-      //   backgroundColor: Colors.white,
-      //   automaticallyImplyLeading: false,
-      //   title: const Center(
-      //     child: Text(
-      //       'Foodify',
-      //       'Foodify',
-      //       style: TextStyle(
-      //         fontSize: 30,
-      //         fontFamily: "OpenSans",
-      //         fontWeight: FontWeight.bold,
-      //         color: Colors.black,
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      body: CurvedNavBar(
-        actionButton: CurvedActionBar(
-            activeIcon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.camera_alt_outlined,
-                size: 37,
-                color: Colors.amber,
-              ),
-            ),
-            inActiveIcon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                  color: Colors.amber, shape: BoxShape.circle),
-              child: IconButton(
-                padding: const EdgeInsets.all(0),
-                icon: const Icon(
+      body: PageStorage(
+        bucket: bucket,
+        child: CurvedNavBar(
+          actionButton: CurvedActionBar(
+              activeIcon: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
                   Icons.camera_alt_outlined,
                   size: 37,
-                  color: Colors.white,
+                  color: Colors.amber,
                 ),
-                // onPressed: selectFromImagePicker,
-                onPressed: () {
-                  _onImageButtonPressed(ImageSource.gallery,
-                      context: context, isMultiImage: true);
-                },
               ),
-            ),
-            text: ""),
-        activeColor: Colors.amber,
-        navBarBackgroundColor: Colors.white,
-        inActiveColor: Colors.black45,
-        appBarItems: [
-          FABBottomAppBarItem(
-              activeIcon: const Icon(
-                Icons.house_outlined,
-                color: Colors.amber,
+              inActiveIcon: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                    color: Colors.amber, shape: BoxShape.circle),
+                child: IconButton(
+                  padding: const EdgeInsets.all(0),
+                  icon: const Icon(
+                    Icons.camera_alt_outlined,
+                    size: 37,
+                    color: Colors.white,
+                  ),
+                  // onPressed: selectFromImagePicker,
+                  onPressed: () {
+                    _onImageButtonPressed(ImageSource.gallery,
+                        context: context, isMultiImage: true);
+                  },
+                ),
               ),
-              inActiveIcon: const Icon(
-                Icons.house_outlined,
-                color: Colors.black54,
-              ),
-              text: 'Home'),
-          FABBottomAppBarItem(
-              activeIcon: const Icon(
-                Icons.favorite_border,
-                color: Colors.amber,
-              ),
-              inActiveIcon: const Icon(
-                Icons.favorite_border,
-                color: Colors.black54,
-              ),
-              text: 'Liked'),
-          FABBottomAppBarItem(
-              activeIcon: const Icon(
-                Icons.format_list_bulleted_sharp,
-                color: Colors.amber,
-              ),
-              inActiveIcon: const Icon(
-                Icons.format_list_bulleted_sharp,
-                color: Colors.black54,
-              ),
-              text: 'My List'),
-          FABBottomAppBarItem(
-              activeIcon: const Icon(
-                Icons.settings_outlined,
-                color: Colors.amber,
-              ),
-              inActiveIcon: const Icon(
-                Icons.settings_outlined,
-                color: Colors.black54,
-              ),
-              text: 'Settings'),
-        ],
-        bodyItems: [
-          Home(),
-          Favourites(),
-          MyList(),
-          const Settings(),
-        ],
-        // actionBarView: Container(
-        //   height: MediaQuery.of(context).size.height,
-        //   color: Colors.black,
-        // ),
+              text: ""),
+          activeColor: Colors.amber,
+          navBarBackgroundColor: Colors.white,
+          inActiveColor: Colors.black45,
+          appBarItems: [
+            FABBottomAppBarItem(
+                activeIcon: const Icon(
+                  Icons.house_outlined,
+                  color: Colors.amber,
+                ),
+                inActiveIcon: const Icon(
+                  Icons.house_outlined,
+                  color: Colors.black54,
+                ),
+                text: 'Home'),
+            FABBottomAppBarItem(
+                activeIcon: const Icon(
+                  Icons.favorite_border,
+                  color: Colors.amber,
+                ),
+                inActiveIcon: const Icon(
+                  Icons.favorite_border,
+                  color: Colors.black54,
+                ),
+                text: 'Liked'),
+            FABBottomAppBarItem(
+                activeIcon: const Icon(
+                  Icons.format_list_bulleted_sharp,
+                  color: Colors.amber,
+                ),
+                inActiveIcon: const Icon(
+                  Icons.format_list_bulleted_sharp,
+                  color: Colors.black54,
+                ),
+                text: 'My List'),
+            FABBottomAppBarItem(
+                activeIcon: const Icon(
+                  Icons.settings_outlined,
+                  color: Colors.amber,
+                ),
+                inActiveIcon: const Icon(
+                  Icons.settings_outlined,
+                  color: Colors.black54,
+                ),
+                text: 'Settings'),
+          ],
+          bodyItems: [
+            const Home(),
+            Favourites(),
+            MyList(),
+            const Settings(),
+          ],
+          // actionBarView: Container(
+          //   height: MediaQuery.of(context).size.height,
+          //   color: Colors.black,
+          // ),
+        ),
       ),
     );
   }

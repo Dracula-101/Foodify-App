@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
   List<String> list = [
     "Chicken Tikka Masala",
     "Indian Chai",
@@ -34,6 +34,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(children: [
       Container(
         decoration: const BoxDecoration(
@@ -165,7 +166,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 ),
               ),
             ),
-            // randomRecipes!,
+            randomRecipes!,
             // const RandomRecipe(),
           ],
         ),
