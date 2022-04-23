@@ -488,32 +488,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< Updated upstream
-      backgroundColor: Colors.white12,
-      body: IndexedStack(
-        index: currentTab,
-        children: [
-          const Home(),
-          Favourites(),
-          Container(),
-          MyList(),
-          const Settings()
-        ],
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(
-          Icons.camera_alt_outlined,
-          color: Colors.white,
-          size: 32,
-=======
         extendBody: true,
         backgroundColor: Colors.transparent,
         body: IndexedStack(
           index: currentTab,
           children: [Home(), Favourites(), MyList(), const Settings()],
->>>>>>> Stashed changes
         ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,

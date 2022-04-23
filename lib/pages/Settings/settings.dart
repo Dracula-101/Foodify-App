@@ -23,32 +23,123 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    getCuisine('rice');
+    getCuisine('buter chicken');
   }
 
-  static Future<String> getCuisine(String title) async {
-    var uri = Uri.https(BASE_URL, '/recipes/cuisine', {
-      "title": title,
-      "apiKey": apiKey.first,
-    });
-    print('okat');
-    print(uri);
-
-    final response =
-        await http.get(uri, headers: {"Content-Type": "application/json"});
-
-    Map data = jsonDecode(response.body);
-
-    if (data['code'] == 402) {
-      changeAPiKey();
-      return getCuisine(title);
+  static Future<void> getCuisine(String title) async {
+    String API_KEY = "664e310b980b4b82bbd717d835edf3fd";
+    final uri = Uri.parse(
+        'https://api.spoonacular.com/recipes/cuisine?apiKey=$API_KEY');
+    final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    Map<String, String> body = {
+      '0': 't',
+      '1': 'i',
+      '2': 't',
+      '3': 'l',
+      '4': 'e',
+      '5': '='
+    };
+    for (int i = 0; i < title.length; i++) {
+      body.putIfAbsent((i + 6).toString(), () => title[i]);
     }
+    print(body);
+    String jsonBody = json.encode(body);
+    final encoding = Encoding.getByName('utf-8');
 
-    if (data['code'] == 200) {
-      print(data);
+    http.Response response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonBody,
+      encoding: encoding,
+    );
+
+    int statusCode = response.statusCode;
+    if (statusCode == 200) {
+      print(response.body);
+    } else {
+      print(response.body);
     }
-
-    return "";
+    String responseBody = response.body;
+    print(responseBody);
+    // final headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    // Map<String, dynamic> body = {
+    //   '0': 't',
+    //   '1': 'i',
+    //   '2': 't',
+    //   '3': 'l',
+    //   '4': 'e',
+    //   '5': '=',
+    //   '6': 'P',
+    //   '7': 'o',
+    //   '8': 'r',
+    //   '9': 'k',
+    //   '10': ' ',
+    //   '11': 'r',
+    //   '12': 'o',
+    //   '13': 'a',
+    //   '14': 's',
+    //   '15': 't',
+    //   '16': ' ',
+    //   '17': 'w',
+    //   '18': 'i',
+    //   '19': 't',
+    //   '20': 'h',
+    //   '21': ' ',
+    //   '22': 'g',
+    //   '23': 'r',
+    //   '24': 'e',
+    //   '25': 'e',
+    //   '26': 'n',
+    //   '27': ' ',
+    //   '28': 'b',
+    //   '29': 'e',
+    //   '30': 'a',
+    //   '31': 'n',
+    //   '32': 's',
+    //   '33': '&',
+    //   '34': 'i',
+    //   '35': 'n',
+    //   '36': 'g',
+    //   '37': 'r',
+    //   '38': 'e',
+    //   '39': 'd',
+    //   '40': 'i',
+    //   '41': 'e',
+    //   '42': 'n',
+    //   '43': 't',
+    //   '44': 'L',
+    //   '45': 'i',
+    //   '46': 's',
+    //   '47': 't',
+    //   '48': '=',
+    //   '49': '3',
+    //   '50': ' ',
+    //   '51': 'o',
+    //   '52': 'z',
+    //   '53': ' ',
+    //   '54': 'p',
+    //   '55': 'o',
+    //   '56': 'r',
+    //   '57': 'k',
+    //   '58': ' ',
+    //   '59': 's',
+    //   '60': 'h',
+    //   '61': 'o',
+    //   '62': 'u',
+    //   '63': 'l',
+    //   '64': 'd',
+    //   '65': 'e',
+    //   '66': 'r'
+    // };
+    // final response =
+    //     await http.post(Uri.parse(uri), body: body, headers: headers);
+    // print(response.body);
+    // if (response.statusCode == 200) {
+    //   final jsonResponse = json.decode(response.body);
+    //   print(jsonResponse);
+    // } else {
+    //   throw Exception('Failed to load post');
+    // }
   }
 
   TextEditingController controller = TextEditingController();
