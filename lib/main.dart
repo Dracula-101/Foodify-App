@@ -8,11 +8,12 @@ import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/pages/VideoFinder/video_finder.dart';
-import 'package:foodify/pages/imagePicker.dart';
+import 'package:foodify/pages/Image%20Picker/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/routes/app_routes.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
+import 'package:foodify/views/widgets/scrolling_parallax.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
@@ -33,6 +34,8 @@ import 'package:fancy_drawer/fancy_drawer.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'views/curved_navbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -485,6 +488,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< Updated upstream
       backgroundColor: Colors.white12,
       body: IndexedStack(
         index: currentTab,
@@ -503,94 +507,100 @@ class _MyHomePageState extends State<MyHomePage> {
           Icons.camera_alt_outlined,
           color: Colors.white,
           size: 32,
+=======
+        extendBody: true,
+        backgroundColor: Colors.transparent,
+        body: IndexedStack(
+          index: currentTab,
+          children: [Home(), Favourites(), MyList(), const Settings()],
+>>>>>>> Stashed changes
         ),
-        elevation: 4,
-        onPressed: () async {
-          List<XFile>? images =
-              await _picker?.pickMultiImage(imageQuality: 100);
-          setState(() {});
-          if (images!.isEmpty) return;
-          Get.to(() {
-            return ImageSelector(
-              images: images,
-            );
-          }, transition: Transition.upToDown);
-        },
-      ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(0),
-        decoration: ShapeDecoration(
-          color: Colors.black,
-          shape: MyBorderShape(),
-          shadows: [
-            BoxShadow(
-                color: Colors.black38, blurRadius: 8.0, offset: Offset(1, 1)),
-          ],
-        ),
-        child: BottomNavigationBar(
-          unselectedFontSize: 14,
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
+        floatingActionButton: FloatingActionButton(
+          // backgroundColor: Colors.transparent,
           elevation: 4,
-          selectedIconTheme: const IconThemeData(
-            color: Colors.amber,
-            size: 27,
-          ),
-          unselectedIconTheme: const IconThemeData(
-            color: Colors.black54,
-            size: 27,
-          ),
-          showUnselectedLabels: true,
-          showSelectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          unselectedLabelStyle: const TextStyle(
-            color: Colors.black,
-          ),
-          currentIndex: currentTab,
-          // fixedColor: Colors.amber,
-          selectedItemColor: Colors.amber,
-          onTap: (int index) {
-            setState(() {
-              currentTab = index;
-            });
+          onPressed: () async {
+            List<XFile>? images =
+                await _picker?.pickMultiImage(imageQuality: 100);
+            setState(() {});
+            if (images!.isEmpty) return;
+            Get.to(() {
+              return ImageSelector(
+                images: images,
+              );
+            }, transition: Transition.upToDown);
           },
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.house_outlined,
-                  // color: Colors.black54,
-                  size: 27,
-                ),
-                label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.favorite_border,
-                  // color: Colors.black54,
-                  size: 27,
-                ),
-                label: 'Favourites'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.format_list_bulleted_sharp,
-                  color: Colors.white,
-                ),
-                label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.format_list_bulleted_sharp,
-                  // color: Colors.black54,
-                  size: 27,
-                ),
-                label: 'My List'),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings_outlined,
-                  // color: Colors.black54,
-                  size: 27,
-                ),
-                label: 'Settings'),
-          ],
+          isExtended: true,
+          child: const Icon(
+            Icons.camera_alt_outlined,
+            size: 35,
+            color: Colors.white,
+          ),
         ),
-      ),
-    );
+        bottomNavigationBar: BottomAppBar(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape:
+              const CircularNotchedRectangle(), // ← carves notch for FAB in BottomAppBar
+          elevation: 6,
+          child: BottomNavigationBar(
+            backgroundColor: Colors.white,
+            unselectedFontSize: 14,
+            elevation: 4,
+            selectedIconTheme: const IconThemeData(
+              color: Colors.amber,
+              size: 27,
+            ),
+            unselectedIconTheme: const IconThemeData(
+              color: Colors.black54,
+              size: 27,
+            ),
+            showUnselectedLabels: true,
+            showSelectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            unselectedLabelStyle: const TextStyle(
+              color: Colors.black,
+            ),
+            currentIndex: currentTab,
+            // fixedColor: Colors.amber,
+            selectedItemColor: Colors.amber,
+            onTap: (int index) {
+              setState(() {
+                currentTab = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.house_outlined,
+                    // color: Colors.black54,
+                    size: 27,
+                  ),
+                  label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.favorite_border,
+                    // color: Colors.black54,
+                    size: 27,
+                  ),
+                  label: 'Favourites'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.format_list_bulleted_sharp,
+                    // color: Colors.black54,
+                    size: 27,
+                  ),
+                  label: 'My List'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.settings_outlined,
+                    // color: Colors.black54,
+                    size: 27,
+                  ),
+                  label: 'Settings'),
+            ],
+          ),
+        ));
   }
 
   loadModel() async {

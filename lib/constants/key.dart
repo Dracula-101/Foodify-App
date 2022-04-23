@@ -39,6 +39,48 @@ List<dynamic> data = [
   "Yam"
 ];
 
+List<String> fruits = [
+  "Apple",
+  "Banana",
+  "Grapes",
+  "Kiwi",
+  "Mango,"
+      "Orange",
+  "Pear",
+  "Pineapple",
+  "Pomegranate",
+  "Watermelon"
+];
+
+List<String> vegetables = [
+  "Beetroot",
+  "Bell Pepper",
+  "Cabbage",
+  "Capsicum",
+  "Carrot",
+  "Cauliflower",
+  "Chili pepper",
+  "Corn",
+  "Cucumber",
+  "Eggplant",
+  "Garlic",
+  "Ginger",
+  "Jalepeno",
+  "Lemon",
+  "Lettuce",
+  "Onion",
+  "Paprika",
+  "Peas",
+  "Potato",
+  "Radish",
+  "Soybeans",
+  "Spinach",
+  "Sweetcorn",
+  "Sweet potato",
+  "Tomato",
+  "Turnip",
+];
+
 List<String> deletedData = [];
 
 void changeAPiKey() {

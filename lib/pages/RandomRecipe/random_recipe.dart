@@ -21,7 +21,7 @@ class _RandomRecipeState extends State<RandomRecipe> {
     getRecipes();
   }
 
-  late List<Recipe> _recipes;
+  static late List<Recipe> _recipes;
   bool _isLoading = true;
 
   Future<void> getRecipes() async {

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class CustomNotchedRectangle extends NotchedShape {
   const CustomNotchedRectangle();
 
-  Path getOuterPath(Rect host, Rect guest) {
+  @override
+  Path getOuterPath(Rect host, Rect? guest) {
     if (guest == null || !host.overlaps(guest)) return Path()..addRect(host);
 
     const double s1 = 10.0;
@@ -23,8 +24,7 @@ class CustomNotchedRectangle extends NotchedShape {
     final double p2yA = math.sqrt(r * r - p2xA * p2xA);
     final double p2yB = math.sqrt(r * r - p2xB * p2xB);
 
-    final List<Offset> p =
-        List<Offset>.generate(6, (int index) => index, growable: false);
+    final List<Offset> p = <Offset>[];
 
     p[0] = Offset(a - s1, b);
     p[1] = Offset(a, b);

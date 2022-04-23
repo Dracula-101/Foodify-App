@@ -35,7 +35,6 @@ class RecipeApi {
     var uri = Uri.https(BASE_URL, '/recipes/random', {
       "number": "10",
       "sort": "desc",
-      // "tags": cuisine + "," + getVeg(),
       "apiKey": apiKey.first,
     });
 
