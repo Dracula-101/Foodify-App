@@ -488,7 +488,13 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.white12,
       body: IndexedStack(
         index: currentTab,
-        children: [const Home(), Favourites(), MyList(), const Settings()],
+        children: [
+          const Home(),
+          Favourites(),
+          Container(),
+          MyList(),
+          const Settings()
+        ],
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
