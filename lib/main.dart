@@ -35,11 +35,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-      home: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -60,49 +56,27 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery(
-      data: MediaQueryData(),
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(
-          body: AnimatedSplashScreen(
-            duration: 2000,
-            splashTransition: SplashTransition.fadeTransition,
-            pageTransitionType: PageTransitionType.rightToLeft,
-            splash: const Icon(
-              FontAwesomeIcons.house,
-              color: Colors.black,
-            ),
-            nextScreen: MaterialApp(
-              // showPerformanceOverlay: true,
-              title: 'Foodify',
-              theme: ThemeData(
-                primarySwatch: Colors.amber,
-              ),
-              // home: const MyHomePage(),
-              // home: LandingPage,
-              // getPages: AppRoutes.pages,
-              home: FutureBuilder<Widget>(
-                future: checkUser(), // async work
-                builder:
-                    (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return const CircularProgressIndicator();
-                    case ConnectionState.done:
-                      return snapshot.data!;
-                    default:
-                      return const Center(
-                        child: Text('Error loading the Page'),
-                      );
-                  }
-                },
-              ),
-              debugShowCheckedModeBanner: false,
-            ),
-          ),
-        ),
+    return GetMaterialApp(
+      // showPerformanceOverlay: true,
+      title: 'Foodify',
+      theme: ThemeData(
+        primarySwatch: Colors.amber,
       ),
+      // home: const MyHomePage(),
+      // home: LandingPage,
+      // getPages: AppRoutes.pages,
+      home: FutureBuilder<Widget>(
+        future: checkUser(), // async work
+        builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const CircularProgressIndicator();
+            default:
+              return snapshot.hasError ? Container() : snapshot.data!;
+          }
+        },
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
