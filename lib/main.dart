@@ -12,6 +12,7 @@ import 'package:foodify/pages/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/routes/app_routes.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
+import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
@@ -29,11 +30,16 @@ import 'package:tflite/tflite.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fancy_drawer/fancy_drawer.dart';
-
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MaterialApp(
+      home: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -54,27 +60,49 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      // showPerformanceOverlay: true,
-      title: 'Foodify',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
+    return MediaQuery(
+      data: MediaQueryData(),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          body: AnimatedSplashScreen(
+            duration: 2000,
+            splashTransition: SplashTransition.fadeTransition,
+            pageTransitionType: PageTransitionType.rightToLeft,
+            splash: const Icon(
+              FontAwesomeIcons.house,
+              color: Colors.black,
+            ),
+            nextScreen: MaterialApp(
+              // showPerformanceOverlay: true,
+              title: 'Foodify',
+              theme: ThemeData(
+                primarySwatch: Colors.amber,
+              ),
+              // home: const MyHomePage(),
+              // home: LandingPage,
+              // getPages: AppRoutes.pages,
+              home: FutureBuilder<Widget>(
+                future: checkUser(), // async work
+                builder:
+                    (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const CircularProgressIndicator();
+                    case ConnectionState.done:
+                      return snapshot.data!;
+                    default:
+                      return const Center(
+                        child: Text('Error loading the Page'),
+                      );
+                  }
+                },
+              ),
+              debugShowCheckedModeBanner: false,
+            ),
+          ),
+        ),
       ),
-      // home: const MyHomePage(),
-      // home: LandingPage,
-      // getPages: AppRoutes.pages,
-      home: FutureBuilder<Widget>(
-        future: checkUser(), // async work
-        builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return const CircularProgressIndicator();
-            default:
-              return snapshot.hasError ? Container() : snapshot.data!;
-          }
-        },
-      ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -314,13 +342,160 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  // TODO: implement wantKeepAlive
   File? image;
   List? recognitions;
   XFile? ximage;
   String? name, confidence;
+  int currentTab = 0;
 
   dynamic _pickImageError;
   ImagePicker? _picker;
+  TextEditingController searchController = TextEditingController();
+
+  Widget? createdHome;
+
+  Widget createHome(BuildContext context) {
+    return PageStorage(
+      bucket: bucket,
+      child: Column(children: [
+        Container(
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  spreadRadius: 5,
+                ),
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: <Widget>[
+              IconButton(
+                splashRadius: 20,
+                splashColor: Colors.grey,
+                icon: const Icon(Icons.search),
+                onPressed: () {},
+              ),
+              Expanded(
+                  child: TextField(
+                onTap: () {},
+                controller: searchController,
+                // onChanged: (value) async {
+                //   await RecipeSuggestionAPI.getSuggestion(value)
+                //       .then((value) => list = value);
+                // },
+                onSubmitted: (value) {
+                  Get.to(RecipeSearchCard(
+                    title: value,
+                    isCuisine: false,
+                  ));
+                  searchController.clear();
+                },
+                style: const TextStyle(
+                  fontSize: 17,
+                  color: Colors.black,
+                ),
+                cursorColor: Colors.black,
+                decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    hintText: "Search Recipes"),
+                // onChanged: (text) {
+                //   widget.searched = true;
+                //   widget.searchedRecipe = text;
+                //   print('Recipe Searched');
+                // },
+              )),
+              IconButton(
+                splashRadius: 20,
+                splashColor: Colors.grey,
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  searchController.clear();
+                },
+              ),
+            ],
+          ),
+        ), //Searchbar
+        // Search(),pub
+        // GFSearchBar(
+        //   searchList: list,
+        //   searchQueryBuilder: (query, list) {
+        //     return list
+        //         .where((item) =>
+        //             item.toString().toLowerCase().contains(query.toLowerCase()))
+        //         .toList();
+        //   },
+        //   noItemsFoundWidget: Container(),
+        //   searchBoxInputDecoration: InputDecoration(
+        //     iconColor: Colors.amberAccent,
+        //     hintText: "Search for a recipe",
+        //     border: OutlineInputBorder(
+        //       borderSide: BorderSide(color: Colors.amberAccent),
+        //       borderRadius: BorderRadius.circular(20),
+        //     ),
+        //     suffix: InkWell(
+        //         onTap: () {
+        //           RecipeSearchCard(
+        //               title: searchController.text, isCuisine: false);
+        //         },
+        //         child: Icon(Icons.search)),
+        //   ),
+        //   overlaySearchListItemBuilder: (item) {
+        //     return Container(
+        //       padding: const EdgeInsets.all(10),
+        //       child: Text(
+        //         item.toString(),
+        //         style: const TextStyle(fontSize: 20),
+        //       ),
+        //     );
+        //   },
+        //   onItemSelected: (item) {
+        //     print('$item');
+        //   },
+        // ),
+        Expanded(
+          child: ListView(
+            cacheExtent: 10000,
+            addAutomaticKeepAlives: true,
+            children: const [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Text(
+                  "Trending",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              TrendingWidget(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Text(
+                  "Recipes for you",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              RandomRecipe(),
+            ],
+          ),
+        )
+      ]),
+    );
+  }
 
   @override
   initState() {
@@ -329,103 +504,110 @@ class _MyHomePageState extends State<MyHomePage> {
     loadModel().then((val) {
       print('Model Loaded');
     });
+    createdHome = createHome(context);
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: PageStorage(
-        bucket: bucket,
-        child: CurvedNavBar(
-          actionButton: CurvedActionBar(
-              activeIcon: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
+      backgroundColor: Colors.white12,
+      body: IndexedStack(
+        index: currentTab,
+        children: [const Home(), Favourites(), MyList(), const Settings()],
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(
+          Icons.camera_alt_outlined,
+          color: Colors.white,
+          size: 32,
+        ),
+        elevation: 4,
+        onPressed: () async {
+          List<XFile>? images =
+              await _picker?.pickMultiImage(imageQuality: 100);
+          setState(() {});
+          if (images!.isEmpty) return;
+          Get.to(() {
+            return ImageSelector(
+              images: images,
+            );
+          }, transition: Transition.upToDown);
+        },
+      ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.all(0),
+        decoration: ShapeDecoration(
+          color: Colors.black,
+          shape: MyBorderShape(),
+          shadows: [
+            BoxShadow(
+                color: Colors.black38, blurRadius: 8.0, offset: Offset(1, 1)),
+          ],
+        ),
+        child: BottomNavigationBar(
+          unselectedFontSize: 14,
+          elevation: 4,
+          selectedIconTheme: const IconThemeData(
+            color: Colors.amber,
+            size: 27,
+          ),
+          unselectedIconTheme: const IconThemeData(
+            color: Colors.black54,
+            size: 27,
+          ),
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          unselectedLabelStyle: const TextStyle(
+            color: Colors.black,
+          ),
+          currentIndex: currentTab,
+          // fixedColor: Colors.amber,
+          selectedItemColor: Colors.amber,
+          onTap: (int index) {
+            setState(() {
+              currentTab = index;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.house_outlined,
+                  // color: Colors.black54,
+                  size: 27,
+                ),
+                label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.favorite_border,
+                  // color: Colors.black54,
+                  size: 27,
+                ),
+                label: 'Favourites'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.format_list_bulleted_sharp,
                   color: Colors.white,
-                  shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.camera_alt_outlined,
-                  size: 37,
-                  color: Colors.amber,
-                ),
-              ),
-              inActiveIcon: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                    color: Colors.amber, shape: BoxShape.circle),
-                child: IconButton(
-                  padding: const EdgeInsets.all(0),
-                  icon: const Icon(
-                    Icons.camera_alt_outlined,
-                    size: 37,
-                    color: Colors.white,
-                  ),
-                  // onPressed: selectFromImagePicker,
-                  onPressed: () {
-                    _onImageButtonPressed(ImageSource.gallery,
-                        context: context, isMultiImage: true);
-                  },
-                ),
-              ),
-              text: ""),
-          activeColor: Colors.amber,
-          navBarBackgroundColor: Colors.white,
-          inActiveColor: Colors.black45,
-          appBarItems: [
-            FABBottomAppBarItem(
-                activeIcon: const Icon(
-                  Icons.house_outlined,
-                  color: Colors.amber,
-                ),
-                inActiveIcon: const Icon(
-                  Icons.house_outlined,
-                  color: Colors.black54,
-                ),
-                text: 'Home'),
-            FABBottomAppBarItem(
-                activeIcon: const Icon(
-                  Icons.favorite_border,
-                  color: Colors.amber,
-                ),
-                inActiveIcon: const Icon(
-                  Icons.favorite_border,
-                  color: Colors.black54,
-                ),
-                text: 'Liked'),
-            FABBottomAppBarItem(
-                activeIcon: const Icon(
+                label: ''),
+            BottomNavigationBarItem(
+                icon: Icon(
                   Icons.format_list_bulleted_sharp,
-                  color: Colors.amber,
+                  // color: Colors.black54,
+                  size: 27,
                 ),
-                inActiveIcon: const Icon(
-                  Icons.format_list_bulleted_sharp,
-                  color: Colors.black54,
-                ),
-                text: 'My List'),
-            FABBottomAppBarItem(
-                activeIcon: const Icon(
+                label: 'My List'),
+            BottomNavigationBarItem(
+                icon: Icon(
                   Icons.settings_outlined,
-                  color: Colors.amber,
+                  // color: Colors.black54,
+                  size: 27,
                 ),
-                inActiveIcon: const Icon(
-                  Icons.settings_outlined,
-                  color: Colors.black54,
-                ),
-                text: 'Settings'),
+                label: 'Settings'),
           ],
-          bodyItems: [
-            const Home(),
-            Favourites(),
-            MyList(),
-            const Settings(),
-          ],
-          // actionBarView: Container(
-          //   height: MediaQuery.of(context).size.height,
-          //   color: Colors.black,
-          // ),
         ),
       ),
     );
@@ -513,27 +695,42 @@ class _MyHomePageState extends State<MyHomePage> {
   File convertToFile(XFile xFile) {
     return File(xFile.path);
   }
+}
 
-  _onImageButtonPressed(ImageSource source,
-      {BuildContext? context, bool isMultiImage = false}) async {
-    List<XFile>? images;
-    try {
-      images = await _picker?.pickMultiImage(
-        // maxWidth: maxWidth,
-        // maxHeight: maxHeight,
-        imageQuality: 100,
-      );
-    } catch (e) {
-      setState(() {
-        _pickImageError = e;
-      });
-    }
-    print("Hello this is a point");
-    if (images!.isEmpty) return;
-    Get.to(() {
-      return ImageSelector(
-        images: images,
-      );
-    }, transition: Transition.upToDown);
+class MyBorderShape extends ShapeBorder {
+  const MyBorderShape();
+
+  @override
+  EdgeInsetsGeometry get dimensions => EdgeInsets.zero;
+
+  final double holeSize = 200;
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    print(rect.height);
+    return Path.combine(
+      PathOperation.difference,
+      Path()
+        ..addRRect(
+            RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 2)))
+        ..close(),
+      Path()
+        ..addOval(Rect.fromCenter(
+            center: rect.center.translate(0, -rect.height / 2),
+            height: holeSize,
+            width: holeSize))
+        ..close(),
+    );
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {}
+
+  @override
+  ShapeBorder scale(double t) => this;
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
+    return Path();
   }
 }

@@ -16,11 +16,6 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Firebase Authentication'),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-      ),
       body: Stack(
         children: [
           // BackgroundImage(image: 'assets/images/register_bg.png'),

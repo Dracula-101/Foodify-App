@@ -18,11 +18,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Firebase Authentication'),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-      ),
       body: Stack(
         children: [
           Container(
@@ -45,12 +40,16 @@ class LoginPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             body: Column(
               children: [
-                Flexible(
+                const SizedBox(
+                  height: 70,
+                ),
+                const Flexible(
                   child: Center(
                     child: Text(
-                      'Foodybite',
+                      'Foodify',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.amber,
                           fontSize: 60,
                           fontWeight: FontWeight.bold),
                     ),
@@ -185,7 +184,7 @@ class LoginPage extends StatelessWidget {
                       'Create New Account',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black,
+                        color: Colors.white,
                         height: 1.5,
                       ),
                     ),
