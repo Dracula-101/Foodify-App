@@ -25,6 +25,11 @@ class _PredictionState extends State<Prediction> {
   bool isLoading = true;
   List<String> fruits = [];
   List<String> vegetables = [];
+  List<bool> isFruitAdded = [];
+  List<bool> isVegetableAdded = [];
+  bool pantry = false;
+  int ranking = 1;
+  String dropdownValue = "Maximize Used Ingredients";
   @override
   initState() {
     super.initState();
@@ -76,9 +81,11 @@ class _PredictionState extends State<Prediction> {
       recognitions.add(rec);
       if (key.fruits.contains(recognitions[i][0]["label"].toString())) {
         fruits.add(recognitions[i][0]["label"]);
+        isFruitAdded.add(true);
       } else if (key.vegetables
           .contains(recognitions[i][0]["label"].toString())) {
         vegetables.add(recognitions[i][0]["label"]);
+        isVegetableAdded.add(true);
       }
     }
     setState(() {
@@ -98,7 +105,7 @@ class _PredictionState extends State<Prediction> {
           'Fruits',
           style: TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -134,16 +141,28 @@ class _PredictionState extends State<Prediction> {
                       ),
                       child: Row(
                         children: [
-                          CircleAvatar(),
-                          SizedBox(
-                            width: 10,
+                          Row(
+                            children: [
+                              CircleAvatar(),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                fruits.elementAt(index),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            fruits.elementAt(index),
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          GFToggle(
+                            onChanged: (val) {
+                              isFruitAdded[index] = (!val!);
+                              print(isFruitAdded[index]);
+                            },
+                            value: true,
+                            type: GFToggleType.ios,
                           )
                         ],
                       ),
@@ -162,7 +181,7 @@ class _PredictionState extends State<Prediction> {
             'Vegetables',
             style: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.normal,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -176,7 +195,7 @@ class _PredictionState extends State<Prediction> {
                 itemCount: vegetables.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    height: 100,
+                    height: 55,
                     margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -189,26 +208,38 @@ class _PredictionState extends State<Prediction> {
                               10.0, // has the effect of softening the shadow
                           spreadRadius:
                               5.0, // has the effect of extending the shadow
-                          offset: Offset(
-                            0.0, // horizontal, move right 10
-                            10.0, // vertical, move down 10
-                          ),
                         )
                       ],
                     ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(),
-                        SizedBox(
-                          width: 10,
+                        Row(
+                          children: [
+                            CircleAvatar(),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              vegetables.elementAt(index),
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          vegetables.elementAt(index),
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                        GFToggle(
+                          enabledTrackColor: Colors.amber,
+                          duration: Duration(milliseconds: 100),
+                          onChanged: (val) {
+                            isVegetableAdded[index] = (!val!);
+                            print(isVegetableAdded[index]);
+                          },
+                          value: true,
+                          type: GFToggleType.ios,
                         )
                       ],
                     ),
@@ -216,6 +247,18 @@ class _PredictionState extends State<Prediction> {
                 })),
       ],
     );
+  }
+
+  String makeList() {
+    String finalList = "";
+    for (int i = 0; i < fruits.length; i++) {
+      if (isFruitAdded[i]) finalList += fruits[i] + ",";
+    }
+    for (int i = 0; i < vegetables.length; i++) {
+      if (isVegetableAdded[i]) finalList += vegetables[i] + ",";
+    }
+    finalList.substring(0, finalList.length - 2);
+    return finalList;
   }
 
   @override
@@ -236,7 +279,20 @@ class _PredictionState extends State<Prediction> {
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(9.0),
                       side: const BorderSide(color: Colors.amber)))),
-          onPressed: () {},
+          onPressed: () {
+            if (dropdownValue == "Maximize Used Ingredients")
+              ranking = 1;
+            else
+              ranking = 2;
+            Get.to(() {
+              String bruh = makeList();
+              print(bruh);
+              return RecipeFindClass(
+                  ingredients: bruh,
+                  ranking: ranking.toString(),
+                  pantry: pantry);
+            });
+          },
           child: const Text(
             'Get Recipes',
             style: TextStyle(
@@ -313,7 +369,7 @@ class _PredictionState extends State<Prediction> {
                                               BorderRadius.circular(10),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey,
+                                              color: Colors.grey.shade300,
                                               blurRadius: 4.0,
                                               spreadRadius: 2.0,
                                             )
@@ -382,6 +438,94 @@ class _PredictionState extends State<Prediction> {
                                 ),
                               );
                             },
+                          ),
+                        ),
+                        const Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Details',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                blurRadius: 4.0,
+                                spreadRadius: 2.0,
+                              )
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Include Pantry Items',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              GFToggle(
+                                value: pantry,
+                                onChanged: (value) {
+                                  setState(() {
+                                    pantry = value!;
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                blurRadius: 4.0,
+                                spreadRadius: 2.0,
+                              )
+                            ],
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: GFDropdown(
+                              padding: const EdgeInsets.all(15),
+                              borderRadius: BorderRadius.circular(15),
+                              border: const BorderSide(
+                                  color: Colors.black12, width: 1),
+                              dropdownButtonColor: Colors.white,
+                              value: dropdownValue,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  dropdownValue = newValue.toString();
+                                });
+                              },
+                              items: [
+                                "Maximize Used Ingredients",
+                                "Minimize Missing Ingredients",
+                              ]
+                                  .map((value) => DropdownMenuItem(
+                                        value: value,
+                                        child: Text(value),
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ),
                         if (fruits.isNotEmpty) buildFruits(context),

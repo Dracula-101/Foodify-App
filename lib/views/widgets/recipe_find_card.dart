@@ -2,7 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:foodify/models/recipeDetails.dart';
+import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class RecipeFindCard extends StatelessWidget {
@@ -30,7 +33,14 @@ class RecipeFindCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () async {
-          print(missedIngredients[1]['name']);
+          Get.to(
+            () {
+              return ProcedurePage(
+                id: id.toString(),
+              );
+            },
+            transition: Transition.cupertino,
+          );
 
           // getRecipeDetails(id.toString());
         },

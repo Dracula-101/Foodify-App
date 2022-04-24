@@ -23,7 +23,7 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    getCuisine('buter chicken');
+    // getCuisine('buter chicken');
   }
 
   static Future<void> getCuisine(String title) async {
