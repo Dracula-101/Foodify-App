@@ -11,6 +11,7 @@ import 'package:foodify/pages/VideoFinder/video_finder.dart';
 import 'package:foodify/pages/Image%20Picker/imagePicker.dart';
 import 'package:foodify/pages/imagePrediction.dart';
 import 'package:foodify/routes/app_routes.dart';
+import 'package:foodify/splashScreen/SplashScreen.dart';
 import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/scrolling_parallax.dart';
@@ -71,12 +72,13 @@ class _MyAppState extends State<MyApp> {
       home: FutureBuilder<Widget>(
         future: checkUser(), // async work
         builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return const CircularProgressIndicator();
-            default:
-              return snapshot.hasError ? Container() : snapshot.data!;
-          }
+          return const SplashScreen();
+          // switch (snapshot.connectionState) {
+          //   case ConnectionState.done:
+          //     return snapshot.data!;
+          //   default:
+          //     return const SplashScreen();
+          // }
         },
       ),
       debugShowCheckedModeBanner: false,
