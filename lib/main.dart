@@ -72,13 +72,17 @@ class _MyAppState extends State<MyApp> {
       home: FutureBuilder<Widget>(
         future: checkUser(), // async work
         builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-          return const SplashScreen();
-          // switch (snapshot.connectionState) {
-          //   case ConnectionState.done:
-          //     return snapshot.data!;
-          //   default:
-          //     return const SplashScreen();
-          // }
+          // return const SplashScreen();
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return snapshot.data!;
+            case ConnectionState.active:
+              return const SplashScreen();
+            case ConnectionState.waiting:
+              return const SplashScreen();
+            default:
+              return Container();
+          }
         },
       ),
       debugShowCheckedModeBanner: false,

@@ -18,14 +18,29 @@ class SignupPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // BackgroundImage(image: 'assets/images/register_bg.png'),
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/bg1.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
           Scaffold(
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
               child: Column(
                 children: [
                   SizedBox(
-                    height: size.width * 0.1,
+                    height: size.width * 0.3,
                   ),
                   Stack(
                     children: [

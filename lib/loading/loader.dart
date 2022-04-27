@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'dart:math';
 
+import 'package:lottie/lottie.dart';
+
 class Loader extends StatefulWidget {
   final double radius;
   final double dotRadius;
@@ -73,106 +75,11 @@ class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100.0,
-      height: 100.0,
-      //color: Colors.black12,
-      child: RotationTransition(
-        turns: animation_rotation,
-        child: Center(
-          child: Stack(
-            children: <Widget>[
-              Transform.translate(
-                offset: Offset(0.0, 0.0),
-                child: Dot(
-                  radius: radius,
-                  color: Colors.black12,
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.amber,
-                ),
-                offset: Offset(
-                  radius * cos(0.0),
-                  radius * sin(0.0),
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.deepOrangeAccent,
-                ),
-                offset: Offset(
-                  radius * cos(0.0 + 1 * pi / 4),
-                  radius * sin(0.0 + 1 * pi / 4),
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.pinkAccent,
-                ),
-                offset: Offset(
-                  radius * cos(0.0 + 2 * pi / 4),
-                  radius * sin(0.0 + 2 * pi / 4),
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.purple,
-                ),
-                offset: Offset(
-                  radius * cos(0.0 + 3 * pi / 4),
-                  radius * sin(0.0 + 3 * pi / 4),
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.yellow,
-                ),
-                offset: Offset(
-                  radius * cos(0.0 + 4 * pi / 4),
-                  radius * sin(0.0 + 4 * pi / 4),
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.lightGreen,
-                ),
-                offset: Offset(
-                  radius * cos(0.0 + 5 * pi / 4),
-                  radius * sin(0.0 + 5 * pi / 4),
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.orangeAccent,
-                ),
-                offset: Offset(
-                  radius * cos(0.0 + 6 * pi / 4),
-                  radius * sin(0.0 + 6 * pi / 4),
-                ),
-              ),
-              Transform.translate(
-                child: Dot(
-                  radius: dotRadius,
-                  color: Colors.blueAccent,
-                ),
-                offset: Offset(
-                  radius * cos(0.0 + 7 * pi / 4),
-                  radius * sin(0.0 + 7 * pi / 4),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        alignment: Alignment.center,
+        height: 160,
+        width: 160,
+        //color: Colors.black12,
+        child: Lottie.asset('assets/lottie/loading.json'));
   }
 
   @override

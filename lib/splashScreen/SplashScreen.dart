@@ -27,20 +27,38 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Foodify"),
-          Lottie.network(
-            // 'assets/lottie/splash_screen.json',
-            'https://raw.githubusercontent.com/xvrh/lottie-flutter/master/example/assets/Mobilo/A.json',
-            controller: _controller,
-            onLoaded: (composition) {
-              // Configure the AnimationController with the duration of the
-              // Lottie file and start the animation.
-              _controller!.duration = composition.duration;
-              _controller!.forward();
-            },
+          Text(
+            'Foodify',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 40),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(),
+            child: Lottie.asset(
+              'assets/lottie/4762-food-carousel.json',
+              fit: BoxFit.fill,
+              // animate: true,
+              // 'assets/lottie/splash_screen.json',
+
+              // controller: _controller,
+              // onLoaded: (composition) {
+              //   // Configure the AnimationController with the duration of the
+              //   // Lottie file and start the animation.
+              //   _controller!.duration = composition.duration;
+              //   _controller!.forward();
+              // },
+            ),
           ),
         ],
       ),

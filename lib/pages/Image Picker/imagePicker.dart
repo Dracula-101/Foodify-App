@@ -167,13 +167,13 @@ class _ImageSelectorState extends State<ImageSelector> {
                                 Icon(
                                   Icons.camera_alt_outlined,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 23,
                                 ),
                                 Text(
                                   ' Add Images',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     fontStyle: FontStyle.normal,
                                     fontFamily: "OpenSans-Regular",
                                   ),
@@ -211,13 +211,13 @@ class _ImageSelectorState extends State<ImageSelector> {
                                 Icon(
                                   Icons.search,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 23,
                                 ),
                                 Text(
                                   'Predict Images',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     fontStyle: FontStyle.normal,
                                     fontFamily: "OpenSans-Regular",
                                   ),
