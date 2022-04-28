@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
   late List<Recipe> _recipes;
   TextEditingController searchController = TextEditingController();
   Widget? trendingRecipes = const TrendingWidget(),
-      randomRecipes = const RandomRecipe();
+      randomRecipes = new RandomRecipe();
 
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
@@ -42,7 +42,9 @@ class _HomeState extends State<Home> {
       key: refreshIndicatorKey,
       onRefresh: () async {
         print("refreshing");
-        build(context);
+        setState(() {
+          randomRecipes = new RandomRecipe();
+        });
       },
       child: Column(children: [
         Container(

@@ -9,6 +9,8 @@ import 'package:foodify/pages/Settings/bindings/settings_bindings.dart';
 import 'package:foodify/pages/Settings/settings.dart';
 import 'package:get/get.dart';
 
+import '../main.dart';
+
 class AppRoutes {
   String recipeDetails = '/recipeDetails';
 
@@ -38,7 +40,10 @@ class AppRoutes {
     ),
     GetPage(
       name: "Settings",
-      page: () => const Settings(),
+      page: () => TakePictureScreen(
+        // Pass the appropriate camera to the TakePictureScreen widget.
+        camera: firstCamera,
+      ),
       bindings: [
         SettingsBinding(),
       ],

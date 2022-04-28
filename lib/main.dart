@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
@@ -38,7 +39,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'views/curved_navbar.dart';
 
-void main() {
+late CameraDescription firstCamera;
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final cameras = await availableCameras();
+  firstCamera = cameras.first;
   runApp(MyApp());
 }
 
@@ -498,7 +504,14 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
         body: IndexedStack(
           index: currentTab,
-          children: [Home(), Favourites(), MyList(), const Settings()],
+          children: [
+            Home(),
+            Favourites(),
+            MyList(),
+            TakePictureScreen(
+              camera: firstCamera,
+            ),
+          ],
         ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,

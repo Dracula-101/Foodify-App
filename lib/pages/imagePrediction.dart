@@ -27,7 +27,7 @@ class _PredictionState extends State<Prediction> {
   List<String> vegetables = [];
   List<bool> isFruitAdded = [];
   List<bool> isVegetableAdded = [];
-  bool pantry = false;
+  bool pantry = true;
   int ranking = 1;
   String dropdownValue = "Maximize Used Ingredients";
   @override
@@ -79,11 +79,11 @@ class _PredictionState extends State<Prediction> {
       );
 
       recognitions.add(rec);
-      if (key.fruits.contains(recognitions[i][0]["label"].toString())) {
+      String item = recognitions[i][0]["label"].toString();
+      if (key.fruits.contains(item) && !fruits.contains(item)) {
         fruits.add(recognitions[i][0]["label"]);
         isFruitAdded.add(true);
-      } else if (key.vegetables
-          .contains(recognitions[i][0]["label"].toString())) {
+      } else if (key.vegetables.contains(item) && !vegetables.contains(item)) {
         vegetables.add(recognitions[i][0]["label"]);
         isVegetableAdded.add(true);
       }
@@ -98,89 +98,14 @@ class _PredictionState extends State<Prediction> {
   }
 
   Widget buildFruits(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.all(8),
-          child: Text(
-            'Fruits',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: fruits.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                  onTap: () {},
-                  child: Container(
-                    margin: const EdgeInsets.all(8),
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade200,
-                          blurRadius:
-                              10.0, // has the effect of softening the shadow
-                          spreadRadius:
-                              5.0, // has the effect of extending the shadow
-                          offset: Offset(
-                            0.0, // horizontal, move right 10
-                            10.0, // vertical, move down 10
-                          ),
-                        )
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              fruits.elementAt(index),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
-                        ),
-                        GFToggle(
-                          onChanged: (val) {
-                            isFruitAdded[index] = (!val!);
-                            print(isFruitAdded[index]);
-                          },
-                          value: true,
-                          type: GFToggleType.ios,
-                        )
-                      ],
-                    ),
-                  ));
-            }),
-      ]),
-    );
-  }
-
-  Widget buildVegetables(BuildContext context) {
-    return Expanded(
-      child: Column(
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
             padding: EdgeInsets.all(8),
             child: Text(
-              'Vegetables',
+              'Fruits',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -190,14 +115,14 @@ class _PredictionState extends State<Prediction> {
           const SizedBox(
             height: 10,
           ),
-          SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: vegetables.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 55,
+          ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: fruits.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                    onTap: () {},
+                    child: Container(
                       margin: const EdgeInsets.all(8),
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -224,31 +149,106 @@ class _PredictionState extends State<Prediction> {
                                 width: 10,
                               ),
                               Text(
-                                vegetables.elementAt(index),
+                                fruits.elementAt(index),
                                 style: const TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.normal,
-                                  color: Colors.black,
                                 ),
                               ),
                             ],
                           ),
                           GFToggle(
                             enabledTrackColor: Colors.amber,
-                            duration: Duration(milliseconds: 100),
                             onChanged: (val) {
-                              isVegetableAdded[index] = (!val!);
-                              print(isVegetableAdded[index]);
+                              isFruitAdded[index] = (!val!);
+                              print(isFruitAdded[index]);
                             },
                             value: true,
                             type: GFToggleType.ios,
                           )
                         ],
                       ),
-                    );
-                  })),
-        ],
-      ),
+                    ));
+              }),
+        ]);
+  }
+
+  Widget buildVegetables(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(8),
+          child: Text(
+            'Vegetables',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: vegetables.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 55,
+                    margin: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade200,
+                          blurRadius:
+                              10.0, // has the effect of softening the shadow
+                          spreadRadius:
+                              5.0, // has the effect of extending the shadow
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              vegetables.elementAt(index),
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        GFToggle(
+                          enabledTrackColor: Colors.amber,
+                          duration: Duration(milliseconds: 100),
+                          onChanged: (val) {
+                            isVegetableAdded[index] = (!val!);
+                            print(isVegetableAdded[index]);
+                          },
+                          value: true,
+                          type: GFToggleType.ios,
+                        )
+                      ],
+                    ),
+                  );
+                })),
+      ],
     );
   }
 
@@ -274,6 +274,7 @@ class _PredictionState extends State<Prediction> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
         style: ButtonStyle(
             elevation: MaterialStateProperty.all(4),
@@ -329,11 +330,12 @@ class _PredictionState extends State<Prediction> {
                   height: 10,
                 ),
                 Container(
-                  height: 500,
+                  margin: const EdgeInsets.all(5),
+                  height: MediaQuery.of(context).size.height * 0.7,
                   child: ListView(
                     children: [
                       SizedBox(
-                        height: 450,
+                        height: 370,
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
@@ -471,7 +473,9 @@ class _PredictionState extends State<Prediction> {
                               ),
                             ),
                             GFToggle(
+                              enabledTrackColor: Colors.amber,
                               value: pantry,
+                              type: GFToggleType.ios,
                               onChanged: (value) {
                                 setState(() {
                                   pantry = value!;
