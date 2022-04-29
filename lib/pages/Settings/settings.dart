@@ -328,6 +328,8 @@
 // // } else {
 // //   throw Exception('Failed to load post');
 // // }
+// ignore_for_file: unnecessary_const
+
 import 'dart:async';
 import 'dart:io';
 
@@ -338,6 +340,9 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:foodify/models/image_analysis.api.dart';
+import 'package:foodify/models/image_analysis.dart';
+import 'package:foodify/views/widgets/image_analysis_widget.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
 
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({
@@ -354,6 +359,11 @@ class TakePictureScreen extends StatefulWidget {
 class TakePictureScreenState extends State<TakePictureScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  bool isLoaded = false;
+  String? link;
+  XFile? image;
+  late ImageAnalysis imageAnalysis;
+
   Future<void> uploadFile(XFile _image) async {
     var link;
     FirebaseStorage storage = FirebaseStorage.instance;
@@ -361,31 +371,29 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     UploadTask uploadTask = ref.putFile(File(_image.path));
     uploadTask.then((res) async {
       link = await res.ref.getDownloadURL();
-      print(link);
-      ImageAnalysisAPI.getAnalysis(link);
       return link;
+    });
+  }
+
+  getImageAnalysis() async {
+    imageAnalysis = await ImageAnalysisAPI.getAnalysis(link!);
+    setState(() {
+      isLoaded = true;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    // To display the current output from the Camera,
-    // create a CameraController.
     _controller = CameraController(
-      // Get a specific camera from the list of available cameras.
       widget.camera,
-      // Define the resolution to use.
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
     );
-
-    // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
   }
 
   @override
   void dispose() {
-    // Dispose of the controller when the widget is disposed.
     _controller.dispose();
     super.dispose();
   }
@@ -393,89 +401,166 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // You must wait until the controller is initialized before displaying the
-      // camera preview. Use a FutureBuilder to display a loading spinner until the
-      // controller has finished initializing.
-      body: Column(
-        children: [
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                    // clipBehavior: Clip.hardEdge,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 30),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(width: 7, color: Colors.amber),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 4.0,
-                          spreadRadius: 4.0,
-                        )
-                      ],
-                    ),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        clipBehavior: Clip.hardEdge,
-                        child: CameraPreview(_controller)));
-              } else {
-                // Otherwise, display a loading indicator.
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
+        body: ListView(
+      physics:
+          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Image Analysis",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (isLoaded)
+                (InkWell(
+                  onTap: () {
+                    setState(() {
+                      isLoaded = false;
+                    });
+                  },
+                  child: const Icon(
+                    FontAwesomeIcons.arrowRotateLeft,
+                    color: Colors.black54,
+                  ),
+                ))
+            ],
           ),
-          ElevatedButton(
-              onPressed: () async {
-                // Take the Picture in a try / catch block. If anything goes wrong,
-                // catch the error.
-                try {
-                  // Ensure that the camera is initialized.
-                  await _initializeControllerFuture;
-
-                  // Attempt to take a picture and get the file `image`
-                  // where it was saved.
-                  final image = await _controller.takePicture();
-                  print("Image Uploading");
-                  String link = uploadFile(image).toString();
-                  // If the picture was taken, display it on a new screen.
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => DisplayPictureScreen(
-                        // Pass the automatically generated path to
-                        // the DisplayPictureScreen widget.
-                        imagePath: image.path,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        !isLoaded ? displayCamera() : displayImage(),
+        !isLoaded
+            ? Container(
+                width: 50,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(horizontal: 60),
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      if (isLoaded)
+                        setState(() {
+                          isLoaded = false;
+                        });
+                      try {
+                        await _initializeControllerFuture;
+                        image = await _controller.takePicture();
+                        print("Image Uploading");
+                        link = uploadFile(image!).toString();
+                        getImageAnalysis();
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Text(
+                          "Take Picture",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Icon(
+                          FontAwesomeIcons.imagePortrait,
+                          size: 30,
+                        ),
+                      ],
+                    )),
+              )
+            :
+            //button to trye again
+            imageAnalysis.recipes == null
+                ? ImageAnalysisWidget(
+                    imageAnalysis: imageAnalysis,
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Text(
+                      'No recipes found',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                  );
-                } catch (e) {
-                  // If an error occurs, log the error to the console.
-                  print(e);
-                }
-              },
-              child: Icon(FontAwesomeIcons.imagePortrait))
+                    ))
+      ],
+    ));
+  }
+
+  SizedBox displayImage() {
+    return SizedBox(
+      child: Column(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.6,
+            width: MediaQuery.of(context).size.width * 0.8,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade200,
+                  blurRadius: 10.0, // has the effect of softening the shadow
+                  spreadRadius: 5.0, // has the effect of extending the shadow
+                )
+              ],
+              image: DecorationImage(
+                image: FileImage(File(
+                  image!.path,
+                )),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
-}
 
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key? key, required this.imagePath})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+  FutureBuilder<void> displayCamera() {
+    return FutureBuilder<void>(
+      future: _initializeControllerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return buildCamera();
+        } else {
+          // Otherwise, display a loading indicator.
+          return const Center(child: Loader());
+        }
+      },
     );
+  }
+
+  Container buildCamera() {
+    return Container(
+        // clipBehavior: Clip.hardEdge,
+        // height: MediaQuery.of(context).size.height * 0.5,
+        margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+        // padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 7, color: Colors.amber),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              blurRadius: 4.0,
+              spreadRadius: 4.0,
+            )
+          ],
+        ),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            clipBehavior: Clip.hardEdge,
+            child: CameraPreview(_controller)));
   }
 }
