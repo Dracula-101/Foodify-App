@@ -6,32 +6,31 @@ class ImageAnalysis {
 
   ImageAnalysis({this.status, this.nutrition, this.category, this.recipes});
 
-  ImageAnalysis.fromJson(dynamic json) {
-    status = json['status'];
-    nutrition = json['nutrition'] != null
-        ? Nutrition.fromJson(json['nutrition'])
-        : null;
-    category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
-    if (json['recipes'] != null) {
-      recipes = <Recipes>[];
-      json['recipes'].forEach((v) {
-        recipes!.add(Recipes.fromJson(v));
-      });
-    }
+  factory ImageAnalysis.fromJson(dynamic json) {
+    return ImageAnalysis(
+      status: json['status'],
+      nutrition: json['nutrition'] != null
+          ? Nutrition.fromJson(json['nutrition'])
+          : null,
+      category:
+          json['category'] != null ? Category.fromJson(json['category']) : null,
+      recipes: json['recipes'] != null
+          ? List<Recipes>.from(json['recipes'].map((x) => Recipes.fromJson(x)))
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.nutrition != null) {
-      data['nutrition'] = this.nutrition!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (nutrition != null) {
+      data['nutrition'] = nutrition!.toJson();
     }
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
+    if (category != null) {
+      data['category'] = category!.toJson();
     }
-    if (this.recipes != null) {
-      data['recipes'] = this.recipes!.map((v) => v.toJson()).toList();
+    if (recipes != null) {
+      data['recipes'] = recipes!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -58,15 +57,15 @@ class Nutrition {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['recipesUsed'] = this.recipesUsed;
-    if (this.calories != null) {
-      data['calories'] = this.calories!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['recipesUsed'] = recipesUsed;
+    if (calories != null) {
+      data['calories'] = calories!.toJson();
     }
-    if (this.fat != null) {
-      data['fat'] = this.fat!.toJson();
+    if (fat != null) {
+      data['fat'] = fat!.toJson();
     }
-    if (this.protein != null) {
+    if (protein != null) {
       data['protein'] = protein!.toJson();
     }
     if (carbs != null) {
@@ -77,7 +76,7 @@ class Nutrition {
 }
 
 class Calories {
-  int? value;
+  double? value;
   String? unit;
   ConfidenceRange95Percent? confidenceRange95Percent;
   double? standardDeviation;
@@ -98,14 +97,13 @@ class Calories {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['value'] = this.value;
-    data['unit'] = this.unit;
-    if (this.confidenceRange95Percent != null) {
-      data['confidenceRange95Percent'] =
-          this.confidenceRange95Percent!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['unit'] = unit;
+    if (confidenceRange95Percent != null) {
+      data['confidenceRange95Percent'] = confidenceRange95Percent!.toJson();
     }
-    data['standardDeviation'] = this.standardDeviation;
+    data['standardDeviation'] = standardDeviation;
     return data;
   }
 }
@@ -122,9 +120,9 @@ class ConfidenceRange95Percent {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['min'] = this.min;
-    data['max'] = this.max;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['min'] = min;
+    data['max'] = max;
     return data;
   }
 }
@@ -141,9 +139,9 @@ class Category {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['name'] = this.name;
-    data['probability'] = this.probability;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['probability'] = probability;
     return data;
   }
 }
@@ -164,11 +162,11 @@ class Recipes {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['imageType'] = this.imageType;
-    data['url'] = this.url;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['imageType'] = imageType;
+    data['url'] = url;
     return data;
   }
 }

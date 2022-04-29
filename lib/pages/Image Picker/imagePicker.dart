@@ -126,21 +126,22 @@ class _ImageSelectorState extends State<ImageSelector> {
 
                     width: size.width,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withOpacity(0.9),
-                          // blurRadius: 4.0,
-                          // spreadRadius: -6.0,
-                        ),
+                          color: Colors.grey.shade300,
+                          blurRadius: 4.0,
+                          spreadRadius: 2.0,
+                        )
                       ],
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
                           margin: const EdgeInsets.symmetric(

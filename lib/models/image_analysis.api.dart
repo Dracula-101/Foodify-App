@@ -7,7 +7,7 @@ import 'package:foodify/constants/key.dart';
 import 'image_analysis.api.dart';
 
 class ImageAnalysisAPI {
-  static Future<Object> getAnalysis(String img) async {
+  static Future<ImageAnalysis> getAnalysis(String img) async {
     String API_KEY = apiKey.first;
     var uri = Uri.https(BASE_URL, '/food/images/analyze', {
       "imageUrl": img,

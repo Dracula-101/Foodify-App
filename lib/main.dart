@@ -42,7 +42,6 @@ import 'views/curved_navbar.dart';
 late CameraDescription firstCamera;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   final cameras = await availableCameras();
   firstCamera = cameras.first;
   runApp(MyApp());
@@ -84,10 +83,8 @@ class _MyAppState extends State<MyApp> {
               return snapshot.data!;
             case ConnectionState.active:
               return const SplashScreen();
-            case ConnectionState.waiting:
-              return const SplashScreen();
             default:
-              return Container();
+              return const SplashScreen();
           }
         },
       ),
