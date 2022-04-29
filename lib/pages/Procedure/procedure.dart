@@ -73,7 +73,6 @@ class _ProcedurePageState extends State<ProcedurePage> {
   void initState() {
     super.initState();
     getRecipeDetails(widget.id);
-    print(details?.analyzedInstructions?.toList());
     stepsCard = [
       if (details?.analyzedInstructions != null)
         for (int i = 0; i < details!.analyzedInstructions!.length.toInt(); i++)
@@ -689,31 +688,31 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     ),
                   ])),
             ),
-          Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Text(
-                  'Cooking Instructions',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: 250,
-                padding: const EdgeInsets.all(8.0),
-                child: PageView(
-                  /// [PageView.scrollDirection] defaults to [Axis.horizontal].
-                  /// Use [Axis.vertical] to scroll vertically.
-                  controller: controller,
-                  children: stepsCard!,
-                ),
-              ),
-            ],
-          ),
+          // Column(
+          //   children: [
+          //     const Padding(
+          //       padding: EdgeInsets.symmetric(horizontal: 30.0),
+          //       child: Text(
+          //         'Cooking Instructions',
+          //         style: TextStyle(
+          //           fontSize: 20,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
+          //     ),
+          //     Container(
+          //       width: double.infinity,
+          //       height: 250,
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: PageView(
+          //         /// [PageView.scrollDirection] defaults to [Axis.horizontal].
+          //         /// Use [Axis.vertical] to scroll vertically.
+          //         controller: controller,
+          //         children: stepsCard!,
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Container(
             margin: const EdgeInsets.all(20.0),
             padding: const EdgeInsets.all(10.0),
