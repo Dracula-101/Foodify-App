@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/main.dart';
@@ -19,14 +20,14 @@ class SignupPage extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/bg1.jpg'),
+                image: AssetImage('assets/images/bg2.webp'),
                 fit: BoxFit.cover,
               ),
             ),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.5),
@@ -42,44 +43,23 @@ class SignupPage extends StatelessWidget {
                   SizedBox(
                     height: size.width * 0.3,
                   ),
-                  Stack(
-                    children: [
-                      Center(
-                        child: ClipOval(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                            child: CircleAvatar(
-                              radius: size.width * 0.14,
-                              backgroundColor: Colors.grey[400]!.withOpacity(
-                                0.4,
-                              ),
-                              child: Icon(
-                                FontAwesomeIcons.user,
-                                color: Colors.white,
-                                size: size.width * 0.1,
-                              ),
-                            ),
+                  Center(
+                    child: ClipOval(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                        child: CircleAvatar(
+                          radius: size.width * 0.14,
+                          backgroundColor: Colors.grey[400]!.withOpacity(
+                            0.4,
+                          ),
+                          child: Icon(
+                            FontAwesomeIcons.user,
+                            color: Colors.white,
+                            size: size.width * 0.1,
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: size.height * 0.08,
-                        left: size.width * 0.56,
-                        child: Container(
-                          height: size.width * 0.1,
-                          width: size.width * 0.1,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.arrowUp,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
                   SizedBox(
                     height: size.width * 0.1,
@@ -353,7 +333,12 @@ class SignupPage extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/');
+                              // Navigator.pushNamed(context, '/');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                              );
                             },
                             child: const Text(
                               'Login',
