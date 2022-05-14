@@ -38,16 +38,6 @@ class AppRoutes {
         FavouritesBinding(),
       ],
     ),
-    GetPage(
-      name: "Settings",
-      page: () => TakePictureScreen(
-        // Pass the appropriate camera to the TakePictureScreen widget.
-        camera: firstCamera,
-      ),
-      bindings: [
-        SettingsBinding(),
-      ],
-    )
     // GetPage(
     //   name: "Recipe Details",
     //   page: () => RecipeDetails(),

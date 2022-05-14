@@ -111,20 +111,20 @@ class RecipeDetails {
         : null;
     summary = json['summary'];
     if (json['cuisines'] != null) {
-      cuisines = <void>[];
+      cuisines = <dynamic>[];
       json['cuisines'].forEach((v) {
         cuisines!.add(v);
       });
     }
     dishTypes = json['dishTypes'].cast<String>();
     if (json['diets'] != null) {
-      diets = <Null>[];
+      diets = <dynamic>[];
       json['diets'].forEach((v) {
         diets!.add(v);
       });
     }
     if (json['occasions'] != null) {
-      occasions = <Null>[];
+      occasions = <dynamic>[];
       json['occasions'].forEach((v) {
         occasions!.add(v);
       });
@@ -134,7 +134,7 @@ class RecipeDetails {
         : null;
     instructions = json['instructions'];
     if (json['analyzedInstructions'] != null) {
-      analyzedInstructions = <Null>[];
+      analyzedInstructions = <dynamic>[];
       json['analyzedInstructions'].forEach((v) {
         analyzedInstructions!.add(v);
       });
@@ -244,6 +244,13 @@ class RecipeDetails {
       diets: snapshot['diets'] != null
           ? (snapshot['diets'] as List).map((e) => e as String).toList()
           : null,
+      occasions: snapshot['occasions'],
+      instructions: snapshot['instructions'],
+      analyzedInstructions: snapshot['analyzedInstructions'] != null
+          ? (snapshot['analyzedInstructions'] as List)
+              .map((e) => AnalyzedInstructions.fromJson(e))
+              .toList()
+          : null,
     );
   }
 
@@ -251,6 +258,124 @@ class RecipeDetails {
   String toString() {
     return 'RecipeDetails{vegetarian: $vegetarian, vegan: $vegan, glutenFree: $glutenFree, dairyFree: $dairyFree, veryHealthy: $veryHealthy, cheap: $cheap, veryPopular: $veryPopular, gaps: $gaps, lowFodmap: $lowFodmap, aggregateLikes: $aggregateLikes, spoonacularScore: $spoonacularScore, healthScore: $healthScore, sourceName: $sourceName, pricePerServing: $pricePerServing, extendedIngredients: $extendedIngredients, id: $id, title: $title, readyInMinutes: $readyInMinutes, servings: $servings, sourceUrl: $sourceUrl, image: $image, nutrition: $nutrition, summary: $summary, cuisines: $cuisines, dishTypes: $dishTypes, diets: $diets}';
   }
+}
+
+class AnalyzedInstructions {
+  String? name;
+  List<Steps>? steps;
+
+  AnalyzedInstructions({this.name, this.steps});
+
+  AnalyzedInstructions.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    if (json['steps'] != null) {
+      steps = <Steps>[];
+      json['steps'].forEach((v) {
+        steps!.add(Steps.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    if (steps != null) {
+      data['steps'] = steps!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Steps {
+  int? number;
+  String? step;
+  List<Ingredients>? ingredients;
+  List<Equipment>? equipment;
+
+  Steps({this.number, this.step, this.ingredients, this.equipment});
+
+  Steps.fromJson(Map<String, dynamic> json) {
+    number = json['number'];
+    step = json['step'];
+    if (json['ingredients'] != null) {
+      ingredients = <Ingredients>[];
+      json['ingredients'].forEach((v) {
+        ingredients!.add(Ingredients.fromJson(v));
+      });
+    }
+    if (json['equipment'] != null) {
+      equipment = <Equipment>[];
+      json['equipment'].forEach((v) {
+        equipment!.add(Equipment.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['number'] = number;
+    data['step'] = step;
+    if (ingredients != null) {
+      data['ingredients'] = ingredients!.map((v) => v.toJson()).toList();
+    }
+    if (equipment != null) {
+      data['equipment'] = equipment!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Ingredients {
+  int? id;
+  String? name;
+  String? localizedName;
+  String? image;
+
+  Ingredients({this.id, this.name, this.localizedName, this.image});
+
+  Ingredients.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    localizedName = json['localizedName'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['localizedName'] = localizedName;
+    data['image'] = image;
+    return data;
+  }
+}
+
+class Equipment {
+  int? id;
+  String? image;
+  String? name;
+  String? instructions;
+
+  Equipment({
+    this.id,
+    this.image,
+    this.name,
+    this.instructions,
+  });
+
+  factory Equipment.fromJson(Map<String, dynamic> json) => Equipment(
+        id: json['id'],
+        image: json['image'],
+        name: json['name'],
+        instructions: json['instructions'],
+      );
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'image': image,
+        'name': name,
+        'instructions': instructions,
+      };
 }
 
 class ExtendedIngredients {
@@ -366,7 +491,7 @@ class Nutrition {
   List<Nutrients>? nutrients;
   List<Properties>? properties;
   List<Flavonoids>? flavonoids;
-  List<Ingredients>? ingredients;
+  List<Ingredients2>? ingredients;
   CaloricBreakdown? caloricBreakdown;
   WeightPerServing? weightPerServing;
 
@@ -398,9 +523,9 @@ class Nutrition {
       });
     }
     if (json['ingredients'] != null) {
-      ingredients = <Ingredients>[];
+      ingredients = <Ingredients2>[];
       json['ingredients'].forEach((v) {
-        ingredients!.add(Ingredients.fromJson(v));
+        ingredients!.add(Ingredients2.fromJson(v));
       });
     }
     caloricBreakdown = json['caloricBreakdown'] != null
@@ -498,16 +623,16 @@ class Properties {
   }
 }
 
-class Ingredients {
+class Ingredients2 {
   double? id;
   String? name;
   double? amount;
   String? unit;
   List<Nutrients>? nutrients;
 
-  Ingredients({this.id, this.name, this.amount, this.unit, this.nutrients});
+  Ingredients2({this.id, this.name, this.amount, this.unit, this.nutrients});
 
-  Ingredients.fromJson(Map<String, dynamic> json) {
+  Ingredients2.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     amount = json['amount'];

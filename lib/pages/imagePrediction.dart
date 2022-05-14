@@ -81,7 +81,12 @@ class _PredictionState extends State<Prediction> {
       );
 
       recognitions.add(rec);
-      String item = recognitions[i][0]["label"].toString();
+      String item = '';
+      if (recognitions[i] == null) {
+        item = 'Not Found';
+      } else {
+        item = recognitions[i][0]["label"].toString();
+      }
       if (key.fruits.contains(item) && !fruits.contains(item)) {
         fruits.add(recognitions[i][0]["label"]);
         isFruitAdded.add(true);
@@ -110,6 +115,7 @@ class _PredictionState extends State<Prediction> {
               'Fruits',
               style: TextStyle(
                 fontSize: 20,
+                color: Colors.black54,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -186,6 +192,7 @@ class _PredictionState extends State<Prediction> {
             'Vegetables',
             style: TextStyle(
               fontSize: 20,
+              color: Colors.black54,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -223,7 +230,8 @@ class _PredictionState extends State<Prediction> {
                         Row(
                           children: [
                             CircleAvatar(
-                                radius: 30,
+                                backgroundColor: Colors.white,
+                                radius: 35,
                                 child: CachedNetworkImage(
                                   imageUrl: key.labels[
                                           vegetables.elementAt(index)] ??
@@ -231,17 +239,9 @@ class _PredictionState extends State<Prediction> {
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.6),
-                                          blurRadius: 30.0,
-                                          spreadRadius: -5.0,
-                                          offset: Offset(0.0, 40.0),
-                                        ),
-                                      ],
                                       image: DecorationImage(
                                           image: imageProvider,
-                                          fit: BoxFit.cover),
+                                          fit: BoxFit.contain),
                                     ),
                                   ),
                                   placeholder: (context, url) =>
@@ -314,10 +314,11 @@ class _PredictionState extends State<Prediction> {
                     borderRadius: BorderRadius.circular(9.0),
                     side: const BorderSide(color: Colors.amber)))),
         onPressed: () {
-          if (dropdownValue == "Maximize Used Ingredients")
+          if (dropdownValue == "Maximize Used Ingredients") {
             ranking = 1;
-          else
+          } else {
             ranking = 2;
+          }
           Get.to(() {
             String bruh = makeList();
             print(bruh);
@@ -334,7 +335,7 @@ class _PredictionState extends State<Prediction> {
       ),
       body: isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: Loader(),
             )
           : ListView(
               children: [
@@ -344,14 +345,14 @@ class _PredictionState extends State<Prediction> {
                     color: Colors.white,
                   ),
                   child: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Text(
                       "Image Recognition",
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontSize: 30,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: "OpenSans",
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -471,6 +472,7 @@ class _PredictionState extends State<Prediction> {
                           'Details',
                           style: TextStyle(
                             fontSize: 20,
+                            color: Colors.black54,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

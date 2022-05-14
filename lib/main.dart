@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
@@ -40,16 +41,16 @@ import 'package:page_transition/page_transition.dart';
 
 import 'views/curved_navbar.dart';
 
-late CameraDescription firstCamera;
+// late CameraDescription firstCamera;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
-  firstCamera = cameras.first;
+  // final cameras = await availableCameras();
+  // firstCamera = cameras.first;
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -528,14 +529,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
         body: IndexedStack(
           index: currentTab,
-          children: [
-            Home(),
-            Favourites(),
-            MyList(),
-            TakePictureScreen(
-              camera: firstCamera,
-            ),
-          ],
+          children: [Home(), Favourites(), MyList(), MyList()],
         ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,
