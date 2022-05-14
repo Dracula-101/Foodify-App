@@ -18,6 +18,7 @@ import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/scrolling_parallax.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
 import 'pages/MyList/mylist.dart';
@@ -34,8 +35,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fancy_drawer/fancy_drawer.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'views/curved_navbar.dart';
 
@@ -54,7 +55,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   static Future<Widget> checkUser() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     User? user = FirebaseAuth.instance.currentUser;
@@ -63,8 +64,7 @@ class _MyAppState extends State<MyApp> {
     return user != null ? const HomeDrawer() : LoginPage();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget App() {
     return GetMaterialApp(
       // showPerformanceOverlay: true,
       title: 'Foodify',
@@ -89,6 +89,33 @@ class _MyAppState extends State<MyApp> {
         },
       ),
       debugShowCheckedModeBanner: false,
+    );
+  }
+
+  AnimationController? _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AnimatedSplashScreen(
+          duration: 3000,
+          splash: const SplashScreen(),
+          nextScreen: App(),
+          splashTransition: SplashTransition.fadeTransition,
+          pageTransitionType: PageTransitionType.rightToLeft,
+          backgroundColor: Colors.amber),
     );
   }
 }
