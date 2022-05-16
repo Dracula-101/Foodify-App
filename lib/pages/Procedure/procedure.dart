@@ -9,6 +9,7 @@ import 'package:foodify/models/recipeDetails.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../views/widgets/shimmer_widget.dart';
 
@@ -25,12 +26,16 @@ class _ProcedurePageState extends State<ProcedurePage> {
   PageController controller = PageController();
   List<Widget>? stepsCard;
   String sourceUrl = "https://spoonacular.com/recipes";
-  Widget? web;
 
   bool isLoading = true;
 
   Future<void> getRecipeDetails(String id) async {
     details = await RecipeDetailsAPI.getRecipeDetails(id.toString());
+    if (details?.spoonacularSourceUrl != null) {
+      sourceUrl = details!.spoonacularSourceUrl!;
+    } else if (details?.sourceUrl != null) {
+      sourceUrl = details!.sourceUrl!;
+    }
 
     setState(() {
       isLoading = false;
@@ -38,11 +43,6 @@ class _ProcedurePageState extends State<ProcedurePage> {
   }
 
   void launchURL() async {
-    if (details?.spoonacularSourceUrl != null) {
-      sourceUrl = details!.spoonacularSourceUrl!;
-    } else if (details?.sourceUrl != null) {
-      sourceUrl = details!.sourceUrl!;
-    }
     if (!await launch(sourceUrl, forceWebView: true, enableJavaScript: true)) {
       Get.snackbar(
         "Couldn't launch URL",
@@ -115,6 +115,19 @@ class _ProcedurePageState extends State<ProcedurePage> {
     ];
   }
 
+  Widget ingredients(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(10),
+        child: PageView(
+          controller: controller,
+          children: stepsCard!
+              .map((e) => Container(
+                    child: e,
+                  ))
+              .toList(),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +153,9 @@ class _ProcedurePageState extends State<ProcedurePage> {
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Colors.amber)))),
-          onPressed: launchURL,
+          onPressed: () {
+            launchURL();
+          },
           child: const Text(
             'Get Procedure',
             style: TextStyle(
@@ -189,22 +204,50 @@ class _ProcedurePageState extends State<ProcedurePage> {
                 child: Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.6),
-                            spreadRadius: 2,
-                            blurRadius: 5)
-                      ]),
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.6),
+                          spreadRadius: 2,
+                          blurRadius: 5)
+                    ],
+                  ),
                   child: IconButton(
-                      onPressed: () {
-                        return Get.back();
-                      },
-                      icon: Icon(
-                        FontAwesomeIcons.arrowLeft,
-                        color: Colors.black,
-                      )),
+                    onPressed: () {
+                      return Get.back();
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.arrowLeft,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  margin: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.6),
+                          spreadRadius: 2,
+                          blurRadius: 5)
+                    ],
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Share.share('See what Recipe I made!\n\n$sourceUrl',
+                          subject: 'Check out this Recipe from Foodify');
+                    },
+                    icon: const Icon(
+                      FontAwesomeIcons.shareNodes,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
               Column(
@@ -298,7 +341,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             height: 5,
                                           ),
                                           Text(
-                                              ((details!.healthScore!) / 20.0)
+                                              ((details!.spoonacularScore!) /
+                                                          20.0)
                                                       .toString() +
                                                   ' Stars',
                                               style: const TextStyle(

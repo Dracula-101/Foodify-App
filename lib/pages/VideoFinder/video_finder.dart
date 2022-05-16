@@ -22,8 +22,11 @@ class _VideoFinderState extends State<VideoFinder> {
   bool _isLoading = true;
   bool _isSearched = false;
 
-  Future<void> getVideos() async {
-    _videos = await VideoFinderAPI.getVideos();
+  Future<void> getVideos(String query) async {
+    _videos = await VideoFinderAPI.getVideos(query);
+    print(_videos.length);
+
+    print("Id is hellllllll");
     setState(() {
       _isLoading = false;
       _isSearched = true;
@@ -71,7 +74,7 @@ class _VideoFinderState extends State<VideoFinder> {
                 color: Colors.amberAccent,
               ),
               onPressed: () async {
-                getVideos();
+                getVideos(controller.text);
                 list.add(controller.text);
                 setState(() {
                   _isSearched = true;
@@ -89,7 +92,7 @@ class _VideoFinderState extends State<VideoFinder> {
             );
           },
           onItemSelected: (item) {
-            getVideos();
+            // getVideos();
           },
         ),
         _isSearched
@@ -120,44 +123,44 @@ class _VideoFinderState extends State<VideoFinder> {
                   )
                 : Expanded(
                     child: FadingEdgeScrollView.fromScrollView(
-                        child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(
-                          parent: BouncingScrollPhysics()),
-                      itemCount: _videos.length,
-                      itemBuilder: (context, index) {
-                        return VideoWidget(
-                          title: _videos[index].title,
-                          length: _videos[index].length,
-                          thumbnail: _videos[index].thumbnail,
-                          youtubeId: _videos[index].youtubeId,
-                          views: _videos[index].views,
-                        );
-                      },
-                    )),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(
+                            parent: BouncingScrollPhysics()),
+                        itemCount: _videos.length,
+                        itemBuilder: (context, index) {
+                          print(_videos.length);
+                          return VideoWidget(
+                            title: _videos[index].title,
+                            length: _videos[index].length,
+                            thumbnail: _videos[index].thumbnail,
+                            youtubeId: _videos[index].youtubeId,
+                            views: _videos[index].views,
+                          );
+                        },
+                      ),
+                    ),
                   ),
       ],
     );
   }
 }
 
-
-
 // if (!_isLoading) {
-      // return ListView.builder(
-      //   shrinkWrap: true,
-      //   physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
-      //   itemCount: _videos.length,
-      //   itemBuilder: (context, index) {
-      //     return VideoWidget(
-      //       title: _videos[index].title,
-      //       length: _videos[index].length,
-      //       thumbnail: _videos[index].thumbnail,
-      //       youtubeId: _videos[index].youtubeId,
-      //       views: _videos[index].views,
-      //     );
-      //   },
-      // );
+// return ListView.builder(
+//   shrinkWrap: true,
+//   physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
+//   itemCount: _videos.length,
+//   itemBuilder: (context, index) {
+//     return VideoWidget(
+//       title: _videos[index].title,
+//       length: _videos[index].length,
+//       thumbnail: _videos[index].thumbnail,
+//       youtubeId: _videos[index].youtubeId,
+//       views: _videos[index].views,
+//     );
+//   },
+// );
 //     } else {
 //       return Container();
 //     }

@@ -5,28 +5,35 @@ import 'package:foodify/views/widgets/video_widget.dart';
 import 'package:http/http.dart' as http;
 
 class VideoFinderAPI {
-  static Future<List<Videos>> getVideos() async {
+  static Future<List<Videos>> getVideos(String query) async {
     var uri = Uri.https(BASE_URL, '/food/videos/search', {
       "number": "10",
+      "query": query,
       // "tags": cuisine + "," + getVeg(),
       "apiKey": apiKey.first,
     });
 
+    print('vid uri is' + uri.toString());
+
     final response = await http.get(uri,
         headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
+    print('vid res is ok' + response.toString());
     Map data = jsonDecode(response.body);
+    print('vid data is' + data.toString());
+
     // print(data);
     if (data['code'] == 402) {
       changeAPiKey();
-      return getVideos();
+      return getVideos(query);
     }
     List _temp = [];
 
     for (var i in data['videos']) {
       _temp.add(i);
     }
-    print(_temp);
+    print('Videos rrrr');
+    print(_temp.toString());
     return Videos.videoesFromSnapshot(_temp);
   }
 }
@@ -43,10 +50,10 @@ class Videos {
   factory Videos.fromJson(dynamic json) {
     return Videos(
       title: json['title'],
-      length: json['length'],
+      length: json['length'].toString(),
       thumbnail: json['thumbnail'],
-      youtubeId: json['youtubeId'],
-      views: json['views'],
+      youtubeId: json['youTubeId'],
+      views: json['views'].toString(),
     );
   }
 

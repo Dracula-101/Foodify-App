@@ -18,6 +18,7 @@ class VideoWidget extends StatefulWidget {
 class _VideoWidgetState extends State<VideoWidget> {
   @override
   Widget build(BuildContext context) {
+    print('Videooooo wid called');
     return InkWell(
         child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
