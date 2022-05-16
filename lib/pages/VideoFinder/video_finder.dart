@@ -96,7 +96,27 @@ class _VideoFinderState extends State<VideoFinder> {
           },
         ),
         _isSearched
-            ? showImage()
+            ? Container(
+                width: 300,
+                height: 300,
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    image: const DecorationImage(
+                      image: AssetImage("assets/images/videofinder.png"),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(50)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset:
+                            const Offset(0, 3), // changes position of shadow
+                      )
+                    ]),
+              )
             : _isLoading
                 ? const Center(
                     child: CircularProgressIndicator(),
@@ -122,29 +142,6 @@ class _VideoFinderState extends State<VideoFinder> {
                     ),
                   ),
       ],
-    );
-  }
-
-  Container showImage() {
-    return Container(
-      width: 300,
-      height: 300,
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          image: const DecorationImage(
-            image: AssetImage("assets/images/videofinder.png"),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
-            )
-          ]),
     );
   }
 }
