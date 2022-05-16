@@ -8,7 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/constants/key.dart';
 import 'package:foodify/models/recipeDetails.api.dart';
 import 'package:foodify/models/recipeDetails.dart';
+import 'package:foodify/views/widgets/instructions.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
@@ -75,16 +77,17 @@ class _ProcedurePageState extends State<ProcedurePage> {
   void initState() {
     super.initState();
     getRecipeDetails(widget.id).then((value) =>
-        log("\n\n\n" + details!.analyzedInstructions![0].steps[0].step));
+        log(details!.analyzedInstructions![0].steps.length.toString()));
+
     stepsCard = [
       if (details?.analyzedInstructions != null)
-        for (int i = 0; i < details!.analyzedInstructions!.length.toInt(); i++)
+        for (int i = 0; i < details!.analyzedInstructions![0].steps.length; i++)
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Container(
               padding: const EdgeInsets.all(20),
               child: Text(
-                details?.analyzedInstructions![i]?.step,
+                details!.analyzedInstructions![0].steps[i].step,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black,
@@ -92,7 +95,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
               ),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(15)),
-                color: Colors.white,
+                color: Colors.amberAccent,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.6),
@@ -110,7 +113,11 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     BlendMode.multiply,
                   ),
                   image: NetworkImage(
-                    details?.analyzedInstructions![i]?.image,
+                    details?.analyzedInstructions![0]?.steps[i]?.ingredients
+                            .isNotEmpty
+                        ? details?.analyzedInstructions![0]?.steps[i]
+                            ?.ingredients[i]?.image
+                        : "https://spoonacular.com/recipeImages/849079-556x370.jpg",
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -120,17 +127,44 @@ class _ProcedurePageState extends State<ProcedurePage> {
     ];
   }
 
-  Widget ingredients(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.all(10),
-        child: PageView(
-          controller: controller,
-          children: stepsCard!
-              .map((e) => Container(
-                    child: e,
-                  ))
-              .toList(),
-        ));
+  Widget cuisines(BuildContext context) {
+    return details?.cuisines != null
+        ? Row(
+            children: <Widget>[
+              for (int i = 0; i < details!.cuisines!.length; i++)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      color: Colors.amberAccent,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.6),
+                          offset: const Offset(
+                            0.0,
+                            10.0,
+                          ),
+                          blurRadius: 10.0,
+                          spreadRadius: -6.0,
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        details?.cuisines![i],
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          )
+        : Container();
   }
 
   @override
@@ -157,14 +191,30 @@ class _ProcedurePageState extends State<ProcedurePage> {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.amber)))),
+                      side: const BorderSide(color: Colors.amber)))),
           onPressed: () {
-            launchURL();
+            if (details?.analyzedInstructions != null ||
+                details!.analyzedInstructions!.isNotEmpty) {
+              Get.to(
+                () {
+                  return Instructions(
+                      instructions: details!.analyzedInstructions!,
+                      title: details!.title!,
+                      url: details?.image ??
+                          'https://bitsofco.de/content/images/2018/12/broken-1.png');
+                },
+                transition: Transition.native,
+              );
+            } else {
+              launchURL();
+            }
           },
           child: const Text(
             'Get Procedure',
             style: TextStyle(
               fontSize: 25,
+              color: Colors.black54,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -190,7 +240,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                               color: Colors.black.withOpacity(0.6),
                               blurRadius: 30.0,
                               spreadRadius: -5.0,
-                              offset: Offset(0.0, 40.0),
+                              offset: const Offset(0.0, 40.0),
                             ),
                           ],
                           image: DecorationImage(
@@ -253,6 +303,13 @@ class _ProcedurePageState extends State<ProcedurePage> {
                       color: Colors.black,
                     ),
                   ),
+                      onPressed: () {
+                        return Get.back();
+                      },
+                      icon: const Icon(
+                        FontAwesomeIcons.arrowLeft,
+                        color: Colors.black,
+                      )),
                 ),
               ),
               Column(
@@ -293,9 +350,16 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                     ],
                                   ),
                                   const SizedBox(height: 15),
-                                  Text(details!.extendedIngredients!.length
-                                          .toString() +
-                                      " Ingredients"),
+                                  Text(
+                                    details!.extendedIngredients!.length
+                                            .toString() +
+                                        " Ingredients",
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   const SizedBox(height: 15),
                                   Row(
                                     mainAxisAlignment:
@@ -389,7 +453,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
             child: Text(
               'Ingredients',
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 25,
+                color: Colors.black54,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -683,21 +748,33 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     ],
                   ),
                 ),
+          // instructions(context),
           if (details?.dishTypes != null)
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: (Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Dish Types',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: const [
+                        Icon(
+                          FontAwesomeIcons.utensils,
+                          color: Colors.black54,
+                          size: 30,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Dish Types',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Wrap(
                       children: details!.dishTypes!.map((dishType) {
                         return Container(
@@ -725,7 +802,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                             child: Center(
                               child: Text(
                                 dishType,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -737,31 +814,70 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     ),
                   ])),
             ),
-          // Column(
-          //   children: [
-          //     const Padding(
-          //       padding: EdgeInsets.symmetric(horizontal: 30.0),
-          //       child: Text(
-          //         'Cooking Instructions',
-          //         style: TextStyle(
-          //           fontSize: 20,
-          //           fontWeight: FontWeight.bold,
-          //         ),
-          //       ),
-          //     ),
-          //     Container(
-          //       width: double.infinity,
-          //       height: 250,
-          //       padding: const EdgeInsets.all(8.0),
-          //       child: PageView(
-          //         /// [PageView.scrollDirection] defaults to [Axis.horizontal].
-          //         /// Use [Axis.vertical] to scroll vertically.
-          //         controller: controller,
-          //         children: stepsCard!,
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          if (details?.cuisines != null)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: (Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (details!.cuisines!.isNotEmpty)
+                      Row(
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.bowlFood,
+                            color: Colors.black54,
+                            size: 25,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Cusines',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    const SizedBox(height: 10),
+                    cuisines(context)
+                  ])),
+            ),
+          if (details?.diets != null)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: (Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (details!.diets!.isNotEmpty)
+                      Row(
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.dumbbell,
+                            color: Colors.black54,
+                            size: 25,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Diets',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    const SizedBox(height: 10),
+                    diets(context)
+                  ])),
+            ),
           Container(
             margin: const EdgeInsets.all(20.0),
             padding: const EdgeInsets.all(10.0),
@@ -827,6 +943,46 @@ class _ProcedurePageState extends State<ProcedurePage> {
         width: width,
         br: BorderRadius.circular(radius),
       ),
+    );
+  }
+
+  diets(BuildContext context) {
+    return Wrap(
+      children: details!.diets!.map((diet) {
+        return Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 5,
+          ),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 5,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Colors.amberAccent,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7, // changes position of shadow
+              ),
+            ],
+          ),
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Center(
+              child: Text(
+                diet,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

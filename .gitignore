@@ -54,3 +54,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+android/.gradle/6.7/javaCompile/classAnalysis.bin
+android/.gradle/6.7/javaCompile/javaCompile.lock
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/.gradle/checksums/checksums.lock
+.gitignore
+.gitignore

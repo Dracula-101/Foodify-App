@@ -34,7 +34,7 @@ class RecipeApi {
   static Future<List<Recipe>> getTrending() async {
     var uri = Uri.https(BASE_URL, '/recipes/random', {
       "number": "10",
-      "sort": "desc",
+      "sort": "asc",
       "apiKey": apiKey.first,
     });
 

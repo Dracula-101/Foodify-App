@@ -1,27 +1,31 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:foodify/models/image_analysis.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';
-
 import 'image_analysis.api.dart';
 
 class ImageAnalysisAPI {
+  static int breakLoop = 5;
   static Future<ImageAnalysis> getAnalysis(String img) async {
-    String API_KEY = apiKey.first;
+    print(img);
     var uri = Uri.https(BASE_URL, '/food/images/analyze', {
       "imageUrl": img,
       "apiKey": apiKey.first,
     });
+    var request = http.Request('GET', uri);
 
-    final response = await http.get(uri,
-        headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
+    http.StreamedResponse response1 = await request.send();
 
-    Map data = jsonDecode(response.body);
+    String API_KEY = apiKey.first;
+
+    Map data = jsonDecode(await response1.stream.bytesToString());
     print(data);
 
-    if (data['code'] == 402) {
+    if (data['code'] == 402 && breakLoop > 0) {
       changeAPiKey();
+      breakLoop--;
       return getAnalysis(img);
     }
     // print(_temp);

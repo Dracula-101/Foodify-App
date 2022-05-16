@@ -41,11 +41,11 @@ import 'package:page_transition/page_transition.dart';
 
 import 'views/curved_navbar.dart';
 
-// late CameraDescription firstCamera;
+late CameraDescription firstCamera;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // final cameras = await availableCameras();
-  // firstCamera = cameras.first;
+  final cameras = await availableCameras();
+  firstCamera = cameras.first;
   runApp(MyApp());
 }
 
@@ -68,6 +68,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   Widget App() {
     return GetMaterialApp(
       // showPerformanceOverlay: true,
+
       title: 'Foodify',
       theme: ThemeData(
         primarySwatch: Colors.amber,
@@ -110,13 +111,14 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: AnimatedSplashScreen(
           duration: 3000,
           splash: const SplashScreen(),
           nextScreen: App(),
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.rightToLeft,
-          backgroundColor: Colors.amber),
+          backgroundColor: Colors.white),
     );
   }
 }
@@ -529,7 +531,14 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
         body: IndexedStack(
           index: currentTab,
-          children: [Home(), Favourites(), MyList(), MyList()],
+          children: [
+            Home(),
+            Favourites(),
+            MyList(),
+            TakePictureScreen(
+              camera: firstCamera,
+            )
+          ],
         ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,

@@ -343,6 +343,7 @@ import 'package:foodify/models/image_analysis.api.dart';
 import 'package:foodify/models/image_analysis.dart';
 import 'package:foodify/views/widgets/image_analysis_widget.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:image_picker/image_picker.dart';
 
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({
@@ -360,6 +361,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   bool isLoaded = false;
+  bool isSearching = false;
   String? link;
   XFile? image;
   late ImageAnalysis imageAnalysis;
@@ -371,14 +373,19 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     UploadTask uploadTask = ref.putFile(File(_image.path));
     uploadTask.then((res) async {
       link = await res.ref.getDownloadURL();
+      print(link);
       return link;
     });
   }
 
   getImageAnalysis() async {
+    setState(() {
+      isSearching = true;
+    });
     imageAnalysis = await ImageAnalysisAPI.getAnalysis(link!);
     setState(() {
       isLoaded = true;
+      isSearching = false;
     });
   }
 
@@ -406,18 +413,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Image Analysis",
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               if (isLoaded)
                 (InkWell(
                   onTap: () {
@@ -428,6 +427,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                   child: const Icon(
                     FontAwesomeIcons.arrowRotateLeft,
                     color: Colors.black54,
+                    size: 35,
                   ),
                 ))
             ],
@@ -436,8 +436,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         const SizedBox(
           height: 10,
         ),
-        !isLoaded ? displayCamera() : displayImage(),
         !isLoaded
+            ? !isSearching
+                ? displayCamera()
+                : Loader()
+            : displayImage(),
+        const SizedBox(
+          height: 10,
+        ),
+        !isLoaded && !isSearching
             ? Container(
                 width: 50,
                 padding: const EdgeInsets.all(8.0),
@@ -445,10 +452,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () async {
-                      if (isLoaded)
+                      if (isLoaded) {
                         setState(() {
                           isLoaded = false;
                         });
+                      }
                       try {
                         await _initializeControllerFuture;
                         image = await _controller.takePicture();
@@ -484,11 +492,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 ? ImageAnalysisWidget(
                     imageAnalysis: imageAnalysis,
                   )
-                : Padding(
-                    padding: const EdgeInsets.all(5),
+                : const Padding(
+                    padding: EdgeInsets.all(5),
                     child: Text(
                       'No recipes found',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         color: Colors.black54,
                         fontWeight: FontWeight.bold,
@@ -541,26 +549,49 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     );
   }
 
-  Container buildCamera() {
-    return Container(
-        // clipBehavior: Clip.hardEdge,
-        // height: MediaQuery.of(context).size.height * 0.5,
-        margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-        // padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 7, color: Colors.amber),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 4.0,
-              spreadRadius: 4.0,
-            )
-          ],
+  Stack buildCamera() {
+    return Stack(
+      children: [
+        Container(
+
+            // clipBehavior: Clip.hardEdge,
+            // height: MediaQuery.of(context).size.height * 0.5,
+            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+            // padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 7, color: Colors.amber),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade300,
+                  blurRadius: 4.0,
+                  spreadRadius: 4.0,
+                )
+              ],
+            ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                clipBehavior: Clip.hardEdge,
+                child: CameraPreview(_controller))),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: ElevatedButton(
+              onPressed: () {
+                //pick image from gallery
+                getImage();
+              },
+              child: const Text("Add From Gallery")),
         ),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            clipBehavior: Clip.hardEdge,
-            child: CameraPreview(_controller)));
+      ],
+    );
+  }
+
+  void getImage() async {
+    image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      link = uploadFile(image!).toString();
+      getImageAnalysis();
+      isLoaded = true;
+    }
   }
 }
