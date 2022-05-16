@@ -27,30 +27,28 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Text(
-          'Foodify',
-          style: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.bold,
+    return Scaffold(
+      body: ListView(
+        children: [
+          const Text(
+            'Foodify',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.amber,
+            ),
           ),
-        ),
-        Lottie.asset(
-          'assets/lottie/4762-food-carousel.json',
-          width: 280,
-          controller: _controller,
-          onLoaded: (composition) {
-            _controller!.duration = composition.duration;
-            _controller!.forward();
-          },
-        ),
-        const SizedBox(
-          height: 30,
-        )
-      ],
+          Lottie.asset(
+            'assets/lottie/4762-food-carousel.json',
+            width: 250,
+            controller: _controller,
+            onLoaded: (composition) {
+              _controller!.duration = composition.duration;
+              _controller!.forward();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

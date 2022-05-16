@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +74,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
   @override
   void initState() {
     super.initState();
-    getRecipeDetails(widget.id);
+    getRecipeDetails(widget.id).then((value) =>
+        log("\n\n\n" + details!.analyzedInstructions![0].steps[0].step));
     stepsCard = [
       if (details?.analyzedInstructions != null)
         for (int i = 0; i < details!.analyzedInstructions!.length.toInt(); i++)
@@ -101,14 +104,16 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     spreadRadius: -6.0,
                   ),
                 ],
-                // image: DecorationImage(
-                //   colorFilter: ColorFilter.mode(
-                //     Colors.black.withOpacity(0.5),
-                //     BlendMode.multiply,
-                //   ),
-                //   image: NetworkImage(thumbnailUrl),
-                //   fit: BoxFit.cover,
-                // ),
+                image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.5),
+                    BlendMode.multiply,
+                  ),
+                  image: NetworkImage(
+                    details?.analyzedInstructions![i]?.image,
+                  ),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
