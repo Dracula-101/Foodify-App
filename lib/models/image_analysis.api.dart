@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:foodify/models/image_analysis.dart';
@@ -9,7 +10,10 @@ import 'image_analysis.api.dart';
 class ImageAnalysisAPI {
   static int breakLoop = 5;
   static Future<ImageAnalysis> getAnalysis(String img) async {
+    print('img url is' + img);
     print(img);
+    log('img url is' + img);
+    log(img);
     var uri = Uri.https(BASE_URL, '/food/images/analyze', {
       "imageUrl": img,
       "apiKey": apiKey.first,

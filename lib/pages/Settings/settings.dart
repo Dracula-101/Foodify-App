@@ -331,6 +331,7 @@
 // ignore_for_file: unnecessary_const
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -364,25 +365,29 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   bool isSearching = false;
   String? link;
   XFile? image;
-  late ImageAnalysis imageAnalysis;
+  ImageAnalysis? imageAnalysis;
 
-  Future<void> uploadFile(XFile _image) async {
+  Future<String> uploadFile(XFile _image) async {
     var link;
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child("Image: " + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(File(_image.path));
-    uploadTask.then((res) async {
+    await uploadTask.then((res) async {
       link = await res.ref.getDownloadURL();
-      print(link);
+      print('link op is ' + link);
+
+      await getImageAnalysis(link);
+
       return link;
     });
+    return '';
   }
 
-  getImageAnalysis() async {
+  getImageAnalysis(String link) async {
     setState(() {
       isSearching = true;
     });
-    imageAnalysis = await ImageAnalysisAPI.getAnalysis(link!);
+    imageAnalysis = await ImageAnalysisAPI.getAnalysis(link);
     setState(() {
       isLoaded = true;
       isSearching = false;
@@ -407,50 +412,51 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('sett rebuild');
     return Scaffold(
-        body: ListView(
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (isLoaded)
-                (InkWell(
-                  onTap: () {
-                    setState(() {
-                      isLoaded = false;
-                    });
-                  },
-                  child: const Icon(
-                    FontAwesomeIcons.arrowRotateLeft,
-                    color: Colors.black54,
-                    size: 35,
-                  ),
-                ))
-            ],
+      body: ListView(
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (isLoaded)
+                  (InkWell(
+                    onTap: () {
+                      setState(() {
+                        isLoaded = false;
+                      });
+                    },
+                    child: const Icon(
+                      FontAwesomeIcons.arrowRotateLeft,
+                      color: Colors.black54,
+                      size: 35,
+                    ),
+                  )),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        !isLoaded
-            ? !isSearching
-                ? displayCamera()
-                : Loader()
-            : displayImage(),
-        const SizedBox(
-          height: 10,
-        ),
-        !isLoaded && !isSearching
-            ? Container(
-                width: 50,
-                padding: const EdgeInsets.all(8.0),
-                margin: const EdgeInsets.symmetric(horizontal: 60),
-                alignment: Alignment.center,
-                child: ElevatedButton(
+          const SizedBox(
+            height: 10,
+          ),
+          !isLoaded
+              ? !isSearching
+                  ? displayCamera()
+                  : Loader()
+              : displayImage(),
+          const SizedBox(
+            height: 10,
+          ),
+          !isLoaded && !isSearching
+              ? Container(
+                  width: 50,
+                  padding: const EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 60),
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
                     onPressed: () async {
                       if (isLoaded) {
                         setState(() {
@@ -461,8 +467,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         await _initializeControllerFuture;
                         image = await _controller.takePicture();
                         print("Image Uploading");
-                        link = uploadFile(image!).toString();
-                        getImageAnalysis();
+                        link = await uploadFile(image!);
                       } catch (e) {
                         print(e);
                       }
@@ -484,26 +489,29 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           size: 30,
                         ),
                       ],
-                    )),
-              )
-            :
-            //button to trye again
-            imageAnalysis.recipes == null
-                ? ImageAnalysisWidget(
-                    imageAnalysis: imageAnalysis,
-                  )
-                : const Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Text(
-                      'No recipes found',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              :
+              //button to trye again
+              imageAnalysis != null
+                  ? ImageAnalysisWidget(
+                      imageAnalysis: imageAnalysis!,
+                    )
+                  : const Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        'No recipes found',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ))
-      ],
-    ));
+                    ),
+        ],
+      ),
+    );
   }
 
   SizedBox displayImage() {
@@ -523,9 +531,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 )
               ],
               image: DecorationImage(
-                image: FileImage(File(
-                  image!.path,
-                )),
+                image: FileImage(
+                  File(
+                    image!.path,
+                  ),
+                ),
                 fit: BoxFit.cover,
               ),
             ),
@@ -589,8 +599,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   void getImage() async {
     image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
-      link = uploadFile(image!).toString();
-      getImageAnalysis();
+      link = await uploadFile(image!);
       isLoaded = true;
     }
   }
