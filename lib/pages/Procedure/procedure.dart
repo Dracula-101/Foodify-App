@@ -303,13 +303,6 @@ class _ProcedurePageState extends State<ProcedurePage> {
                       color: Colors.black,
                     ),
                   ),
-                      onPressed: () {
-                        return Get.back();
-                      },
-                      icon: const Icon(
-                        FontAwesomeIcons.arrowLeft,
-                        color: Colors.black,
-                      )),
                 ),
               ),
               Column(
