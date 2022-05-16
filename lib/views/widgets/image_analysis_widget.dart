@@ -32,215 +32,149 @@ class ImageAnalysisWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageAnalysis == null) return Container();
     return Padding(
       padding: const EdgeInsets.all(13.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            imageAnalysis.category!.name != null
-                ? 'Guess: ' + capitalize(imageAnalysis.category!.name!)
-                : 'Guess: Not Found',
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.black54,
-              fontWeight: FontWeight.normal,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Guess',
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Text(
+                  imageAnalysis.category?.name != null
+                      ? capitalize(imageAnalysis.category!.name!)
+                      : 'Not Found',
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 5,
           ),
-          Text(
-            'Probability: ${imageAnalysis.category!.probability ?? 0} %',
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.black54,
-              fontWeight: FontWeight.normal,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Probability ",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      ((imageAnalysis.category?.probability ?? 0) * 100)
+                          .toStringAsFixed(2),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Icon(FontAwesomeIcons.percent,
+                        size: 30, color: Colors.black54)
+                  ],
+                ),
+              )
+            ],
           ),
-          Divider(
+          const Divider(
             thickness: 2,
           ),
           const SizedBox(
             height: 15,
           ),
-          const Text(
-            'Suggested recipes: ',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
+          if (imageAnalysis.recipes != null)
+            const Text(
+              'Suggested recipes: ',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.black54,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
           const SizedBox(
             height: 5,
           ),
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: imageAnalysis.recipes!.length,
+            itemCount: imageAnalysis.recipes?.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 5,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        if (imageAnalysis.recipes?[index].id != null) {
-                          ProcedurePage(
-                            id: imageAnalysis.recipes![index].id.toString(),
-                          );
-                        }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.amber, width: 2),
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 4.0,
-                              spreadRadius: 2.0,
-                            )
+              return InkWell(
+                onTap: () {
+                  print(imageAnalysis.recipes?[index].id);
+                  if (imageAnalysis.recipes?[index].id != null) {
+                    Get.to(() {
+                      return ProcedurePage(
+                        id: imageAnalysis.recipes![index].id.toString(),
+                      );
+                    });
+                  }
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.amber, width: 2),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 4.0,
+                        spreadRadius: 2.0,
+                      )
+                    ],
+                  ),
+                  child: FittedBox(
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(5.0),
+                      width: MediaQuery.of(context).size.width,
+                      child: ListTile(
+                        leading: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              FontAwesomeIcons.utensils,
+                              color: Colors.black38,
+                            ),
                           ],
                         ),
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          width: MediaQuery.of(context).size.width * 0.77,
-                          child: ListTile(
-                            leading: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(
-                                  FontAwesomeIcons.utensils,
-                                  color: Colors.black38,
-                                ),
-                              ],
-                            ),
-                            title: Text(
-                              '${imageAnalysis.recipes![index].title}',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        urlLauncher(imageAnalysis.recipes![index].url ??
-                            "https://spoonacular.com");
-                      },
-                      child: const Icon(
-                        FontAwesomeIcons.chevronRight,
-                        color: Colors.black38,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget a() {
-    return SizedBox(
-      height: 300,
-      width: 300,
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  'Guess : ${imageAnalysis.category!.name ?? 'Not Found'}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                const Spacer(),
-                Row(
-                  children: [
-                    Text(
-                      '${imageAnalysis.category?.probability ?? 0}',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    const Icon(
-                      FontAwesomeIcons.percent,
-                      color: Colors.black38,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            const Text(
-              'Suggested recipes: ',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black54,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            if (imageAnalysis.recipes != null)
-              (ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: imageAnalysis.recipes!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                      vertical: 5,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        InkWell(
+                        trailing: InkWell(
                           onTap: () {
-                            if (imageAnalysis.recipes?[index].id != null) {
-                              ProcedurePage(
-                                id: imageAnalysis.recipes![index].id.toString(),
-                              );
-                            }
+                            urlLauncher(imageAnalysis.recipes![index].url!);
                           },
                           child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                              vertical: 5,
-                            ),
+                            padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
+                              border: Border.all(color: Colors.amber, width: 2),
                               borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
+                              color: Colors.amberAccent,
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.shade300,
@@ -249,41 +183,27 @@ class ImageAnalysisWidget extends StatelessWidget {
                                 )
                               ],
                             ),
-                            child: Container(
-                              height: 300,
-                              child: ListTile(
-                                leading: const Icon(
-                                  FontAwesomeIcons.utensils,
-                                  color: Colors.black38,
-                                ),
-                                title: Text(
-                                  '${imageAnalysis.recipes![index].title}',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
+                            child: Icon(
+                              FontAwesomeIcons.rightFromBracket,
+                              color: Colors.black38,
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            urlLauncher(imageAnalysis.recipes![index].url ??
-                                "https://spoonacular.com");
-                          },
-                          child: const Icon(
-                            FontAwesomeIcons.chevronRight,
-                            color: Colors.black38,
+                        title: Text(
+                          '${imageAnalysis.recipes![index].title}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  );
-                },
-              ))
-          ],
-        ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
