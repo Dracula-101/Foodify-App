@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodify/models/video_finder.api.dart';
 import 'package:foodify/views/widgets/video_widget.dart';
@@ -19,8 +22,8 @@ class _VideoFinderState extends State<VideoFinder> {
   }
 
   late List<Videos> _videos;
-  bool _isLoading = true;
   bool _isSearched = false;
+  bool isCompleted = false;
 
   Future<void> getVideos(String query) async {
     _videos = await VideoFinderAPI.getVideos(query);
@@ -28,8 +31,8 @@ class _VideoFinderState extends State<VideoFinder> {
 
     print("Id is hellllllll");
     setState(() {
-      _isLoading = false;
       _isSearched = true;
+      isCompleted = true;
     });
   }
 
@@ -42,7 +45,8 @@ class _VideoFinderState extends State<VideoFinder> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    log('vid rrrr');
+    return ListView(
       children: [
         GFSearchBar(
           controller: controller,
@@ -92,11 +96,12 @@ class _VideoFinderState extends State<VideoFinder> {
             );
           },
           onItemSelected: (item) {
-            // getVideos();
+            getVideos(item.toString());
           },
         ),
-        _isSearched
-            ? Container(
+        isCompleted
+            ? Container()
+            : Container(
                 width: 300,
                 height: 300,
                 margin: const EdgeInsets.all(10),
@@ -116,31 +121,24 @@ class _VideoFinderState extends State<VideoFinder> {
                             const Offset(0, 3), // changes position of shadow
                       )
                     ]),
+              ),
+        isCompleted
+            ? ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(
+                    parent: BouncingScrollPhysics()),
+                itemCount: _videos.length,
+                itemBuilder: (context, index) {
+                  return VideoWidget(
+                    title: _videos[index].title,
+                    length: _videos[index].length,
+                    thumbnail: _videos[index].thumbnail,
+                    youtubeId: _videos[index].youtubeId,
+                    views: _videos[index].views,
+                  );
+                },
               )
-            : _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Expanded(
-                    child: FadingEdgeScrollView.fromScrollView(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(
-                            parent: BouncingScrollPhysics()),
-                        itemCount: _videos.length,
-                        itemBuilder: (context, index) {
-                          print(_videos.length);
-                          return VideoWidget(
-                            title: _videos[index].title,
-                            length: _videos[index].length,
-                            thumbnail: _videos[index].thumbnail,
-                            youtubeId: _videos[index].youtubeId,
-                            views: _videos[index].views,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+            : Container(),
       ],
     );
   }

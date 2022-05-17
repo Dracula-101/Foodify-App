@@ -34,7 +34,7 @@ class Instructions extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Row(
                 children: [
                   Align(
