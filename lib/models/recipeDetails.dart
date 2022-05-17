@@ -214,7 +214,7 @@ class RecipeDetails {
       lowFodmap: snapshot['lowFodmap'],
       aggregateLikes: snapshot['aggregateLikes'],
       spoonacularScore: snapshot['spoonacularScore'],
-      healthScore: snapshot['healthScore'] as double,
+      // healthScore: snapshot['healthScore'] as double,
       // creditsText: snapshot['creditsText'],
       // license: snapshot['license'],
       sourceName: snapshot['sourceName'],

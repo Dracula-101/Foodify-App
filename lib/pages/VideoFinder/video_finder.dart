@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:foodify/models/recipe_suggest.api.dart';
 import 'package:foodify/models/video_finder.api.dart';
 import 'package:foodify/views/widgets/video_widget.dart';
 import 'package:getwidget/components/search_bar/gf_search_bar.dart';
@@ -21,15 +23,14 @@ class _VideoFinderState extends State<VideoFinder> {
     super.initState();
   }
 
+  TextEditingController searchController = TextEditingController();
+
   late List<Videos> _videos;
   bool _isSearched = false;
   bool isCompleted = false;
 
   Future<void> getVideos(String query) async {
     _videos = await VideoFinderAPI.getVideos(query);
-    print(_videos.length);
-
-    print("Id is hellllllll");
     setState(() {
       _isSearched = true;
       isCompleted = true;
@@ -48,82 +49,181 @@ class _VideoFinderState extends State<VideoFinder> {
     log('vid rrrr');
     return ListView(
       children: [
-        GFSearchBar(
-          controller: controller,
-          searchList: list,
-          searchQueryBuilder: (query, list) {
-            return list
-                .where((item) =>
-                    item.toString().toLowerCase().contains(query.toLowerCase()))
-                .toList();
-          },
-          noItemsFoundWidget: Container(),
-          searchBoxInputDecoration: InputDecoration(
-            fillColor: Colors.white,
-            focusColor: Colors.white,
-            contentPadding: const EdgeInsets.all(15),
-            border: OutlineInputBorder(
-              gapPadding: 6,
-              borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(
-                color: Colors.amberAccent,
+        // Container(
+        //   decoration: const BoxDecoration(
+        //       color: Colors.white,
+        //       boxShadow: [
+        //         BoxShadow(
+        //           color: Colors.black12,
+        //           blurRadius: 10,
+        //           spreadRadius: 5,
+        //         ),
+        //       ],
+        //       borderRadius: BorderRadius.all(Radius.circular(15))),
+        //   margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        //   child: Row(
+        //     children: <Widget>[
+        //       IconButton(
+        //         splashRadius: 20,
+        //         splashColor: Colors.grey,
+        //         icon: const Icon(Icons.search),
+        //         onPressed: () {},
+        //       ),
+        //       Expanded(
+        //           child: TextField(
+        //         onTap: () {},
+        //         controller: searchController,
+        //         onChanged: (value) async {
+        //           await RecipeSuggestionAPI.getSuggestion(value)
+        //               .then((value) => list = value);
+        //         },
+        //         onSubmitted: (value) {
+        //           getVideos(value);
+        //           list.add(value);
+        //           setState(() {
+        //             _isSearched = !_isSearched;
+        //           });
+        //         },
+        //         style: const TextStyle(
+        //           fontSize: 17,
+        //           color: Colors.black,
+        //         ),
+        //         cursorColor: Colors.black,
+        //         decoration: const InputDecoration(
+        //             border: InputBorder.none,
+        //             focusedBorder: InputBorder.none,
+        //             enabledBorder: InputBorder.none,
+        //             errorBorder: InputBorder.none,
+        //             disabledBorder: InputBorder.none,
+        //             hintText: "Search Videos"),
+        //         // onChanged: (text) {
+        //         //   widget.searched = true;
+        //         //   widget.searchedRecipe = text;
+        //         //   print('Recipe Searched');
+        //         // },
+        //       )),
+        //       IconButton(
+        //         splashRadius: 20,
+        //         splashColor: Colors.grey,
+        //         icon: const Icon(Icons.close),
+        //         onPressed: () {
+        //           searchController.clear();
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        Container(
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  spreadRadius: 5,
+                ),
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              IconButton(
+                splashRadius: 20,
+                splashColor: Colors.grey,
+                icon: const Icon(Icons.search),
+                onPressed: () {},
               ),
-            ),
-            hintText: "Search Videos",
-            hintStyle:
-                const TextStyle(color: Colors.black54, fontFamily: 'OpenSans'),
-            suffixIcon: IconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Colors.amberAccent,
-              ),
-              onPressed: () async {
-                getVideos(controller.text);
-                list.add(controller.text);
-                setState(() {
-                  _isSearched = true;
-                });
-              },
-            ),
-          ),
-          overlaySearchListItemBuilder: (item) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Text(
-                item.toString(),
-                style: const TextStyle(fontSize: 18, fontFamily: 'OpenSans'),
-              ),
-            );
-          },
-          onItemSelected: (item) {
-            getVideos(item.toString());
-          },
-        ),
-        isCompleted
-            ? Container()
-            : Container(
-                width: 300,
-                height: 300,
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage("assets/images/videofinder.png"),
-                      fit: BoxFit.cover,
+              Expanded(
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: searchController,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      color: Colors.black,
                     ),
-                    borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      )
-                    ]),
+                    cursorColor: Colors.black,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: "Search Videos",
+                    ),
+                    onSubmitted: (text) {
+                      getVideos(text);
+                      list.add(text);
+                      setState(() {
+                        _isSearched = !_isSearched;
+                      });
+                    },
+                    onChanged: (text) async {
+                      await RecipeSuggestionAPI.getSuggestion(text)
+                          .then((value) => list = value);
+                      print('Recipe Searched');
+                    },
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    // await RecipeSuggestionAPI.getSuggestion(pattern)
+                    //     .then((value) => list = value);
+                    return list;
+                  },
+                  itemBuilder: (context, list) {
+                    return ListTile(
+                      title: Text(list.toString()),
+                    );
+                  },
+                  onSuggestionSelected: (list) {
+                    searchController.text = list.toString();
+                    getVideos(list.toString());
+                    setState(() {
+                      _isSearched = !_isSearched;
+                    });
+                  },
+                ),
               ),
-        isCompleted
-            ? ListView.builder(
+              IconButton(
+                splashRadius: 20,
+                splashColor: Colors.grey,
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  searchController.clear();
+                },
+              ),
+            ],
+          ),
+        ),
+        !isCompleted
+            ? Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.width * 0.2,
+                  ),
+                  Container(
+                    width: 300,
+                    height: 300,
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          image: AssetImage("assets/images/videofinder.png"),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(50)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          )
+                        ]),
+                  ),
+                ],
+              )
+            : ListView.builder(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(
                     parent: BouncingScrollPhysics()),
@@ -137,8 +237,7 @@ class _VideoFinderState extends State<VideoFinder> {
                     views: _videos[index].views,
                   );
                 },
-              )
-            : Container(),
+              ),
       ],
     );
   }

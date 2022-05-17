@@ -31,14 +31,14 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: Colors.white,
       body: ListView(
         children: [
-          const Text(
-            'Foodify',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.amber,
-            ),
-          ),
+          // const Text(
+          //   'Foodify',
+          //   style: TextStyle(
+          //     fontSize: 25,
+          //     fontWeight: FontWeight.bold,
+          //     color: Colors.amber,
+          //   ),
+          // ),
           Lottie.asset(
             'assets/lottie/4762-food-carousel.json',
             width: 250,

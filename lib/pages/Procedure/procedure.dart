@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/constants/key.dart';
 import 'package:foodify/models/recipeDetails.api.dart';
 import 'package:foodify/models/recipeDetails.dart';
+import 'package:foodify/pages/Favourites/favourites.dart';
 import 'package:foodify/views/widgets/instructions.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
@@ -30,7 +31,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
   PageController controller = PageController();
   List<Widget>? stepsCard;
   String sourceUrl = "https://spoonacular.com/recipes";
-
+  bool isLiked = false;
   bool isLoading = true;
 
   Future<void> getRecipeDetails(String id) async {
@@ -40,7 +41,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
     } else if (details?.sourceUrl != null) {
       sourceUrl = details!.sourceUrl!;
     }
-
+    checkIfLiked();
     setState(() {
       isLoading = false;
     });
@@ -78,7 +79,6 @@ class _ProcedurePageState extends State<ProcedurePage> {
     super.initState();
     getRecipeDetails(widget.id).then((value) =>
         log(details!.analyzedInstructions![0].steps.length.toString()));
-
     stepsCard = [
       if (details?.analyzedInstructions != null)
         for (int i = 0; i < details!.analyzedInstructions![0].steps.length; i++)
@@ -193,8 +193,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                       borderRadius: BorderRadius.circular(18.0),
                       side: const BorderSide(color: Colors.amber)))),
           onPressed: () {
-            if (details?.analyzedInstructions != null ||
-                details!.analyzedInstructions!.isNotEmpty) {
+            if (details?.analyzedInstructions != null &&
+                details?.analyzedInstructions![0]?.steps != null) {
               Get.to(
                 () {
                   return Instructions(
@@ -282,28 +282,28 @@ class _ProcedurePageState extends State<ProcedurePage> {
               Align(
                 alignment: Alignment.topRight,
                 child: Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.6),
-                          spreadRadius: 2,
-                          blurRadius: 5)
-                    ],
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      Share.share('See what Recipe I made!\n\n$sourceUrl',
-                          subject: 'Check out this Recipe from Foodify');
-                    },
-                    icon: const Icon(
-                      FontAwesomeIcons.shareNodes,
-                      color: Colors.black,
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.6),
+                            spreadRadius: 2,
+                            blurRadius: 5)
+                      ],
                     ),
-                  ),
-                ),
+                    child: IconButton(
+                      onPressed: () {
+                        Share.share('See what Recipe I made!\n\n$sourceUrl',
+                            subject: 'Check out this Recipe from Foodify');
+                      },
+                      icon: const Icon(
+                        FontAwesomeIcons.shareNodes,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                    )),
               ),
               Column(
                 children: [
@@ -331,13 +331,17 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                     direction: Axis.horizontal,
                                     children: [
                                       Flexible(
-                                        child: Center(
-                                          child: Text(details!.title.toString(),
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 27,
-                                                fontWeight: FontWeight.bold,
-                                              )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: Text(
+                                                details!.title.toString(),
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 27,
+                                                  fontWeight: FontWeight.bold,
+                                                )),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -353,7 +357,77 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(height: 15),
+                                  const SizedBox(height: 5),
+                                  InkWell(
+                                      onTap: () {
+                                        if (!isLiked) {
+                                          Favourites.addFavourites(
+                                            details!.title!,
+                                            details!.id.toString(),
+                                            details?.image ??
+                                                'https://bitsofco.de/content/images/2018/12/broken-1.png',
+                                            ((details!.spoonacularScore ??
+                                                        0.0) /
+                                                    20.0)
+                                                .toString(),
+                                            details!.readyInMinutes.toString() +
+                                                " mins",
+                                          );
+                                          Favourites.updateFavourites(
+                                            details!.title!,
+                                            details!.id.toString(),
+                                            details?.image ??
+                                                'https://bitsofco.de/content/images/2018/12/broken-1.png',
+                                            ((details!.spoonacularScore ??
+                                                        0.0) /
+                                                    20.0)
+                                                .toString(),
+                                            details!.readyInMinutes.toString() +
+                                                " mins",
+                                          );
+                                        } else {
+                                          Favourites.removeFavourites(
+                                              details!.id.toString());
+                                        }
+
+                                        setState(() {
+                                          isLiked = !isLiked;
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 15),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              !isLiked
+                                                  ? const Icon(
+                                                      CupertinoIcons.heart,
+                                                      color: Colors.redAccent,
+                                                      size: 25,
+                                                    )
+                                                  : const Icon(
+                                                      CupertinoIcons
+                                                          .heart_solid,
+                                                      color: Colors.red,
+                                                      size: 25,
+                                                    ),
+                                              const SizedBox(width: 6),
+                                              Text(
+                                                isLiked
+                                                    ? "Favourited!"
+                                                    : "Like This ?",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                    color: Colors.black54),
+                                              ),
+                                            ]),
+                                      )),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -403,7 +477,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             height: 5,
                                           ),
                                           Text(
-                                              ((details!.spoonacularScore!) /
+                                              ((details!.spoonacularScore ??
+                                                              0) /
                                                           20.0)
                                                       .toString() +
                                                   ' Stars',
@@ -977,5 +1052,11 @@ class _ProcedurePageState extends State<ProcedurePage> {
         );
       }).toList(),
     );
+  }
+
+  void checkIfLiked() {
+    setState(() {
+      isLiked = Favourites.checkIfLiked(details!.id!.toString());
+    });
   }
 }

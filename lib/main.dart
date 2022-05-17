@@ -615,14 +615,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     // color: Colors.black54,
                     size: 27,
                   ),
-                  label: 'My List'),
+                  label: 'Cuisines'),
               BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.settings_outlined,
+                    Icons.gesture,
                     // color: Colors.black54,
                     size: 27,
                   ),
-                  label: 'Settings'),
+                  label: 'Guesser'),
             ],
           ),
         ));

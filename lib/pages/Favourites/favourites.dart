@@ -107,7 +107,6 @@ class Favourites extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -119,7 +118,7 @@ class Favourites extends StatelessWidget {
             "Favourites",
             style: TextStyle(
               fontFamily: "lorabold700",
-              color: Color.fromARGB(255, 0, 0, 0),
+              color: Colors.black54,
               fontSize: 30,
               // decorationThickness: 10,
               fontWeight: FontWeight.bold,
@@ -152,6 +151,15 @@ class Favourites extends StatelessWidget {
   static void updateFavourites(String recipeName, String id, String imageUrl,
       String rating, String cooktime) async {
     await controller.addToDatabase(recipeName, id, imageUrl, rating, cooktime);
+  }
+
+  static bool checkIfLiked(String id) {
+    for (int i = 0; i < controller.favouritesList.length; i++) {
+      if (controller.favouritesList[i].id == id) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 

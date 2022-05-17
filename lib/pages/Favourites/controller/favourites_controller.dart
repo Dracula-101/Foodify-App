@@ -56,8 +56,8 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
     update();
   }
 
-  Future<void> addToDatabase(String recipeName, String id, String cookTime,
-      String rating, String imageUrl) async {
+  Future<void> addToDatabase(String recipeName, String id, String imageUrl,
+      String rating, String cookTime) async {
     print("Added to database");
     FirebaseFirestore.instance
         .collection('users')

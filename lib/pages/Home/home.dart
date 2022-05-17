@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:foodify/loading/loadingPlate.dart';
 import 'package:foodify/models/recipe.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
@@ -60,7 +61,7 @@ class _HomeState extends State<Home> {
               borderRadius: BorderRadius.all(Radius.circular(15))),
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
-            children: <Widget>[
+            children: [
               IconButton(
                 splashRadius: 20,
                 splashColor: Colors.grey,
@@ -68,44 +69,69 @@ class _HomeState extends State<Home> {
                 onPressed: () {},
               ),
               Expanded(
-                  child: TextField(
-                onTap: () {},
-                controller: searchController,
-                // onChanged: (value) async {
-                //   await RecipeSuggestionAPI.getSuggestion(value)
-                //       .then((value) => list = value);
-                // },
-                onSubmitted: (value) {
-                  Get.to(RecipeSearchCard(
-                    title: value,
-                    isCuisine: false,
-                  ));
-                  searchController.clear();
-                },
-                style: const TextStyle(
-                  fontSize: 17,
-                  color: Colors.black,
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: searchController,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      color: Colors.black,
+                    ),
+                    cursorColor: Colors.black,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: "Search Recipes",
+                    ),
+                    onSubmitted: (text) {
+                      list.add(text);
+                      Get.to(RecipeSearchCard(
+                        title: text,
+                        isCuisine: false,
+                      ));
+                      searchController.clear();
+                    },
+                    onChanged: (text) async {
+                      await RecipeSuggestionAPI.getSuggestion(text)
+                          .then((value) => list = value);
+                      print('Recipe Searched');
+                    },
+                  ),
+                  suggestionsBoxDecoration: const SuggestionsBoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    color: Colors.white,
+                    shadowColor: Colors.black12,
+                    elevation: 8,
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    // await RecipeSuggestionAPI.getSuggestion(pattern)
+                    //     .then((value) => list = value);
+                    return list;
+                  },
+                  itemBuilder: (context, list) {
+                    return ListTile(
+                      title: Text(list.toString()),
+                    );
+                  },
+                  onSuggestionSelected: (list) {
+                    Get.to(RecipeSearchCard(
+                      title: list.toString(),
+                      isCuisine: false,
+                    ));
+                    searchController.clear();
+                  },
                 ),
-                cursorColor: Colors.black,
-                decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    hintText: "Search Recipes"),
-                // onChanged: (text) {
-                //   widget.searched = true;
-                //   widget.searchedRecipe = text;
-                //   print('Recipe Searched');
-                // },
-              )),
+              ),
               IconButton(
                 splashRadius: 20,
                 splashColor: Colors.grey,
                 icon: const Icon(Icons.close),
                 onPressed: () {
                   searchController.clear();
+                  //exit the controller
+                  FocusScope.of(context).requestFocus(FocusNode());
                 },
               ),
             ],
@@ -117,12 +143,13 @@ class _HomeState extends State<Home> {
             addAutomaticKeepAlives: true,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Row(
                   children: [
-                    Text(
+                    const Text(
                       "Trending",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 25,
                         color: Colors.black54,
                         fontWeight: FontWeight.bold,
@@ -134,7 +161,8 @@ class _HomeState extends State<Home> {
               trendingRecipes!,
               // const TrendingWidget(),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,

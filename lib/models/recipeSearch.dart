@@ -29,7 +29,9 @@ class RecipeSearch {
       title: json['title'] as String,
       image: json['image'] as String,
       cookTime: json['readyInMinutes'] as int,
-      rating: (json['spoonacularScore'] as double) / 20.0,
+      rating: json['spoonacularScore'] != null
+          ? (json['spoonacularScore'] as double) / 20.0
+          : 0.0,
       vegetarian: json['vegetarian'] as bool,
       calories: json['nutrition']['nutrients'][0]['amount'].toString(),
       caloriesUnit: json['nutrition']['nutrients'][0]['unit'],

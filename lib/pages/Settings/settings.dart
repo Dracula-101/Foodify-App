@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:foodify/constants/key.dart';
 import 'package:foodify/loading/loader.dart';
 import 'package:foodify/models/image_analysis.api.dart';
 import 'package:foodify/models/image_analysis.dart';
@@ -31,6 +32,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   late Future<void> _initializeControllerFuture;
   bool isLoaded = false;
   bool isSearching = false;
+  bool isError = false;
+  bool isTakingTime = false;
   String? link;
   XFile? image;
   ImageAnalysis? imageAnalysis;
@@ -52,8 +55,26 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   getImageAnalysis(String link) async {
     imageAnalysis = await ImageAnalysisAPI.getAnalysis(link);
     setState(() {
-      isLoaded = true;
-      isSearching = false;
+      isLoaded = !isLoaded;
+      isSearching = !isSearching;
+    });
+  }
+
+  startTimer() {
+    Timer(const Duration(seconds: 30), () {
+      setState(() {
+        // isLoaded = false;
+        isError = !isError;
+      });
+    });
+  }
+
+  takeTime() {
+    Timer(const Duration(seconds: 5), () {
+      setState(() {
+        // isLoaded = false;
+        isTakingTime = !isTakingTime;
+      });
     });
   }
 
@@ -115,7 +136,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           ),
           !isLoaded && !isSearching
               ? displayCamera()
-              : isSearching
+              : isSearching && !isError
                   ? Column(children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.2,
@@ -143,6 +164,50 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                      ),
+                      //cancel button
+                      if (isTakingTime)
+                        (InkWell(
+                          onTap: () {
+                            setState(() {
+                              isLoaded = false;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: FittedBox(
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      FontAwesomeIcons.xmark,
+                                      color: Colors.white,
+                                      size: 35,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )),
                     ])
                   : displayImage(),
         ],
@@ -180,16 +245,58 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               ? ImageAnalysisWidget(
                   imageAnalysis: imageAnalysis!,
                 )
-              : const Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Text(
-                    'No recipes found',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black54,
-                      fontWeight: FontWeight.bold,
+              : ListView(
+                  shrinkWrap: true,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        'No recipes found',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                    const Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        'Try taking picture of these food items',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5.0, vertical: 10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        classes.join(', '),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
         ],
       ),
@@ -237,6 +344,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ElevatedButton(
                   onPressed: () {
+                    startTimer();
+                    takeTime();
                     setState(() {
                       isSearching = true;
                     });
@@ -256,6 +365,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             alignment: Alignment.center,
             child: ElevatedButton(
               onPressed: () async {
+                startTimer();
+                takeTime();
                 setState(() {
                   isSearching = true;
                 });
@@ -297,6 +408,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   void getImage() async {
     image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
     setState(() {
       isSearching = true;
     });

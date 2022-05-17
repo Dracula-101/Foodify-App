@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'package:get/get.dart';
+
 class Recipe {
   final int id;
   final String title;
@@ -21,7 +24,9 @@ class Recipe {
         image: json['image'] == null
             ? "https://bitsofco.de/content/images/2018/12/broken-1.png"
             : json['image'] as String,
-        rating: (json['spoonacularScore'] as double) / 20.0,
+        rating: json['spoonacularScore'] != null
+            ? (json['spoonacularScore'] as double) / 20.0
+            : roundOffToXDecimal((Random().nextDouble()) * 5),
         readyInMinutes: json['readyInMinutes'] as int,
         vegetarian: json['vegetarian'] as bool);
   }
@@ -31,6 +36,17 @@ class Recipe {
     return snapshot.map((data) {
       return Recipe.fromJson(data);
     }).toList();
+  }
+
+  static double roundOffToXDecimal(double number, {int numberOfDecimal = 2}) {
+    // To prevent number that ends with 5 not round up correctly in Dart (eg: 2.275 round off to 2.27 instead of 2.28)
+    String numbersAfterDecimal = number.toString().split('.')[1];
+    if (numbersAfterDecimal != '0') {
+      int existingNumberOfDecimal = numbersAfterDecimal.length;
+      number += 1 / (10 * pow(10, existingNumberOfDecimal));
+    }
+
+    return double.parse(number.toStringAsFixed(numberOfDecimal));
   }
 
   @override
