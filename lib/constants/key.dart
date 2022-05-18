@@ -51,9 +51,9 @@ Map<String, String> labels = {
   'Pomegranate':
       'https://www.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2014/01/10/Production/Health/Images/bigstock-Half-of-pomegranate-on-a-white-12359999.jpg?t=20170517',
   'Potato':
-      'https://www.macmillandictionary.com/external/slideshow/full/141151_full.jpg',
+      'https://kalamnamarket.com/wp-content/uploads/2018/06/potato-super.jpg',
   'Radish':
-      'https://media.istockphoto.com/photos/daikon-radishes-isolated-on-white-background-picture-id158690297?k=20&m=158690297&s=612x612&w=0&h=7Bw_dabX0LewKLAtnqBHHCt5nWYe0xAGjPqk6zg2Q1I=',
+      'https://seedsnpots.com/wp-content/uploads/2017/09/radish-long-white-icicle-1000-seeds.jpg',
   'Soybeans':
       'https://www.azom.com/image.axd?picture=2018%2F7%2FImageForArticle_16061(1).jpg',
   'Spinach': 'https://spoonacular.com/cdn/ingredients_250x250/spinach.jpg',

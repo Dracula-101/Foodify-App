@@ -92,6 +92,7 @@ class _HomeState extends State<Home> {
                         isCuisine: false,
                       ));
                       searchController.clear();
+                      FocusScope.of(context).requestFocus(FocusNode());
                     },
                     onChanged: (text) async {
                       await RecipeSuggestionAPI.getSuggestion(text)
@@ -121,6 +122,7 @@ class _HomeState extends State<Home> {
                       isCuisine: false,
                     ));
                     searchController.clear();
+                    FocusScope.of(context).requestFocus(FocusNode());
                   },
                 ),
               ),

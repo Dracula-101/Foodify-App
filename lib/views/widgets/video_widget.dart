@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,45 @@ class VideoWidget extends StatefulWidget {
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
+  double _sigmaX = 0.0; // from 0-10
+  double _sigmaY = 0.0; // from 0-10
+  double _opacity = 0.1; // from 0-1.0
+  double _width = 350;
+  double _height = 300;
+
+  Widget buildGradient() {
+    return Positioned.fill(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(
+            colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [0.6, 0.95],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitleAndSubtitle() {
+    return Positioned(
+      left: 15,
+      right: 15,
+      bottom: 20,
+      child: Text(
+        widget.title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+          overflow: TextOverflow.ellipsis,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -59,40 +100,11 @@ class _VideoWidgetState extends State<VideoWidget> {
                   height: 180, br: BorderRadius.circular(15)),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            Align(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                  widget.title,
-                  style: const TextStyle(fontSize: 19),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              alignment: Alignment.center,
-            ),
-            Align(
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.grey.shade200.withOpacity(0.9)),
-                child: Text(
-                  widget.title,
-                  style: const TextStyle(fontSize: 20, color: Colors.black),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              alignment: Alignment.center,
-            ),
+            buildGradient(),
+            _buildTitleAndSubtitle()
           ],
         ),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
           boxShadow: [
             BoxShadow(
               color: Colors.white.withOpacity(0.6),

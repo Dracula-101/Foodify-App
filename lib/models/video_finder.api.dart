@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class VideoFinderAPI {
   static Future<List<Videos>> getVideos(String query) async {
     var uri = Uri.https(BASE_URL, '/food/videos/search', {
-      "number": "10",
+      "number": "15",
       "query": query,
       // "tags": cuisine + "," + getVeg(),
       "apiKey": apiKey.first,
@@ -32,8 +32,6 @@ class VideoFinderAPI {
     for (var i in data['videos']) {
       _temp.add(i);
     }
-    print('Videos rrrr');
-    print(_temp.toString());
     return Videos.videoesFromSnapshot(_temp);
   }
 }

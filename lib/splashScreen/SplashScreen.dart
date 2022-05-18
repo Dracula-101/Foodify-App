@@ -40,8 +40,8 @@ class _SplashScreenState extends State<SplashScreen>
           //   ),
           // ),
           Lottie.asset(
-            'assets/lottie/4762-food-carousel.json',
-            width: 250,
+            // 'assets/videos/splashscr.mp4.lottie.json',
+            'assets/videos/splash_animation.json',
             controller: _controller,
             onLoaded: (composition) {
               _controller!.duration = composition.duration;

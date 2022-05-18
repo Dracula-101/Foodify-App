@@ -85,6 +85,7 @@ flutter:
     - assets/tflite/labels.txt
     - assets/tflite/model.tflite
     - assets/tflite/dict.txt
+    - assets/videos/
 
   fonts:
     - family: OpenSans
