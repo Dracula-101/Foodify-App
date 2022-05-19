@@ -1,5 +1,6 @@
 import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
+import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:get/get.dart';
 
 class RandomRecipeController extends GetxController with StateMixin<dynamic> {
@@ -10,12 +11,9 @@ class RandomRecipeController extends GetxController with StateMixin<dynamic> {
   @override
   void onReady() {
     super.onReady();
-    isLoading.value = true;
   }
 
-  isLoaded() {
-    return isLoading.value;
-  }
+  isLoaded() {}
 
   Future<void> getRecipes() async {
     recipes = await RecipeApi.getRecipe();

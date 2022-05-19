@@ -19,7 +19,7 @@ class AppRoutes {
   static List<GetPage> pages = [
     GetPage(
       name: "Random Recipe",
-      page: () => const RandomRecipe(),
+      page: () => RandomRecipe(),
       bindings: [
         RandomRecipeBinding(),
       ],

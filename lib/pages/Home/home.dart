@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:foodify/loading/loadingPlate.dart';
 import 'package:foodify/models/recipe.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
+import 'package:foodify/pages/RandomRecipe/controller/random_recipe_controller.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/search.dart';
@@ -31,11 +32,11 @@ class _HomeState extends State<Home> {
   late List<Recipe> _recipes;
   TextEditingController searchController = TextEditingController();
   Widget? trendingRecipes = const TrendingWidget(),
-      randomRecipes = new RandomRecipe();
-
+      randomRecipes = RandomRecipe();
+  RandomRecipe rr = RandomRecipe();
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-
+  // RandomRecipeState state = RandomRecipeState();
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -43,9 +44,7 @@ class _HomeState extends State<Home> {
       key: refreshIndicatorKey,
       onRefresh: () async {
         print("refreshing");
-        setState(() {
-          randomRecipes = new RandomRecipe();
-        });
+        RandomRecipe.callFunction(context);
       },
       child: Column(children: [
         Container(

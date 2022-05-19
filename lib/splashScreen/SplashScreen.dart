@@ -39,14 +39,28 @@ class _SplashScreenState extends State<SplashScreen>
           //     color: Colors.amber,
           //   ),
           // ),
-          Lottie.asset(
-            // 'assets/videos/splashscr.mp4.lottie.json',
-            'assets/videos/splash_animation.json',
-            controller: _controller,
-            onLoaded: (composition) {
-              _controller!.duration = composition.duration;
-              _controller!.forward();
-            },
+          Stack(
+            children: [
+              Lottie.asset(
+                // 'assets/videos/splashscr.mp4.lottie.json',
+                'assets/videos/splash_animation.json',
+                controller: _controller,
+                onLoaded: (composition) {
+                  _controller!.duration = composition.duration;
+                  _controller!.forward();
+                },
+              ),
+              Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.65),
+                  Text('Foodify',
+                      style: TextStyle(
+                        color: Colors.deepOrangeAccent,
+                        fontSize: 45,
+                      ))
+                ],
+              ),
+            ],
           ),
         ],
       ),

@@ -12,6 +12,10 @@ class RandomRecipe extends StatefulWidget {
 
   @override
   State<RandomRecipe> createState() => _RandomRecipeState();
+
+  static callFunction(context) {
+    _RandomRecipeState.rebuildAllChildren(context);
+  }
 }
 
 class _RandomRecipeState extends State<RandomRecipe> {
@@ -22,18 +26,29 @@ class _RandomRecipeState extends State<RandomRecipe> {
   }
 
   static late List<Recipe> _recipes;
-  bool _isLoading = true;
+  static bool _isLoading = true;
 
   Future<void> getRecipes() async {
     _recipes = await RecipeApi.getRecipe();
+
     setState(() {
       _isLoading = false;
     });
   }
 
+  static rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
+  }
+
   final _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
+    rebuildAllChildren(context);
     if (!_isLoading) {
       return FadingEdgeScrollView.fromScrollView(
         child: ListView.builder(
