@@ -27,7 +27,7 @@ class _VideoFinderState extends State<VideoFinder> {
 
   TextEditingController searchController = TextEditingController();
 
-  late List<Videos> _videos;
+  List<Videos> _videos = [];
   bool isLoading = false;
   bool isCompleted = false;
   bool _isSearched = false;
@@ -172,7 +172,7 @@ class _VideoFinderState extends State<VideoFinder> {
                     ],
                   )
                 : Loader()
-            : _videos.length != 0
+            : _videos != null
                 ? ListView.builder(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(

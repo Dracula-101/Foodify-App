@@ -117,7 +117,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
           splash: const SplashScreen(),
           nextScreen: App(),
           splashTransition: SplashTransition.fadeTransition,
-          pageTransitionType: PageTransitionType.rightToLeft,
+          pageTransitionType: PageTransitionType.fade,
           backgroundColor: Colors.white),
     );
   }

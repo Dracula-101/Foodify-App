@@ -12,17 +12,39 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   AnimationController? _controller;
+  AnimationController? _textAnimation;
+  late Animation<double> _animation;
+  double _opacity = 1;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
+    _textAnimation = AnimationController(
+      duration: const Duration(seconds: 4),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _textAnimation!,
+      curve: Curves.bounceIn,
+    );
+    fadeText();
     super.initState();
   }
 
   @override
   void dispose() {
     _controller!.dispose();
+    _textAnimation!.dispose();
     super.dispose();
+  }
+
+  fadeText() async {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
+      setState(() {
+        _opacity = 0;
+      });
+    });
   }
 
   @override
@@ -31,18 +53,9 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: Colors.white,
       body: ListView(
         children: [
-          // const Text(
-          //   'Foodify',
-          //   style: TextStyle(
-          //     fontSize: 25,
-          //     fontWeight: FontWeight.bold,
-          //     color: Colors.amber,
-          //   ),
-          // ),
           Stack(
             children: [
               Lottie.asset(
-                // 'assets/videos/splashscr.mp4.lottie.json',
                 'assets/videos/splash_animation.json',
                 controller: _controller,
                 onLoaded: (composition) {
@@ -52,12 +65,21 @@ class _SplashScreenState extends State<SplashScreen>
               ),
               Column(
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.65),
-                  Text('Foodify',
-                      style: TextStyle(
-                        color: Colors.deepOrangeAccent,
-                        fontSize: 45,
-                      ))
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.67),
+                  AnimatedOpacity(
+                    opacity: _opacity,
+                    duration: const Duration(seconds: 1),
+                    child: const Center(
+                      child: Text(
+                        'Foodify',
+                        style: TextStyle(
+                          color: Colors.deepOrangeAccent,
+                          fontSize: 45,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,13 +10,18 @@ import 'package:foodify/main.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   SignupPage({Key? key}) : super(key: key);
 
-  String _email = '', _password = '', _confirmpassword = '';
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
 
+class _SignupPageState extends State<SignupPage> {
+  String _email = '', _password = '', _confirmpassword = '';
   @override
   Widget build(BuildContext context) {
+    log('signup rebuild');
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -144,6 +151,7 @@ class SignupPage extends StatelessWidget {
                               textInputAction: TextInputAction.next,
                               onChanged: (text) {
                                 _email = text;
+                                log('email updated new is' + _email);
                               },
                             ),
                           ),
@@ -186,6 +194,8 @@ class SignupPage extends StatelessWidget {
                               textInputAction: TextInputAction.next,
                               onChanged: (text) {
                                 _password = text;
+                                log('pass updated new is' + _password);
+                                debugPrint('pass updated new is' + _password);
                               },
                             ),
                           ),
@@ -202,11 +212,11 @@ class SignupPage extends StatelessWidget {
                           ),
                           child: Center(
                             child: TextField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
                                   child: Icon(
                                     FontAwesomeIcons.lock,
                                     size: 28,
@@ -228,6 +238,9 @@ class SignupPage extends StatelessWidget {
                               textInputAction: TextInputAction.done,
                               onChanged: (text) {
                                 _confirmpassword = text;
+                                log('cpass updated new is' + _confirmpassword);
+                                debugPrint(
+                                    'cpass updated new is' + _confirmpassword);
                               },
                             ),
                           ),
@@ -245,17 +258,33 @@ class SignupPage extends StatelessWidget {
                         ),
                         child: TextButton(
                           onPressed: () async {
-                            if (_email == '') {
-                              Get.snackbar(
-                                "Email field empty",
-                                "Please enter your Details",
-                                colorText: Colors.black,
-                                duration: Duration(seconds: 2),
-                                icon: Icon(Icons.person, color: Colors.white),
-                                snackPosition: SnackPosition.BOTTOM,
-                              );
-                              return;
-                            }
+                            log(_email +
+                                " -a- " +
+                                _password +
+                                " " +
+                                _confirmpassword);
+                            debugPrint(_email +
+                                " -a- " +
+                                _password +
+                                " " +
+                                _confirmpassword);
+                            print(_email +
+                                " -a- " +
+                                _password +
+                                " " +
+                                _confirmpassword);
+
+                            // if (_email == '') {
+                            //   Get.snackbar(
+                            //     "Email field empty",
+                            //     "Please enter your Details",
+                            //     colorText: Colors.black,
+                            //     duration: Duration(seconds: 2),
+                            //     icon: Icon(Icons.person, color: Colors.white),
+                            //     snackPosition: SnackPosition.BOTTOM,
+                            //   );
+                            //   return;
+                            // }
                             if (_password == '') {
                               Get.snackbar(
                                 "Password field empty",
@@ -279,7 +308,8 @@ class SignupPage extends StatelessWidget {
                               return;
                             }
                             if (_password == _confirmpassword) {
-                              bool userCreated = await createUser();
+                              bool userCreated =
+                                  await createUser(_email, _password);
                               if (userCreated) {
                                 Get.snackbar(
                                   "Account created successfuly",
@@ -367,7 +397,7 @@ class SignupPage extends StatelessWidget {
     );
   }
 
-  Future<bool> createUser() async {
+  Future<bool> createUser(String _email, String _password) async {
     try {
       final newUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _email, password: _password);
