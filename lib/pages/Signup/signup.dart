@@ -21,7 +21,6 @@ class _SignupPageState extends State<SignupPage> {
   String _email = '', _password = '', _confirmpassword = '';
   @override
   Widget build(BuildContext context) {
-    log('signup rebuild');
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -151,7 +150,6 @@ class _SignupPageState extends State<SignupPage> {
                               textInputAction: TextInputAction.next,
                               onChanged: (text) {
                                 _email = text;
-                                log('email updated new is' + _email);
                               },
                             ),
                           ),
@@ -194,8 +192,6 @@ class _SignupPageState extends State<SignupPage> {
                               textInputAction: TextInputAction.next,
                               onChanged: (text) {
                                 _password = text;
-                                log('pass updated new is' + _password);
-                                debugPrint('pass updated new is' + _password);
                               },
                             ),
                           ),
@@ -238,9 +234,6 @@ class _SignupPageState extends State<SignupPage> {
                               textInputAction: TextInputAction.done,
                               onChanged: (text) {
                                 _confirmpassword = text;
-                                log('cpass updated new is' + _confirmpassword);
-                                debugPrint(
-                                    'cpass updated new is' + _confirmpassword);
                               },
                             ),
                           ),
@@ -258,33 +251,17 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         child: TextButton(
                           onPressed: () async {
-                            log(_email +
-                                " -a- " +
-                                _password +
-                                " " +
-                                _confirmpassword);
-                            debugPrint(_email +
-                                " -a- " +
-                                _password +
-                                " " +
-                                _confirmpassword);
-                            print(_email +
-                                " -a- " +
-                                _password +
-                                " " +
-                                _confirmpassword);
-
-                            // if (_email == '') {
-                            //   Get.snackbar(
-                            //     "Email field empty",
-                            //     "Please enter your Details",
-                            //     colorText: Colors.black,
-                            //     duration: Duration(seconds: 2),
-                            //     icon: Icon(Icons.person, color: Colors.white),
-                            //     snackPosition: SnackPosition.BOTTOM,
-                            //   );
-                            //   return;
-                            // }
+                            if (_email == '') {
+                              Get.snackbar(
+                                "Email field empty",
+                                "Please enter your Details",
+                                colorText: Colors.black,
+                                duration: Duration(seconds: 2),
+                                icon: Icon(Icons.person, color: Colors.white),
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                              return;
+                            }
                             if (_password == '') {
                               Get.snackbar(
                                 "Password field empty",
