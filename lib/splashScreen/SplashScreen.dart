@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:foodify/views/widgets/video_widget.dart';
 import 'package:lottie/lottie.dart';
 
@@ -13,21 +14,18 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   AnimationController? _controller;
   AnimationController? _textAnimation;
-  late Animation<double> _animation;
-  double _opacity = 1;
+  double _opacity = 0;
+  bool changeDim = false;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     _textAnimation = AnimationController(
-      duration: const Duration(seconds: 4),
+      duration: const Duration(milliseconds: 4500),
       vsync: this,
     );
-    _animation = CurvedAnimation(
-      parent: _textAnimation!,
-      curve: Curves.bounceIn,
-    );
-    fadeText();
+    fadeInText();
+    Future.delayed(const Duration(milliseconds: 4000));
     super.initState();
   }
 
@@ -35,10 +33,22 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     _controller!.dispose();
     _textAnimation!.dispose();
+    setState(() {
+      changeDim = !changeDim;
+    });
     super.dispose();
   }
 
-  fadeText() async {
+  fadeInText() async {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (!mounted) return;
+      setState(() {
+        _opacity = 1;
+      });
+    });
+  }
+
+  fadeOutText() async {
     Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
       setState(() {
@@ -50,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: ListView(
         children: [
           Stack(
@@ -65,23 +75,32 @@ class _SplashScreenState extends State<SplashScreen>
               ),
               Column(
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.67),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 1500),
+                    curve: Curves.fastOutSlowIn,
+                    height: changeDim
+                        ? MediaQuery.of(context).size.height * 0.4
+                        : MediaQuery.of(context).size.height * 0.7,
+                  ),
                   AnimatedOpacity(
                     opacity: _opacity,
-                    duration: const Duration(seconds: 1),
+                    duration: const Duration(seconds: 2),
                     child: const Center(
-                      child: Text(
-                        'Foodify',
-                        style: TextStyle(
-                          color: Colors.deepOrangeAccent,
-                          fontSize: 45,
-                          fontWeight: FontWeight.bold,
+                      child: FittedBox(
+                        child: Text(
+                          'Foodify',
+                          style: TextStyle(
+                            color: Colors.deepOrangeAccent,
+                            fontSize: 55,
+                            fontFamily: 'Amsterdam-ZVGqm',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ],
-              ),
+              )
             ],
           ),
         ],

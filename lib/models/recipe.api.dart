@@ -6,9 +6,15 @@ import 'package:foodify/constants/parameters.dart';
 
 class RecipeApi {
   static Future<List<Recipe>> getRecipe() async {
+    String personEating = "";
+    if (getEating() == "") {
+      personEating = cuisine;
+    } else {
+      personEating = cuisine + "," + getEating();
+    }
     var uri = Uri.https(BASE_URL, '/recipes/random', {
       "number": "10",
-      // "tags": cuisine + "," + getVeg(),
+      "tags": personEating,
       "apiKey": apiKey.first,
     });
 

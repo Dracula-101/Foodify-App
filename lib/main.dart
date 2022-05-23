@@ -1,34 +1,22 @@
 import 'package:camera/camera.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:foodify/models/removebg.dart';
 import 'package:foodify/pages/DrawerItems/AboutUs.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
-import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
+import 'package:foodify/pages/Settings/settings.dart';
 import 'package:foodify/pages/VideoFinder/video_finder.dart';
 import 'package:foodify/pages/Image%20Picker/imagePicker.dart';
-import 'package:foodify/pages/imagePrediction.dart';
-import 'package:foodify/routes/app_routes.dart';
 import 'package:foodify/splashScreen/SplashScreen.dart';
-import 'package:foodify/views/widgets/recipeFind.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
-import 'package:foodify/views/widgets/scrolling_parallax.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
 import 'pages/MyList/mylist.dart';
-import 'pages/Settings/settings.dart';
-import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
-import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
-import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
+import 'pages/Guesser/guesser.dart';
 import 'dart:io';
-import 'package:flutter/src/widgets/image.dart' as img;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
@@ -37,15 +25,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fancy_drawer/fancy_drawer.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:page_transition/page_transition.dart';
-
-import 'views/curved_navbar.dart';
+import 'dart:ui';
 
 late CameraDescription firstCamera;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   firstCamera = cameras.first;
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   runApp(MyApp());
 }
 
@@ -113,11 +102,11 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AnimatedSplashScreen(
-          duration: 4202,
+          duration: 5000,
           splash: const SplashScreen(),
           nextScreen: App(),
+          splashIconSize: window.physicalSize.height,
           splashTransition: SplashTransition.fadeTransition,
-          pageTransitionType: PageTransitionType.fade,
           backgroundColor: Colors.white),
     );
   }
@@ -136,6 +125,7 @@ class _HomeDrawerState extends State<HomeDrawer>
   List<Widget> screens = [
     const MyHomePage(),
     const VideoFinder(),
+    const Settings(),
     const AboutUs()
   ];
 
@@ -224,6 +214,28 @@ class _HomeDrawerState extends State<HomeDrawer>
                       ),
                       onPressed: () {
                         setSelectedWidget(1);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  height: 55,
+                  width: 200,
+                  child: FittedBox(
+                    child: ElevatedButton(
+                      child: Text(
+                        "Settings",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.purple.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        setSelectedWidget(2);
                       },
                     ),
                   ),

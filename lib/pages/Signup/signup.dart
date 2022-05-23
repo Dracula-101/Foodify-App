@@ -50,23 +50,30 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(
                     height: size.width * 0.3,
                   ),
-                  Center(
-                    child: ClipOval(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                        child: CircleAvatar(
-                          radius: size.width * 0.14,
-                          backgroundColor: Colors.grey[400]!.withOpacity(
-                            0.4,
-                          ),
-                          child: Icon(
-                            FontAwesomeIcons.user,
-                            color: Colors.white,
-                            size: size.width * 0.1,
-                          ),
-                        ),
-                      ),
-                    ),
+                  // Center(
+                  //   child: ClipOval(
+                  //     child: BackdropFilter(
+                  //       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                  //       child: CircleAvatar(
+                  //         radius: size.width * 0.14,
+                  //         backgroundColor: Colors.grey[400]!.withOpacity(
+                  //           0.4,
+                  //         ),
+                  //         child: Icon(
+                  //           FontAwesomeIcons.user,
+                  //           color: Colors.white,
+                  //           size: size.width * 0.1,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  Text(
+                    'Welcome to Foodify',
+                    style: TextStyle(
+                        fontFamily: "Amsterdam-ZVGqm",
+                        fontSize: 27,
+                        color: Colors.amberAccent),
                   ),
                   SizedBox(
                     height: size.width * 0.1,

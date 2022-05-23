@@ -8,11 +8,12 @@ import 'package:getwidget/getwidget.dart';
 import '../../loading/loader.dart';
 
 class RandomRecipe extends StatefulWidget {
-  const RandomRecipe({Key? key}) : super(key: key);
+  RandomRecipe({Key? key}) : super(key: key);
 
   @override
   State<RandomRecipe> createState() => _RandomRecipeState();
 
+  static late List<Recipe> recipes;
   static callFunction(context) {
     _RandomRecipeState.rebuildAllChildren(context);
   }
@@ -25,11 +26,10 @@ class _RandomRecipeState extends State<RandomRecipe> {
     getRecipes();
   }
 
-  static late List<Recipe> _recipes;
   static bool _isLoading = true;
 
   Future<void> getRecipes() async {
-    _recipes = await RecipeApi.getRecipe();
+    RandomRecipe.recipes = await RecipeApi.getRecipe();
 
     setState(() {
       _isLoading = false;
@@ -56,18 +56,19 @@ class _RandomRecipeState extends State<RandomRecipe> {
           physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
           controller: _controller,
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
-          itemCount: _recipes.length,
+          itemCount: RandomRecipe.recipes.length,
           itemBuilder: (context, index) {
             return RecipeCard(
-              id: _recipes[index].id,
-              title: _recipes[index].title,
-              cookTime: _recipes[index].readyInMinutes.toString() + " mins ",
-              rating: _recipes[index].rating.toString() + " ",
-              thumbnailUrl: _recipes[index].image,
+              id: RandomRecipe.recipes[index].id,
+              title: RandomRecipe.recipes[index].title,
+              cookTime: RandomRecipe.recipes[index].readyInMinutes.toString() +
+                  " mins ",
+              rating: RandomRecipe.recipes[index].rating.toString() + " ",
+              thumbnailUrl: RandomRecipe.recipes[index].image,
               description: "random",
               calories: "-1",
               caloriesUnit: "cal",
-              vegetarian: _recipes[index].vegetarian,
+              vegetarian: RandomRecipe.recipes[index].vegetarian,
             );
           },
         ),

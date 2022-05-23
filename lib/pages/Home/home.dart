@@ -1,13 +1,18 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:foodify/loading/loadingPlate.dart';
+import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
+import 'package:foodify/pages/Explore%20Page/explore.dart';
 import 'package:foodify/pages/RandomRecipe/controller/random_recipe_controller.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
+import 'package:foodify/pages/VideoFinder/video_finder.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
+import 'package:foodify/views/widgets/recipe_card.dart';
 import 'package:foodify/views/widgets/search.dart';
 import 'package:foodify/views/widgets/searchbar.dart';
 import 'package:foodify/views/widgets/trending.dart';
@@ -31,12 +36,78 @@ class _HomeState extends State<Home> {
   ];
   late List<Recipe> _recipes;
   TextEditingController searchController = TextEditingController();
-  Widget? trendingRecipes = const TrendingWidget(),
-      randomRecipes = RandomRecipe();
-  RandomRecipe rr = RandomRecipe();
+  Widget? trendingRecipes = const TrendingWidget();
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-  // RandomRecipeState state = RandomRecipeState();
+  final ScrollController _controller = ScrollController();
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getRecipes();
+  }
+
+  Future<void> getRecipes() async {
+    _recipes = await RecipeApi.getRecipe();
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Widget reloadRecipes(BuildContext context) {
+    if (!_isLoading) {
+      return FadingEdgeScrollView.fromScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
+          controller: _controller,
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
+          itemCount: _recipes.length,
+          itemBuilder: (context, index) {
+            return RecipeCard(
+              id: _recipes[index].id,
+              title: _recipes[index].title,
+              cookTime: _recipes[index].readyInMinutes.toString() + " mins ",
+              rating: _recipes[index].rating.toString() + " ",
+              thumbnailUrl: _recipes[index].image,
+              description: "random",
+              calories: "-1",
+              caloriesUnit: "cal",
+              vegetarian: _recipes[index].vegetarian,
+            );
+          },
+        ),
+      );
+    } else {
+      return FadingEdgeScrollView.fromScrollView(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(parent: BouncingScrollPhysics()),
+          controller: _controller,
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return GFShimmer(
+              mainColor: Colors.white,
+              secondaryColor: Colors.grey,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white70,
+                  border: Border.all(color: Colors.white70, width: 5),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                width: MediaQuery.of(context).size.width,
+                height: 180,
+              ),
+            );
+          },
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -44,7 +115,7 @@ class _HomeState extends State<Home> {
       key: refreshIndicatorKey,
       onRefresh: () async {
         print("refreshing");
-        RandomRecipe.callFunction(context);
+        getRecipes();
       },
       child: Column(children: [
         Container(
@@ -140,8 +211,7 @@ class _HomeState extends State<Home> {
         ),
         Expanded(
           child: ListView(
-            cacheExtent: 10000,
-            addAutomaticKeepAlives: true,
+            cacheExtent: 2000,
             children: [
               Padding(
                 padding:
@@ -177,7 +247,15 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(
+                          () {
+                            return ExplorePage(
+                              recipes: _recipes,
+                            );
+                          },
+                        );
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: const [
@@ -197,7 +275,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              randomRecipes!,
+              reloadRecipes(context),
               // const RandomRecipe(),
             ],
           ),

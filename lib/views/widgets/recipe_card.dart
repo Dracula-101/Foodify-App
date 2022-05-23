@@ -43,10 +43,7 @@ class _RecipeCardState extends State<RecipeCard> {
         onTap: () async {
           Get.to(() {
             return ProcedurePage(id: widget.id.toString());
-          },
-              transition: Transition.cupertino,
-              duration: Duration(seconds: 1),
-              curve: Curves.fastOutSlowIn);
+          }, duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -55,25 +52,28 @@ class _RecipeCardState extends State<RecipeCard> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              CachedNetworkImage(
-                imageUrl: widget.thumbnailUrl,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 80.0,
-                  height: 80.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.5),
-                          BlendMode.multiply,
-                        ),
-                        image: imageProvider,
-                        fit: BoxFit.cover),
+              Hero(
+                tag: 'location-img-' + widget.id.toString(),
+                child: CachedNetworkImage(
+                  imageUrl: widget.thumbnailUrl,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 80.0,
+                    height: 80.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                          colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.5),
+                            BlendMode.multiply,
+                          ),
+                          image: imageProvider,
+                          fit: BoxFit.cover),
+                    ),
                   ),
+                  placeholder: (context, url) => ShimmerWidget.rectangular(
+                      height: 180, br: BorderRadius.circular(15)),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                placeholder: (context, url) => ShimmerWidget.rectangular(
-                    height: 180, br: BorderRadius.circular(15)),
-                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               Align(
                 child: Padding(
@@ -230,8 +230,8 @@ class _RecipeCardState extends State<RecipeCard> {
                 child: Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(15)),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.6),
@@ -244,7 +244,8 @@ class _RecipeCardState extends State<RecipeCard> {
                           ),
                         ]),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 7),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 3, vertical: 7),
                       child: widget.vegetarian
                           ? Image.asset(
                               'assets/images/veg.png',

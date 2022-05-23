@@ -1,17 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodify/constants/key.dart' as key;
-import 'package:foodify/models/recipeFind.dart';
+import 'package:foodify/constants/parameters.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
 import "dart:io";
 import 'package:image_picker/image_picker.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:tflite/tflite.dart';
-import 'package:loop_page_view/loop_page_view.dart';
 import '../views/widgets/recipeFind.dart';
 
 class Prediction extends StatefulWidget {
@@ -152,7 +149,28 @@ class _PredictionState extends State<Prediction> {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(),
+                              CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 35,
+                                  child: CachedNetworkImage(
+                                    imageUrl: key
+                                            .labels[fruits.elementAt(index)] ??
+                                        'https://bitsofco.de/content/images/2018/12/broken-1.png',
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.contain),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) =>
+                                        ShimmerWidget.rectangular(
+                                            height: 300,
+                                            br: BorderRadius.circular(0)),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  )),
                               SizedBox(
                                 width: 10,
                               ),

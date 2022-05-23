@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:get/get.dart';
 
 class Recipe {
   final int id;

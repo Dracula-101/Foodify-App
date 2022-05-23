@@ -46,13 +46,16 @@ class LoginPage extends StatelessWidget {
                 ),
                 const Flexible(
                   child: Center(
-                    child: Text(
-                      'Foodify',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 60,
-                          fontWeight: FontWeight.bold),
+                    child: FittedBox(
+                      child: Text(
+                        'Foodify',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.amber,
+                            fontSize: 55,
+                            fontFamily: "Amsterdam-ZVGqm",
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),

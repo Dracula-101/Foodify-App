@@ -13,7 +13,7 @@ class RecipeSearchApi {
       "sortDirection": "asc",
       "titleMatch": title,
       "instructionsRequired": "true",
-      "tags": cuisine + "," + getVeg(),
+      "tags": cuisine + "," + getEating(),
       "apiKey": apiKey.first,
     });
 
@@ -39,6 +39,7 @@ class RecipeSearchApi {
       "sortDirection": "asc",
       "instructionsRequired": "true",
       "cuisine": cuisine,
+      "tags": getEating(),
       "apiKey": apiKey.first,
     });
 

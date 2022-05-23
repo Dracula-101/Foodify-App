@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,7 +34,8 @@ class _ProcedurePageState extends State<ProcedurePage> {
   String sourceUrl = "https://spoonacular.com/recipes";
   bool isLiked = false;
   bool isLoading = true;
-
+  late String url = details?.image ??
+      'https://bitsofco.de/content/images/2018/12/broken-1.png';
   Future<void> getRecipeDetails(String id) async {
     details = await RecipeDetailsAPI.getRecipeDetails(id.toString());
     if (details?.spoonacularSourceUrl != null) {
@@ -77,54 +79,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
   @override
   void initState() {
     super.initState();
-    getRecipeDetails(widget.id).then((value) =>
-        log(details!.analyzedInstructions![0].steps.length.toString()));
-    stepsCard = [
-      if (details?.analyzedInstructions != null)
-        for (int i = 0; i < details!.analyzedInstructions![0].steps.length; i++)
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                details!.analyzedInstructions![0].steps[i].step,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                color: Colors.amberAccent,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.6),
-                    offset: const Offset(
-                      0.0,
-                      10.0,
-                    ),
-                    blurRadius: 10.0,
-                    spreadRadius: -6.0,
-                  ),
-                ],
-                image: DecorationImage(
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.5),
-                    BlendMode.multiply,
-                  ),
-                  image: NetworkImage(
-                    details?.analyzedInstructions![0]?.steps[i]?.ingredients
-                            .isNotEmpty
-                        ? details?.analyzedInstructions![0]?.steps[i]
-                            ?.ingredients[i]?.image
-                        : "https://spoonacular.com/recipeImages/849079-556x370.jpg",
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-    ];
+    getRecipeDetails(widget.id);
   }
 
   Widget cuisines(BuildContext context) {
@@ -228,29 +183,33 @@ class _ProcedurePageState extends State<ProcedurePage> {
             fit: StackFit.passthrough,
             children: [
               !isLoading
-                  ? CachedNetworkImage(
-                      imageUrl: details?.image ??
-                          'https://bitsofco.de/content/images/2018/12/broken-1.png',
-                      height: 300,
-                      imageBuilder: (context, imageProvider) => Container(
-                        height: 300.0,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.6),
-                              blurRadius: 30.0,
-                              spreadRadius: -5.0,
-                              offset: const Offset(0.0, 40.0),
-                            ),
-                          ],
-                          image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.cover),
+                  ? Hero(
+                      tag: 'location-img-${details?.id}',
+                      child: CachedNetworkImage(
+                        imageUrl: details?.image ??
+                            'https://bitsofco.de/content/images/2018/12/broken-1.png',
+                        height: 300,
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 300.0,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.6),
+                                blurRadius: 30.0,
+                                spreadRadius: -5.0,
+                                offset: const Offset(0.0, 40.0),
+                              ),
+                            ],
+                            image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover),
+                          ),
                         ),
+                        placeholder: (context, url) =>
+                            ShimmerWidget.rectangular(
+                                height: 300, br: BorderRadius.circular(0)),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
-                      placeholder: (context, url) => ShimmerWidget.rectangular(
-                          height: 300, br: BorderRadius.circular(0)),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
                     )
                   : buildShimmer(
                       context, 300, MediaQuery.of(context).size.width, 0.0),
@@ -478,7 +437,10 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                           ),
                                           Text(
                                               ((details!.spoonacularScore ??
-                                                              0) /
+                                                              roundOffToXDecimal(
+                                                                  (Random()
+                                                                          .nextDouble()) *
+                                                                      5)) /
                                                           20.0)
                                                       .toString() +
                                                   ' Stars',
@@ -816,72 +778,80 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     ],
                   ),
                 ),
+          Container(
+            margin: const EdgeInsets.all(20.0),
+            child: const Divider(
+              thickness: 2,
+              color: Colors.black54,
+            ),
+          ),
           // instructions(context),
           if (details?.dishTypes != null)
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: (Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: const [
-                        Icon(
-                          FontAwesomeIcons.utensils,
-                          color: Colors.black54,
-                          size: 30,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Dish Types',
-                          style: TextStyle(
-                            fontSize: 25,
+            if (details!.dishTypes!.isNotEmpty)
+              (Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: (Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.utensils,
                             color: Colors.black54,
-                            fontWeight: FontWeight.bold,
+                            size: 30,
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      children: details!.dishTypes!.map((dishType) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
+                          SizedBox(width: 5),
+                          Text(
+                            'Dish Types',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.amberAccent,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7, // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Center(
-                              child: Text(
-                                dishType,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        children: details!.dishTypes!.map((dishType) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Colors.amberAccent,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7, // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: Center(
+                                child: Text(
+                                  dishType,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ])),
-            ),
+                          );
+                        }).toList(),
+                      ),
+                    ])),
+              )),
           if (details?.cuisines != null)
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -946,6 +916,13 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     diets(context)
                   ])),
             ),
+          Container(
+            margin: const EdgeInsets.all(20.0),
+            child: const Divider(
+              thickness: 2,
+              color: Colors.black54,
+            ),
+          ),
           Container(
             margin: const EdgeInsets.all(20.0),
             padding: const EdgeInsets.all(10.0),
@@ -1058,5 +1035,16 @@ class _ProcedurePageState extends State<ProcedurePage> {
     setState(() {
       isLiked = Favourites.checkIfLiked(details!.id!.toString());
     });
+  }
+
+  double roundOffToXDecimal(double number, {int numberOfDecimal = 2}) {
+    // To prevent number that ends with 5 not round up correctly in Dart (eg: 2.275 round off to 2.27 instead of 2.28)
+    String numbersAfterDecimal = number.toString().split('.')[1];
+    if (numbersAfterDecimal != '0') {
+      int existingNumberOfDecimal = numbersAfterDecimal.length;
+      number += 1 / (10 * pow(10, existingNumberOfDecimal));
+    }
+
+    return double.parse(number.toStringAsFixed(numberOfDecimal));
   }
 }
