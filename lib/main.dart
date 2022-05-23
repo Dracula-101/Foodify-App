@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AnimatedSplashScreen(
-          duration: 5000,
+          duration: 4000,
           splash: const SplashScreen(),
           nextScreen: App(),
           splashIconSize: window.physicalSize.height,

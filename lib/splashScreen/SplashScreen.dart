@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:foodify/views/widgets/video_widget.dart';
@@ -16,16 +18,23 @@ class _SplashScreenState extends State<SplashScreen>
   AnimationController? _textAnimation;
   double _opacity = 0;
   bool changeDim = false;
-
+  late var timer;
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     _textAnimation = AnimationController(
-      duration: const Duration(milliseconds: 4500),
+      duration: const Duration(milliseconds: 6000),
       vsync: this,
     );
     fadeInText();
-    Future.delayed(const Duration(milliseconds: 4000));
+    if (mounted) {
+      timer = Timer(
+        const Duration(milliseconds: 4000),
+        () => setState(() {
+          changeDim = !changeDim;
+        }),
+      );
+    }
     super.initState();
   }
 
@@ -33,14 +42,12 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     _controller!.dispose();
     _textAnimation!.dispose();
-    setState(() {
-      changeDim = !changeDim;
-    });
+    timer.cancel();
     super.dispose();
   }
 
   fadeInText() async {
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       if (!mounted) return;
       setState(() {
         _opacity = 1;
