@@ -146,6 +146,7 @@ class Favourites extends StatelessWidget {
 
   static void removeFavourites(String string) {
     controller.removeFavourite(string);
+    controller.removeFromDatabase(string);
   }
 
   static void updateFavourites(String recipeName, String id, String imageUrl,
@@ -162,37 +163,3 @@ class Favourites extends StatelessWidget {
     return false;
   }
 }
-
-
-
-
-
-// Expanded(
-//                 child: GetX<FavouritesController>(
-//                   init: FavouritesController(),
-//                   builder: (controller) {
-//                     return ListView.builder(
-//                       physics: const BouncingScrollPhysics(
-//                           parent: BouncingScrollPhysics()),
-//                       itemCount: controller.favouritesList.length,
-//                       itemBuilder: (context, index) {
-//                         return FavouritesCard(
-//                           recipeName: controller.favouritesList
-//                               .elementAt(index)
-//                               .recipeName,
-//                           id: controller.favouritesList.elementAt(index).id,
-//                           imageUrl: controller.favouritesList
-//                               .elementAt(index)
-//                               .imageUrl,
-//                           rating:
-//                               controller.favouritesList.elementAt(index).rating,
-//                           cooktime: controller.favouritesList
-//                               .elementAt(index)
-//                               .cooktime,
-//                         );
-//                       },
-//                     );
-//                   },
-//                 ),
-//               ))
-

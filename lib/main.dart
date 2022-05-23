@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,6 +13,7 @@ import 'package:foodify/splashScreen/SplashScreen.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/drawer/gf_drawer.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
 import 'pages/MyList/mylist.dart';
@@ -35,7 +37,7 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -121,7 +123,6 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer>
     with SingleTickerProviderStateMixin {
-  late FancyDrawerController _controller;
   List<Widget> screens = [
     const MyHomePage(),
     const VideoFinder(),
@@ -136,18 +137,12 @@ class _HomeDrawerState extends State<HomeDrawer>
   setSelectedWidget(int i) {
     setState(() {
       selectedWidget = screens[i];
-      _controller.close();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = FancyDrawerController(
-        vsync: this, duration: const Duration(milliseconds: 250))
-      ..addListener(() {
-        setState(() {}); // Must call setState
-      }); // This chunk of code is important
   }
 
   @override
@@ -158,198 +153,278 @@ class _HomeDrawerState extends State<HomeDrawer>
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.amber, Colors.amberAccent],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.1, 0.95],
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0.0,
+          title: const Text(
+            "Foodify",
+            style: TextStyle(
+              fontSize: 25,
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
+          backgroundColor: Colors.white12,
         ),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-          child: FancyDrawerWrapper(
-            backgroundColor: Colors.transparent,
-            controller: _controller,
-            itemGap: 13,
-            cornerRadius: 15,
-            drawerItems: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
+        drawerDragStartBehavior: DragStartBehavior.down,
+        drawerEnableOpenDragGesture: true,
+        drawerEdgeDragWidth: 100,
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              Stack(
+                children: [
+                  ClipRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                      child: Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.3),
+                          image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/img_videoimage_1.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const DrawerHeader(
+                    decoration: BoxDecoration(),
+                    child: Text('Foodify',
+                        style: TextStyle(
+                            color: Colors.amberAccent,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Amsterdam-ZVGqm")),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
                 child: Container(
-                  height: 55,
-                  width: 200,
-                  child: FittedBox(
-                    child: ElevatedButton(
-                      child: Text(
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.home,
+                        color: Colors.amberAccent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
                         "Home",
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.purple.shade700,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () {
-                        setSelectedWidget(0);
-                      },
-                    ),
+                    ],
                   ),
                 ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setSelectedWidget(0);
+                  //close drawer
+                },
               ),
-              Align(
-                alignment: Alignment.centerLeft,
+              InkWell(
                 child: Container(
-                  height: 55,
-                  width: 200,
-                  child: FittedBox(
-                    child: ElevatedButton(
-                      child: Text(
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.video_library,
+                        color: Colors.amberAccent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
                         "Recipe Videos",
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.purple.shade700,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () {
-                        setSelectedWidget(1);
-                      },
-                    ),
+                    ],
                   ),
                 ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setSelectedWidget(1);
+                },
               ),
-              Align(
-                alignment: Alignment.centerLeft,
+              InkWell(
                 child: Container(
-                  height: 55,
-                  width: 200,
-                  child: FittedBox(
-                    child: ElevatedButton(
-                      child: Text(
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.settings,
+                        color: Colors.amberAccent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
                         "Settings",
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.purple.shade700,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () {
-                        setSelectedWidget(2);
-                      },
-                    ),
+                    ],
                   ),
                 ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setSelectedWidget(2);
+                },
               ),
-              Align(
-                alignment: Alignment.centerLeft,
+              InkWell(
                 child: Container(
-                  height: 55,
-                  width: 200,
-                  child: FittedBox(
-                    child: ElevatedButton(
-                      child: Text(
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.info,
+                        color: Colors.amberAccent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
                         "Contact Us",
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.purple.shade700,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () async {
-                        String url = 'mailto:$toMailId?subject=$subject';
-                        if (!await launch(url, enableJavaScript: true)) {
-                          Get.snackbar(
-                            "Couldn't launch URL",
-                            "Please check your Internet connection",
-                            duration: const Duration(seconds: 2),
-                            icon: const Icon(
-                                FontAwesomeIcons.triangleExclamation,
-                                color: Colors.white),
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
-                        }
-                      },
-                    ),
+                    ],
                   ),
                 ),
+                onTap: () async {
+                  String url = 'mailto:$toMailId?subject=$subject';
+                  if (!await launch(url, enableJavaScript: true)) {
+                    Get.snackbar(
+                      "Couldn't launch URL",
+                      "Please check your Internet connection",
+                      duration: const Duration(seconds: 2),
+                      icon: const Icon(FontAwesomeIcons.triangleExclamation,
+                          color: Colors.white),
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                  }
+                },
               ),
-              Align(
-                alignment: Alignment.centerLeft,
+              InkWell(
                 child: Container(
-                  height: 55,
-                  width: 200,
-                  child: FittedBox(
-                    child: ElevatedButton(
-                      child: Text(
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.logout,
+                        color: Colors.amberAccent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
                         "Log Out",
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.purple.shade700,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () {
-                        logout();
-                      },
-                    ),
+                    ],
                   ),
                 ),
+                onTap: () {
+                  logout();
+                },
               ),
-              Align(
-                alignment: Alignment.centerLeft,
+              InkWell(
                 child: Container(
-                  color: Colors.transparent,
-                  height: 55,
-                  width: 200,
-                  child: InkWell(
-                    child: const Center(
-                      child: Text(
-                        "Close",
-                        textAlign: TextAlign.center,
+                  margin: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.developer_board,
+                        color: Colors.amberAccent,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Dev Team",
                         style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                    ),
-                    onTap: () {
-                      print('closed');
-                      _controller.close();
-                    },
+                    ],
                   ),
                 ),
+                onTap: () {
+                  Get.snackbar(
+                    "Developed by:",
+                    "Pratik Pujari, Dilip Patel and Krishna Pai",
+                    duration: const Duration(seconds: 2),
+                    icon: const Icon(FontAwesomeIcons.handsClapping,
+                        color: Colors.black54),
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                },
               ),
+
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: Container(
+              //     color: Colors.transparent,
+              //     height: 55,
+              //     width: 200,
+              //     child: InkWell(
+              //       child: const Center(
+              //         child: Text(
+              //           "Close",
+              //           textAlign: TextAlign.center,
+              //           style: TextStyle(
+              //             fontSize: 22,
+              //             color: Colors.white,
+              //             fontWeight: FontWeight.normal,
+              //           ),
+              //         ),
+              //       ),
+              //       onTap: () {
+              //         print('closed');
+              //         _controller.close();
+              //       },
+              //     ),
+              //   ),
+              // ),
             ],
-            child: Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                elevation: 0.0,
-                title: const Text(
-                  "Foodify",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontFamily: "OpenSans",
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                backgroundColor: Colors.white12,
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    _controller.toggle();
-                  },
-                ),
-              ),
-              body: selectedWidget,
-            ),
           ),
         ),
+        body: selectedWidget,
       ),
     );
   }
@@ -452,49 +527,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ), //Searchbar
-        // Search(),pub
-        // GFSearchBar(
-        //   searchList: list,
-        //   searchQueryBuilder: (query, list) {
-        //     return list
-        //         .where((item) =>
-        //             item.toString().toLowerCase().contains(query.toLowerCase()))
-        //         .toList();
-        //   },
-        //   noItemsFoundWidget: Container(),
-        //   searchBoxInputDecoration: InputDecoration(
-        //     iconColor: Colors.amberAccent,
-        //     hintText: "Search for a recipe",
-        //     border: OutlineInputBorder(
-        //       borderSide: BorderSide(color: Colors.amberAccent),
-        //       borderRadius: BorderRadius.circular(20),
-        //     ),
-        //     suffix: InkWell(
-        //         onTap: () {
-        //           RecipeSearchCard(
-        //               title: searchController.text, isCuisine: false);
-        //         },
-        //         child: Icon(Icons.search)),
-        //   ),
-        //   overlaySearchListItemBuilder: (item) {
-        //     return Container(
-        //       padding: const EdgeInsets.all(10),
-        //       child: Text(
-        //         item.toString(),
-        //         style: const TextStyle(fontSize: 20),
-        //       ),
-        //     );
-        //   },
-        //   onItemSelected: (item) {
-        //     print('$item');
-        //   },
-        // ),
         Expanded(
           child: ListView(
             cacheExtent: 10000,
             addAutomaticKeepAlives: true,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text(
                   "Trending",
@@ -505,9 +543,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              TrendingWidget(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              const TrendingWidget(),
+              const Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text(
                   "Recipes for you",
                   style: TextStyle(
@@ -544,7 +583,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: IndexedStack(
           index: currentTab,
           children: [
-            Home(),
+            const Home(),
             Favourites(),
             MyList(),
             TakePictureScreen(

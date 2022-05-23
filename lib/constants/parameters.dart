@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 String cuisine = "";
 bool isVegetarian = false;
 bool isBoth = true;

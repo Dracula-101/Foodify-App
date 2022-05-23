@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/constants/parameters.dart';
-import 'package:getwidget/components/button/gf_button.dart';
-import 'package:getwidget/components/toggle/gf_toggle.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:getwidget/types/gf_toggle_type.dart';
-
-import '../../constants/key.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);

@@ -102,9 +102,9 @@ class _RecipeCardState extends State<RecipeCard> {
                       Favourites.updateFavourites(
                         widget.title,
                         widget.id.toString(),
-                        widget.cookTime,
-                        widget.rating,
                         widget.thumbnailUrl,
+                        widget.rating,
+                        widget.cookTime,
                       );
                     } else {
                       Favourites.removeFavourites(widget.id.toString());
