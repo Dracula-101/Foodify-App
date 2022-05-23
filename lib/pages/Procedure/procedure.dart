@@ -436,14 +436,14 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                             height: 5,
                                           ),
                                           Text(
-                                              ((details!.spoonacularScore ??
-                                                              roundOffToXDecimal(
-                                                                  (Random()
-                                                                          .nextDouble()) *
-                                                                      5)) /
+                                              details!.spoonacularScore != null
+                                                  ? (details!.spoonacularScore! /
                                                           20.0)
-                                                      .toString() +
-                                                  ' Stars',
+                                                      .toString()
+                                                  : (Random().nextDouble() * 5)
+                                                          .toStringAsPrecision(
+                                                              2) +
+                                                      ' Stars',
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   overflow:

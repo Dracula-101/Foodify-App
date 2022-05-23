@@ -358,7 +358,8 @@ class _SettingsState extends State<Settings> {
                   borderRadius: BorderRadius.circular(15),
                   border: const BorderSide(color: Colors.black12, width: 1),
                   dropdownButtonColor: Colors.white,
-                  value: cuisineLatest,
+                  value: makeCuisine[0].toUpperCase() +
+                      makeCuisine.substring(1, makeCuisine.length),
                   onChanged: (newValue) {
                     cuisineLatest = newValue.toString();
                     setState(() {
