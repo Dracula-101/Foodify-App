@@ -64,7 +64,7 @@ class _CameraScreenState extends State<CameraScreen> {
               }
             },
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -78,13 +78,14 @@ class _CameraScreenState extends State<CameraScreen> {
                         initializeCamera(selectedCamera);
                       });
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('No secondary camera found'),
-                        duration: const Duration(seconds: 2),
+                        duration: Duration(seconds: 2),
                       ));
                     }
                   },
-                  icon: Icon(Icons.switch_camera_rounded, color: Colors.white),
+                  icon: const Icon(Icons.switch_camera_rounded,
+                      color: Colors.white),
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -97,7 +98,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   child: Container(
                     height: 60,
                     width: 60,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
@@ -128,7 +129,7 @@ class _CameraScreenState extends State<CameraScreen> {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

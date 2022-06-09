@@ -29,7 +29,7 @@ class _CuisinesState extends State<Cuisines> {
             );
           },
               transition: Transition.cupertino,
-              duration: Duration(seconds: 1),
+              duration: const Duration(seconds: 1),
               curve: Curves.fastOutSlowIn);
         },
         child: Container(

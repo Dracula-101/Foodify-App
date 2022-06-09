@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodify/constants/key.dart';
-import 'package:foodify/constants/parameters.dart';
 import 'package:get/get.dart';
 
 import 'recipeSearch_card.dart';
@@ -37,7 +36,7 @@ class ExampleParallax extends StatelessWidget {
               imageUrl: cui.imageUrl,
               name: cui.name,
             ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
         ],
       ),
     );
@@ -66,7 +65,7 @@ class CuisinesListItem extends StatelessWidget {
           );
         },
             transition: Transition.cupertino,
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             curve: Curves.fastOutSlowIn);
       },
       child: Padding(

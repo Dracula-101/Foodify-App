@@ -138,7 +138,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.2,
                       ),
-                      Loader(),
+                      const Loader(),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
@@ -249,7 +249,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                       padding: EdgeInsets.all(5),
                       child: Text(
                         'No recipes found',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
                           color: Colors.black54,
                           fontWeight: FontWeight.bold,
@@ -260,7 +260,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                       padding: EdgeInsets.all(5),
                       child: Text(
                         'Try taking picture of these food items',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           color: Colors.black54,
                           fontWeight: FontWeight.bold,
@@ -307,7 +307,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         if (snapshot.connectionState == ConnectionState.done) {
           return buildCamera();
         } else {
-          return Center(child: Loader());
+          return const Center(child: Loader());
         }
       },
     );

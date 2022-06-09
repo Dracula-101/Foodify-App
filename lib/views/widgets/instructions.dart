@@ -76,7 +76,7 @@ class Instructions extends StatelessWidget {
                         width: size,
                         child: Text(
                           title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
                             overflow: TextOverflow.ellipsis,
                             color: Colors.black54,
@@ -93,7 +93,7 @@ class Instructions extends StatelessWidget {
               // margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
               padding: const EdgeInsets.all(10),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.8,
+                height: MediaQuery.of(context).size.height * 0.7,
                 width: MediaQuery.of(context).size.width,
                 child: PageView(
                     // scrollBehavior: ScrollBehavior(),
@@ -399,9 +399,9 @@ class Instructions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (instructions[0].steps[index].equipment.length > 0)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
               "Equiments",
               style: TextStyle(
                 fontSize: 25,

@@ -18,7 +18,7 @@ class RecipeCard extends StatefulWidget {
   final String caloriesUnit;
   final String description;
 
-  RecipeCard(
+  const RecipeCard(
       {Key? key,
       required this.id,
       required this.title,
@@ -31,6 +31,7 @@ class RecipeCard extends StatefulWidget {
       required this.description})
       : super(key: key);
 
+  @override
   State<RecipeCard> createState() => _RecipeCardState();
 }
 
@@ -231,7 +232,7 @@ class _RecipeCardState extends State<RecipeCard> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: const BorderRadius.only(
-                            topLeft: const Radius.circular(15)),
+                            topLeft: Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.6),

@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:foodify/models/image_analysis.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';
-import 'image_analysis.api.dart';
 
 class ImageAnalysisAPI {
   static int breakLoop = 5;

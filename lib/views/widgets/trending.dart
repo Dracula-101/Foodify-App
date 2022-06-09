@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:foodify/models/recipe.api.dart';
@@ -7,7 +6,6 @@ import 'package:foodify/models/recipe.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
 
 class TrendingWidget extends StatefulWidget {
   const TrendingWidget({Key? key}) : super(key: key);
@@ -98,7 +96,7 @@ class _TrendingWidgetState extends State<TrendingWidget> {
                   Container(
                     alignment: Alignment.bottomCenter,
                     clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15)),

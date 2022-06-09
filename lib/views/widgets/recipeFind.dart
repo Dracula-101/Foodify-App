@@ -47,11 +47,11 @@ class _RecipeFindClassState extends State<RecipeFindClass> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: _isLoading
-            ? Center(child: Loader())
+            ? const Center(child: Loader())
             : Container(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Row(children: [

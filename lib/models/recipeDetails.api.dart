@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:foodify/models/recipeDetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';

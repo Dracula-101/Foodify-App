@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodify/constants/key.dart' as key;
-import 'package:foodify/constants/parameters.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
 import "dart:io";
@@ -171,7 +170,7 @@ class _PredictionState extends State<Prediction> {
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                   )),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
@@ -269,7 +268,7 @@ class _PredictionState extends State<Prediction> {
                                   errorWidget: (context, url, error) =>
                                       const Icon(Icons.error),
                                 )),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text(
@@ -284,7 +283,7 @@ class _PredictionState extends State<Prediction> {
                         ),
                         GFToggle(
                           enabledTrackColor: Colors.amber,
-                          duration: Duration(milliseconds: 100),
+                          duration: const Duration(milliseconds: 100),
                           onChanged: (val) {
                             isVegetableAdded[index] = (!val!);
                             print(isVegetableAdded[index]);
@@ -485,7 +484,7 @@ class _PredictionState extends State<Prediction> {
                         ),
                       ),
                       const Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: Text(
                           'Details',
                           style: TextStyle(
@@ -538,7 +537,7 @@ class _PredictionState extends State<Prediction> {
                       Container(
                         height: 50,
                         width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.white,

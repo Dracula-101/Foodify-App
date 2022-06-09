@@ -57,7 +57,7 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
       ),
       body: Container(
         child: _isLoading
-            ? Center(child: Loader())
+            ? const Center(child: Loader())
             : _recipes.isEmpty
                 ? Center(
                     child: Column(
@@ -76,20 +76,20 @@ class _RecipeSearchCardState extends State<RecipeSearchCard> {
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
+                                    const BorderRadius.all(Radius.circular(50)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset: Offset(
+                                    offset: const Offset(
                                         0, 3), // changes position of shadow
                                   )
                                 ]),
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           Text("No recipes found for " + widget.title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                         ]),
                   )

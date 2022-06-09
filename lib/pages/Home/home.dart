@@ -1,20 +1,12 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:foodify/loading/loadingPlate.dart';
 import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
 import 'package:foodify/pages/Explore%20Page/explore.dart';
-import 'package:foodify/pages/RandomRecipe/controller/random_recipe_controller.dart';
-import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
-import 'package:foodify/pages/VideoFinder/video_finder.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/recipe_card.dart';
-import 'package:foodify/views/widgets/search.dart';
-import 'package:foodify/views/widgets/searchbar.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
@@ -217,10 +209,10 @@ class _HomeState extends State<Home> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Row(
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       "Trending",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 25,
                         color: Colors.black54,
                         fontWeight: FontWeight.bold,

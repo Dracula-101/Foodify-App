@@ -13,7 +13,6 @@ import 'package:foodify/splashScreen/SplashScreen.dart';
 import 'package:foodify/views/widgets/recipeSearch_card.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/drawer/gf_drawer.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
 import 'pages/MyList/mylist.dart';
@@ -24,7 +23,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fancy_drawer/fancy_drawer.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
@@ -183,7 +181,7 @@ class _HomeDrawerState extends State<HomeDrawer>
                         height: 200,
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.3),
-                          image: DecorationImage(
+                          image: const DecorationImage(
                             image: AssetImage(
                                 "assets/images/img_videoimage_1.png"),
                             fit: BoxFit.cover,
@@ -453,7 +451,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String? name, confidence;
   int currentTab = 0;
 
-  dynamic _pickImageError;
   ImagePicker? _picker;
   TextEditingController searchController = TextEditingController();
 
@@ -531,8 +528,8 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             cacheExtent: 10000,
             addAutomaticKeepAlives: true,
-            children: [
-              const Padding(
+            children: const [
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text(
                   "Trending",
@@ -543,10 +540,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              const TrendingWidget(),
-              const Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              TrendingWidget(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text(
                   "Recipes for you",
                   style: TextStyle(
@@ -584,8 +580,8 @@ class _MyHomePageState extends State<MyHomePage> {
           index: currentTab,
           children: [
             const Home(),
-            Favourites(),
-            MyList(),
+            const Favourites(),
+            const MyList(),
             TakePictureScreen(
               camera: firstCamera,
             )

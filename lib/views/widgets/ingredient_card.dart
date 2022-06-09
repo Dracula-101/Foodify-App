@@ -79,7 +79,7 @@ class Ingredient_Card extends StatelessWidget {
               ),
               placeholder: (context, url) => ShimmerWidget.rectangular(
                   height: 180, br: BorderRadius.circular(15)),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
           Row(
@@ -104,11 +104,12 @@ class Ingredient_Card extends StatelessWidget {
                   padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.4),
+                    color: const Color.fromARGB(255, 255, 255, 255)
+                        .withOpacity(0.4),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: InkWell(
-                    child: Icon(
+                    child: const Icon(
                       Icons.delete,
                       color: Color.fromARGB(255, 59, 160, 255),
                       size: 30,
@@ -126,7 +127,7 @@ class Ingredient_Card extends StatelessWidget {
       )),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(15)),
-        color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
+        color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.4),
       ),
     );
     // return Container(

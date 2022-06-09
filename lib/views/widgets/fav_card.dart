@@ -1,15 +1,11 @@
-// import 'dart:html';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:foodify/models/recipeDetails.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 
 class FavouritesCard extends StatelessWidget {
   String recipeName, id, imageUrl, rating, cooktime;

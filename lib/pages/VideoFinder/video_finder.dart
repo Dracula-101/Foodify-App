@@ -1,13 +1,9 @@
-import 'dart:developer';
-
-import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
 import 'package:foodify/models/video_finder.api.dart';
 import 'package:foodify/views/widgets/video_widget.dart';
-import 'package:getwidget/components/search_bar/gf_search_bar.dart';
 
 import '../../loading/loader.dart';
 
@@ -164,14 +160,14 @@ class _VideoFinderState extends State<VideoFinder> {
                               )
                             ]),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
-                      Text('Search for Recipes',
+                      const Text('Search for Recipes',
                           style: TextStyle(color: Colors.black54, fontSize: 20))
                     ],
                   )
-                : Loader()
+                : const Loader()
             : _videos != null
                 ? ListView.builder(
                     shrinkWrap: true,
@@ -193,7 +189,7 @@ class _VideoFinderState extends State<VideoFinder> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(height: 60),
+                          const SizedBox(height: 60),
                           Container(
                             width: 250,
                             height: 250,
@@ -206,20 +202,20 @@ class _VideoFinderState extends State<VideoFinder> {
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
+                                    const BorderRadius.all(Radius.circular(50)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset: Offset(
+                                    offset: const Offset(
                                         0, 3), // changes position of shadow
                                   )
                                 ]),
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           Text("No recipes found for " + searched,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                         ]),
                   )

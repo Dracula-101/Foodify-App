@@ -2,15 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:foodify/pages/Image%20Picker/imagePicker.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
 void main() {
   testWidgets('Testing of machine learning model', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(const MyApp());
 
     // // Verify that our counter starts at 0.
     // expect(find.text('0'), findsOneWidget);
@@ -38,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
@@ -54,9 +52,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List? recognitions;
   XFile? ximage;
   String? name, confidence;
-
-  List<XFile>? _imageFileList;
-  dynamic _pickImageError;
   ImagePicker? _picker;
 
   @override
@@ -160,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               selectFromImagePicker();
             },
-            child: Text('Select Image'),
+            child: const Text('Select Image'),
           ),
           Text('Name: $name'),
           Text('Confidence: $confidence'),

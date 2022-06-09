@@ -9,7 +9,7 @@ class MyListModel {
 
   Widget _addItemButton(String item) {
     return FloatingActionButton(
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
       backgroundColor: Colors.blue,
       foregroundColor: Colors.white,
       onPressed: () => _insertSingleItem(item),
@@ -29,22 +29,22 @@ class MyListModel {
     return SizeTransition(
       sizeFactor: animation,
       child: Card(
-        color: Color.fromARGB(248, 248, 255, 255),
+        color: const Color.fromARGB(248, 248, 255, 255),
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.white70, width: 1),
+          side: const BorderSide(color: Colors.white70, width: 1),
           borderRadius: BorderRadius.circular(20),
         ),
-        margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
         elevation: 5.0,
         borderOnForeground: true,
         child: ListTile(
-          leading: CircleAvatar(
+          leading: const CircleAvatar(
               backgroundColor: Colors.white,
               foregroundColor: Colors.greenAccent,
               backgroundImage: AssetImage('assets/images/image 1.png')),
           title: Text(
             item,
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
           trailing: GestureDetector(
             child: Column(

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
-import 'package:foodify/views/widgets/video_widget.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -86,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen>
                     duration: const Duration(milliseconds: 1500),
                     curve: Curves.fastOutSlowIn,
                     height: changeDim
-                        ? MediaQuery.of(context).size.height * 0.4
+                        ? MediaQuery.of(context).size.height * 0.35
                         : MediaQuery.of(context).size.height * 0.7,
                   ),
                   AnimatedOpacity(

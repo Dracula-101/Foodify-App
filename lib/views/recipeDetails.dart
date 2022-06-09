@@ -1,5 +1,3 @@
-import 'package:foodify/models/recipe.dart';
-
 class recipeID {
   late String title;
   late String imageUrl;

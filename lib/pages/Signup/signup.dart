@@ -1,17 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/main.dart';
 import 'dart:ui';
-import 'package:flutter/material.dart';
 
 class SignupPage extends StatefulWidget {
-  SignupPage({Key? key}) : super(key: key);
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -68,7 +64,7 @@ class _SignupPageState extends State<SignupPage> {
                   //     ),
                   //   ),
                   // ),
-                  Text(
+                  const Text(
                     'Welcome to Foodify',
                     style: TextStyle(
                         fontFamily: "Amsterdam-ZVGqm",
@@ -91,11 +87,11 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           child: Center(
                             child: TextField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
                                   child: Icon(
                                     FontAwesomeIcons.user,
                                     size: 28,
@@ -108,7 +104,7 @@ class _SignupPageState extends State<SignupPage> {
                                     color: Colors.white,
                                     height: 1.5),
                               ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 22,
                                   color: Colors.white,
                                   height: 1.5),
@@ -132,11 +128,11 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           child: Center(
                             child: TextField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
                                   child: Icon(
                                     FontAwesomeIcons.envelope,
                                     size: 28,
@@ -149,7 +145,7 @@ class _SignupPageState extends State<SignupPage> {
                                     color: Colors.white,
                                     height: 1.5),
                               ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 22,
                                   color: Colors.white,
                                   height: 1.5),
@@ -173,11 +169,11 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           child: Center(
                             child: TextField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
                                   child: Icon(
                                     FontAwesomeIcons.lock,
                                     size: 28,
@@ -191,7 +187,7 @@ class _SignupPageState extends State<SignupPage> {
                                     height: 1.5),
                               ),
                               obscureText: true,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 22,
                                   color: Colors.white,
                                   height: 1.5),
@@ -233,7 +229,7 @@ class _SignupPageState extends State<SignupPage> {
                                     height: 1.5),
                               ),
                               obscureText: true,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 22,
                                   color: Colors.white,
                                   height: 1.5),
@@ -246,7 +242,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
                       Container(
@@ -263,8 +259,9 @@ class _SignupPageState extends State<SignupPage> {
                                 "Email field empty",
                                 "Please enter your Details",
                                 colorText: Colors.black,
-                                duration: Duration(seconds: 2),
-                                icon: Icon(Icons.person, color: Colors.white),
+                                duration: const Duration(seconds: 2),
+                                icon: const Icon(Icons.person,
+                                    color: Colors.white),
                                 snackPosition: SnackPosition.BOTTOM,
                               );
                               return;
@@ -274,8 +271,9 @@ class _SignupPageState extends State<SignupPage> {
                                 "Password field empty",
                                 "Please enter your Details",
                                 colorText: Colors.black,
-                                duration: Duration(seconds: 2),
-                                icon: Icon(Icons.person, color: Colors.white),
+                                duration: const Duration(seconds: 2),
+                                icon: const Icon(Icons.person,
+                                    color: Colors.white),
                                 snackPosition: SnackPosition.BOTTOM,
                               );
                               return;
@@ -285,8 +283,9 @@ class _SignupPageState extends State<SignupPage> {
                                 "Confirm Password Empty",
                                 "Please enter your Password again",
                                 colorText: Colors.black,
-                                duration: Duration(seconds: 2),
-                                icon: Icon(Icons.person, color: Colors.white),
+                                duration: const Duration(seconds: 2),
+                                icon: const Icon(Icons.person,
+                                    color: Colors.white),
                                 snackPosition: SnackPosition.BOTTOM,
                               );
                               return;
@@ -299,8 +298,9 @@ class _SignupPageState extends State<SignupPage> {
                                   "Account created successfuly",
                                   "Redirecting to Home Page",
                                   colorText: Colors.black,
-                                  duration: Duration(seconds: 2),
-                                  icon: Icon(Icons.person, color: Colors.white),
+                                  duration: const Duration(seconds: 2),
+                                  icon: const Icon(Icons.person,
+                                      color: Colors.white),
                                   snackPosition: SnackPosition.BOTTOM,
                                 );
                                 // Navigator.push(
@@ -310,7 +310,7 @@ class _SignupPageState extends State<SignupPage> {
                                 // );
                                 Navigator.pushAndRemoveUntil(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return HomeDrawer();
+                                  return const HomeDrawer();
                                 }), (route) => false);
                               }
                             } else {
@@ -318,14 +318,15 @@ class _SignupPageState extends State<SignupPage> {
                                 'Passwords don\'t match',
                                 "Please verify your passwords",
                                 colorText: Colors.black,
-                                duration: Duration(seconds: 2),
-                                icon: Icon(Icons.person, color: Colors.white),
+                                duration: const Duration(seconds: 2),
+                                icon: const Icon(Icons.person,
+                                    color: Colors.white),
                                 snackPosition: SnackPosition.BOTTOM,
                               );
                               print('Passwords don\'t match');
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             'Register',
                             style: TextStyle(
                                 fontSize: 22,
@@ -335,7 +336,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Row(
@@ -367,7 +368,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                     ],
@@ -390,8 +391,8 @@ class _SignupPageState extends State<SignupPage> {
         Get.snackbar(
           "Account already exists",
           "",
-          duration: Duration(seconds: 2),
-          icon: Icon(Icons.person, color: Colors.white),
+          duration: const Duration(seconds: 2),
+          icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
         print('Account already exists');
@@ -399,8 +400,8 @@ class _SignupPageState extends State<SignupPage> {
         Get.snackbar(
           "Password too weak",
           "Minimum Password length is 6 characters",
-          duration: Duration(seconds: 2),
-          icon: Icon(Icons.person, color: Colors.white),
+          duration: const Duration(seconds: 2),
+          icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
         print('Minimum length of the password should be 6 characters');

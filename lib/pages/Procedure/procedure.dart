@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,6 @@ import 'package:foodify/models/recipeDetails.dart';
 import 'package:foodify/pages/Favourites/favourites.dart';
 import 'package:foodify/views/widgets/instructions.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
@@ -231,7 +228,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     onPressed: () {
                       return Get.back();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       FontAwesomeIcons.arrowLeft,
                       color: Colors.black,
                     ),
@@ -380,7 +377,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                                     ? "Favourited!"
                                                     : "Like This ?",
                                                 textAlign: TextAlign.center,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 20,
                                                     color: Colors.black54),
@@ -778,13 +775,15 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     ],
                   ),
                 ),
-          Container(
-            margin: const EdgeInsets.all(20.0),
-            child: const Divider(
-              thickness: 2,
-              color: Colors.black54,
-            ),
-          ),
+          if (details != null)
+            if (details!.dishTypes!.isNotEmpty && details!.diets!.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.all(20.0),
+                child: const Divider(
+                  thickness: 2,
+                  color: Colors.black54,
+                ),
+              ),
           // instructions(context),
           if (details?.dishTypes != null)
             if (details!.dishTypes!.isNotEmpty)
@@ -853,69 +852,71 @@ class _ProcedurePageState extends State<ProcedurePage> {
                     ])),
               )),
           if (details?.cuisines != null)
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: (Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (details!.cuisines!.isNotEmpty)
-                      Row(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.bowlFood,
-                            color: Colors.black54,
-                            size: 25,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Cusines',
-                            style: TextStyle(
-                              fontSize: 25,
+            if (details!.cuisines!.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: (Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (details!.cuisines!.isNotEmpty)
+                        Row(
+                          children: const [
+                            Icon(
+                              FontAwesomeIcons.bowlFood,
                               color: Colors.black54,
-                              fontWeight: FontWeight.bold,
+                              size: 25,
                             ),
-                          ),
-                        ],
-                      ),
-                    const SizedBox(height: 10),
-                    cuisines(context)
-                  ])),
-            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Cusines',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 10),
+                      cuisines(context)
+                    ])),
+              ),
           if (details?.diets != null)
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: (Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (details!.diets!.isNotEmpty)
-                      Row(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.dumbbell,
-                            color: Colors.black54,
-                            size: 25,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Diets',
-                            style: TextStyle(
-                              fontSize: 25,
+            if (details!.diets!.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: (Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (details!.diets!.isNotEmpty)
+                        Row(
+                          children: const [
+                            Icon(
+                              FontAwesomeIcons.dumbbell,
                               color: Colors.black54,
-                              fontWeight: FontWeight.bold,
+                              size: 25,
                             ),
-                          ),
-                        ],
-                      ),
-                    const SizedBox(height: 10),
-                    diets(context)
-                  ])),
-            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Diets',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 10),
+                      diets(context)
+                    ])),
+              ),
           Container(
             margin: const EdgeInsets.all(20.0),
             child: const Divider(

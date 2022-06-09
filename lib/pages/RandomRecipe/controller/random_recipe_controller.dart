@@ -1,6 +1,5 @@
 import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
-import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:get/get.dart';
 
 class RandomRecipeController extends GetxController with StateMixin<dynamic> {

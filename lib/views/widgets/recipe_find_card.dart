@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
-import 'package:foodify/models/recipeDetails.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
@@ -18,7 +17,7 @@ class RecipeFindCard extends StatelessWidget {
   final List<dynamic> usedIngredients;
   final int likes;
 
-  RecipeFindCard({
+  const RecipeFindCard({
     required this.id,
     required this.title,
     required this.image,
@@ -69,7 +68,7 @@ class RecipeFindCard extends StatelessWidget {
                 ),
                 placeholder: (context, url) => ShimmerWidget.rectangular(
                     height: 180, br: BorderRadius.circular(15)),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Align(
                 child: Column(

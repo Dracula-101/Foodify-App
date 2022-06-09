@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/models/image_analysis.dart';
 import 'package:foodify/pages/Procedure/procedure.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ImageAnalysisWidget extends StatelessWidget {
@@ -183,7 +180,7 @@ class ImageAnalysisWidget extends StatelessWidget {
                                 )
                               ],
                             ),
-                            child: Icon(
+                            child: const Icon(
                               FontAwesomeIcons.rightFromBracket,
                               color: Colors.black38,
                             ),

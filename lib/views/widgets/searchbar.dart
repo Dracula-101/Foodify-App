@@ -50,7 +50,7 @@ class _SearchBarState extends State<SearchBar> {
                                     controller: widget.searched! == false
                                         ? widget.searchController
                                         : null,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 17,
                                       color: Colors.black,
                                     ),
@@ -111,12 +111,12 @@ class _SearchBarState extends State<SearchBar> {
                   ],
                 )),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Text(
                 widget.text,
                 textDirection: TextDirection.ltr,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: "lorabold700",
                   color: Color.fromARGB(255, 0, 0, 0),
                   fontSize: 30,

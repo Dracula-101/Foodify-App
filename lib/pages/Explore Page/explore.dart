@@ -4,7 +4,6 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/views/widgets/recipe_card.dart';
-import 'package:getwidget/components/shimmer/gf_shimmer.dart';
 
 import '../../models/recipe.dart';
 
@@ -49,14 +48,14 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Recipes for you'),
+          title: const Text('Recipes for you'),
           backgroundColor: Colors.white,
           elevation: 0.0,
         ),
         body: ListView(
           addAutomaticKeepAlives: true,
           cacheExtent: 2000,
-          children: [buildRecipes(context), RandomRecipe()],
+          children: [buildRecipes(context), const RandomRecipe()],
         ));
   }
 }

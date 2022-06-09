@@ -5,10 +5,8 @@ import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:foodify/views/widgets/recipe_card.dart';
 import 'package:getwidget/getwidget.dart';
 
-import '../../loading/loader.dart';
-
 class RandomRecipe extends StatefulWidget {
-  RandomRecipe({Key? key}) : super(key: key);
+  const RandomRecipe({Key? key}) : super(key: key);
 
   @override
   State<RandomRecipe> createState() => _RandomRecipeState();

@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/pages/Signup/signup.dart';
@@ -22,7 +21,7 @@ class LoginPage extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/bg.jpg'),
                 fit: BoxFit.cover,
@@ -73,11 +72,10 @@ class LoginPage extends StatelessWidget {
                         ),
                         child: Center(
                           child: TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               prefixIcon: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0),
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 child: Icon(
                                   FontAwesomeIcons.envelope,
                                   size: 27,
@@ -90,7 +88,7 @@ class LoginPage extends StatelessWidget {
                                   color: Colors.white54,
                                   height: 1.5),
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 21, color: Colors.white, height: 1.5),
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
@@ -112,11 +110,10 @@ class LoginPage extends StatelessWidget {
                         ),
                         child: Center(
                           child: TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               prefixIcon: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0),
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 child: Icon(
                                   FontAwesomeIcons.lock,
                                   size: 25,
@@ -130,7 +127,7 @@ class LoginPage extends StatelessWidget {
                                   height: 1.5),
                             ),
                             obscureText: true,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 21, color: Colors.white, height: 1.5),
                             keyboardType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.done,
@@ -141,7 +138,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Container(
@@ -152,7 +149,7 @@ class LoginPage extends StatelessWidget {
                         color: Colors.blue,
                       ),
                       child: TextButton(
-                        child: Text(
+                        child: const Text(
                           'Login',
                           style: TextStyle(
                               fontSize: 20,
@@ -165,13 +162,13 @@ class LoginPage extends StatelessWidget {
                           if (loggedIn) {
                             Navigator.pushAndRemoveUntil(context,
                                 MaterialPageRoute(builder: (context) {
-                              return HomeDrawer();
+                              return const HomeDrawer();
                             }), (route) => false);
                           }
                         },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                   ],
@@ -180,11 +177,12 @@ class LoginPage extends StatelessWidget {
                   onTap: () async {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignupPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignupPage()),
                     );
                   },
                   child: Container(
-                    child: Text(
+                    child: const Text(
                       'Create New Account',
                       style: TextStyle(
                         fontSize: 20,
@@ -192,14 +190,14 @@ class LoginPage extends StatelessWidget {
                         height: 1.5,
                       ),
                     ),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(width: 1, color: Colors.white),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
               ],
@@ -216,8 +214,8 @@ class LoginPage extends StatelessWidget {
         "Email field empty",
         "Please enter your Details",
         colorText: Colors.black,
-        duration: Duration(seconds: 2),
-        icon: Icon(Icons.person, color: Colors.white),
+        duration: const Duration(seconds: 2),
+        icon: const Icon(Icons.person, color: Colors.white),
         snackPosition: SnackPosition.BOTTOM,
       );
       return false;
@@ -227,8 +225,8 @@ class LoginPage extends StatelessWidget {
         "Password field empty",
         "Please enter your Details",
         colorText: Colors.black,
-        duration: Duration(seconds: 2),
-        icon: Icon(Icons.person, color: Colors.white),
+        duration: const Duration(seconds: 2),
+        icon: const Icon(Icons.person, color: Colors.white),
         snackPosition: SnackPosition.BOTTOM,
       );
       return false;
@@ -243,8 +241,8 @@ class LoginPage extends StatelessWidget {
           "No User found",
           "Please create a new account",
           colorText: Colors.black,
-          duration: Duration(seconds: 2),
-          icon: Icon(Icons.person, color: Colors.white),
+          duration: const Duration(seconds: 2),
+          icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
         print('No user found for that email.');
@@ -252,8 +250,8 @@ class LoginPage extends StatelessWidget {
         Get.snackbar(
           "Password Incorrect",
           "Please enter correct E-mail and Password",
-          duration: Duration(seconds: 2),
-          icon: Icon(Icons.person, color: Colors.white),
+          duration: const Duration(seconds: 2),
+          icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
         print('Wrong password provided for that user.');
@@ -261,8 +259,8 @@ class LoginPage extends StatelessWidget {
         Get.snackbar(
           "Too many wrong attempts",
           "Please try again later",
-          duration: Duration(seconds: 2),
-          icon: Icon(Icons.person, color: Colors.white),
+          duration: const Duration(seconds: 2),
+          icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
         print('Wrong password provided for that user.');
@@ -270,8 +268,8 @@ class LoginPage extends StatelessWidget {
         Get.snackbar(
           "Invalid Email",
           "Please recheck your Email",
-          duration: Duration(seconds: 2),
-          icon: Icon(Icons.person, color: Colors.white),
+          duration: const Duration(seconds: 2),
+          icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
         print('Wrong password provided for that user.');
@@ -284,8 +282,8 @@ class LoginPage extends StatelessWidget {
       "Login successful",
       "Redirecting to Home Page",
       colorText: Colors.black,
-      duration: Duration(seconds: 2),
-      icon: Icon(Icons.person, color: Colors.white),
+      duration: const Duration(seconds: 2),
+      icon: const Icon(Icons.person, color: Colors.white),
       snackPosition: SnackPosition.BOTTOM,
     );
     print('User logged in ...');

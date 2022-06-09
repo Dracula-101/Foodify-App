@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:foodify/constants/key.dart';
-import 'package:foodify/views/widgets/video_widget.dart';
 import 'package:http/http.dart' as http;
 
 class VideoFinderAPI {
@@ -13,14 +12,10 @@ class VideoFinderAPI {
       "apiKey": apiKey.first,
     });
 
-    print('vid uri is' + uri.toString());
-
     final response = await http.get(uri,
         headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
-    print('vid res is ok' + response.toString());
     Map data = jsonDecode(response.body);
-    print('vid data is' + data.toString());
 
     // print(data);
     if (data['code'] == 402) {

@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 class RandomRecipeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => RandomRecipe());
+    Get.lazyPut(() => const RandomRecipe());
   }
 }

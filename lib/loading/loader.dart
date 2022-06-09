@@ -8,7 +8,7 @@ class Loader extends StatefulWidget {
   final double radius;
   final double dotRadius;
 
-  Loader({this.radius = 50.0, this.dotRadius = 20.0});
+  const Loader({this.radius = 50.0, this.dotRadius = 20.0});
 
   @override
   _LoaderState createState() => _LoaderState();
@@ -39,21 +39,21 @@ class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
     animation_rotation = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.0, 1.0, curve: Curves.linear),
+        curve: const Interval(0.0, 1.0, curve: Curves.linear),
       ),
     );
 
     animation_radius_in = Tween(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.75, 1.0, curve: Curves.elasticIn),
+        curve: const Interval(0.75, 1.0, curve: Curves.elasticIn),
       ),
     );
 
     animation_radius_out = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Interval(0.0, 0.25, curve: Curves.elasticOut),
+        curve: const Interval(0.0, 0.25, curve: Curves.elasticOut),
       ),
     );
 
@@ -94,7 +94,7 @@ class Dot extends StatelessWidget {
   final double? radius;
   final Color? color;
 
-  Dot({this.radius, this.color});
+  const Dot({this.radius, this.color});
 
   @override
   Widget build(BuildContext context) {

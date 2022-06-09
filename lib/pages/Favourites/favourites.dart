@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:foodify/loading/loadingPlate.dart';
-import 'package:foodify/main.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
-import 'package:foodify/pages/Login/loginpage.dart';
-import 'package:foodify/views/widgets/searchbar.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import '../../views/widgets/fav_card.dart';
 
 class Favourites extends StatelessWidget {
-  Favourites({
+  const Favourites({
     Key? key,
   }) : super(key: key);
   static FavouritesController controller = Get.put(FavouritesController());
@@ -60,7 +55,7 @@ class Favourites extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: 100),
+        const SizedBox(height: 100),
         Center(
           child: Container(
             height: MediaQuery.of(context).size.height * 0.3,

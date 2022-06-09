@@ -11,7 +11,7 @@ class _ExpressState extends State<Express> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(
+      child: const Text(
         'Express',
         style: TextStyle(
           fontSize: 20,

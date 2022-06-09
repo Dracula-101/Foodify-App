@@ -1,12 +1,5 @@
-import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
-import 'package:foodify/constants/parameters.dart';
-import 'package:foodify/pages/MyList/controller/mylist_controller.dart';
-import 'package:foodify/constants/key.dart';
-import 'package:foodify/views/widgets/cuisine.dart';
 import 'package:foodify/views/widgets/scrolling_parallax.dart';
-import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 // class MyList extends StatelessWidget {
 //   // ignore: prefer_final_fields
@@ -132,7 +125,7 @@ import 'package:hexcolor/hexcolor.dart';
 //   }
 // }
 class MyList extends StatelessWidget {
-  MyList({Key? key}) : super(key: key);
+  const MyList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

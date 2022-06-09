@@ -3,15 +3,12 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 
 class VideoWidget extends StatefulWidget {
   final String title, length, thumbnail, youtubeId, views;
-  VideoWidget(
+  const VideoWidget(
       {required this.title,
       required this.length,
       required this.thumbnail,
