@@ -153,7 +153,6 @@ class _ChooseLocationState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    print("object");
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -170,21 +169,19 @@ class _ChooseLocationState extends State<Search> {
   }
 
   void updateFilter(String text) {
-    print("updated Text: ${text}");
     filterSearchResults(text);
   }
 
   void filterSearchResults(String query) {
     List<String> dummySearchList = <String>[];
     dummySearchList.addAll(locationList!);
-    print("List size : " + dummySearchList.length.toString());
     if (query.isNotEmpty) {
       List<String> dummyListData = <String>[];
-      dummySearchList.forEach((item) {
+      for (var item in dummySearchList) {
         if (item.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
-      });
+      }
       setState(() {
         locationDataList.clear();
         locationDataList.addAll(dummyListData);
@@ -206,60 +203,58 @@ class _ChooseLocationState extends State<Search> {
       locationDataList.addAll(locationList!);
     }
 
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _filter,
-              onChanged: (value) async {
-                await RecipeSuggestionAPI.getSuggestion(value).then((value) {
-                  setState(() {
-                    locationList = value;
-                    locationDataList.clear();
-                    locationDataList.addAll(locationList!);
-                  });
-                });
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            controller: _filter,
+            onChanged: (value) async {
+              await RecipeSuggestionAPI.getSuggestion(value).then((value) {
                 setState(() {
-                  _searchText = value;
-                  updateFilter(_searchText);
+                  locationList = value;
+                  locationDataList.clear();
+                  locationDataList.addAll(locationList!);
                 });
-              },
-              decoration: InputDecoration(
-                labelStyle: setTextStyle(),
-                labelText: "Search",
-                prefixIcon: IconButton(
-                  icon: _searchIcon,
-                  onPressed: () {
-                    _searchPressed(context.widget.runtimeType.toString());
-                  },
-                ),
-                hintText: 'Search for recipes',
-                hintStyle: setTextStyle(),
+              });
+              setState(() {
+                _searchText = value;
+                updateFilter(_searchText);
+              });
+            },
+            decoration: InputDecoration(
+              labelStyle: setTextStyle(),
+              labelText: "Search",
+              prefixIcon: IconButton(
+                icon: _searchIcon,
+                onPressed: () {
+                  _searchPressed(context.widget.runtimeType.toString());
+                },
               ),
+              hintText: 'Search for recipes',
+              hintStyle: setTextStyle(),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: locationDataList.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 1.0, horizontal: 4.0),
-                    child: Card(
-                      child: ListTile(
-                        title: Text(locationDataList[index]),
-                        leading: const CircleAvatar(),
-                      ),
+        ),
+        Expanded(
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: locationDataList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 1.0, horizontal: 4.0),
+                  child: Card(
+                    child: ListTile(
+                      title: Text(locationDataList[index]),
+                      leading: const CircleAvatar(),
                     ),
-                  );
-                }),
-          ),
-        ],
-      ),
+                  ),
+                );
+              }),
+        ),
+      ],
     );
   }
 }

@@ -3,14 +3,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:foodify/pages/DrawerItems/AboutUs.dart';
+import 'package:foodify/pages/DrawerItems/about_us.dart';
 import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/pages/Settings/settings.dart';
 import 'package:foodify/pages/VideoFinder/video_finder.dart';
 import 'package:foodify/pages/Image%20Picker/imagePicker.dart';
-import 'package:foodify/splashScreen/SplashScreen.dart';
-import 'package:foodify/views/widgets/recipeSearch_card.dart';
+import 'package:foodify/splashScreen/splashscreen.dart';
+import 'package:foodify/views/widgets/recipe_search_card.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
@@ -22,7 +22,6 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
@@ -47,14 +46,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   static Future<Widget> checkUser() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
     User? user = FirebaseAuth.instance.currentUser;
 
     // return user != null ? const MyHomePage() : LoginPage();
     return user != null ? const HomeDrawer() : LoginPage();
   }
 
-  Widget App() {
+  Widget app() {
     return GetMaterialApp(
       // showPerformanceOverlay: true,
 
@@ -104,7 +102,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
       home: AnimatedSplashScreen(
           duration: 4000,
           splash: const SplashScreen(),
-          nextScreen: App(),
+          nextScreen: app(),
           splashIconSize: window.physicalSize.height,
           splashTransition: SplashTransition.fadeTransition,
           backgroundColor: Colors.white),
@@ -443,8 +441,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  // TODO: implement wantKeepAlive
   File? image;
   List? recognitions;
   XFile? ximage;
@@ -564,9 +560,7 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     super.initState();
     _picker = ImagePicker();
-    loadModel().then((val) {
-      print('Model Loaded');
-    });
+    loadModel();
     createdHome = createHome(context);
   }
 
@@ -677,55 +671,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
   loadModel() async {
     Tflite.close();
-    print('Loadmodel called 2');
     try {
-      String res;
-
-      res = (await Tflite.loadModel(
-        model: "assets/tflite/model_unquant.tflite",
-        labels: "assets/tflite/labels.txt",
-      ))!;
-      print('Result is $res');
-
-      print(res);
-      debugPrint('Model Loaded, res is ' + res);
+      await Tflite.loadModel(
+          model: "assets/tflite/model_unquant.tflite",
+          labels: "assets/tflite/labels.txt");
     } on PlatformException {
-      print("Failed to load the model");
+      Get.snackbar(
+        'Error',
+        'Failed to load the model',
+        icon: const Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 4),
+      );
     }
   }
 
   selectFromImagePicker() async {
-    print('aaaa');
     ImagePicker imagepick = ImagePicker();
     ximage = await imagepick.pickImage(source: ImageSource.camera);
 
     image = convertToFile(ximage!);
-    print('image picked is ' + image!.path);
-    // RemoveBgAPI.getImage(image!);
     predictImage(File(image!.path));
   }
 
   predictImage(File image) async {
-    print('Predict image called');
-
     await applyModel(image);
-
-    // FileImage(image).resolve(ImageConfiguration()).addListener(
-    //       (ImageStreamListener(
-    //         (ImageInfo info, bool _) {
-    //           // setState(() {
-    //           //   _imageWidth = info.image.width.toDouble();
-    //           //   _imageHeight = info.image.height.toDouble();
-    //           // });
-    //           _imageWidth = info.image.width.toDouble();
-    //           _imageHeight = info.image.height.toDouble();
-    //         },
-    //       )),
-    //     );
   }
 
   applyModel(File file) async {
-    print('get Image called7');
+    // print('get Image called7');
     var res = await Tflite.runModelOnImage(
       path: file.path,
       numResults: 5,
@@ -733,25 +712,15 @@ class _MyHomePageState extends State<MyHomePage> {
       imageMean: 0.0,
       imageStd: 255.0,
     );
-    print('reached mount');
     if (!mounted) return;
-    print('Setstate true');
 
     if (res!.isEmpty) {
-      print('returning 0');
       return;
     }
     String str = res[0]['label'];
     name = str.substring(2);
     double a = res[0]['confidence'] * 100.0;
     confidence = (a.toString().substring(0, 2)) + '%';
-    print(res);
-    // Get.to(
-    //   () {
-    //     Prediction(image: file, recognitions: res);
-    //   },
-    //   transition: Transition.upToDown,
-    // );
   }
 
   File convertToFile(XFile xFile) {
@@ -769,7 +738,6 @@ class MyBorderShape extends ShapeBorder {
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    print(rect.height);
     return Path.combine(
       PathOperation.difference,
       Path()

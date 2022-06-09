@@ -10,12 +10,10 @@ class Express extends StatefulWidget {
 class _ExpressState extends State<Express> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text(
-        'Express',
-        style: TextStyle(
-          fontSize: 20,
-        ),
+    return const Text(
+      'Express',
+      style: TextStyle(
+        fontSize: 20,
       ),
     );
   }

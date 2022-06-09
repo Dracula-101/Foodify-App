@@ -59,28 +59,26 @@ class Ingredient_Card extends StatelessWidget {
       height: 180,
       child: (Column(
         children: [
-          Container(
-            child: CachedNetworkImage(
-              imageUrl:
-                  "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-              imageBuilder: (context, imageProvider) => Container(
-                // width: 80.0,
-                // height: 80.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.5),
-                        BlendMode.multiply,
-                      ),
-                      image: imageProvider,
-                      fit: BoxFit.cover),
-                ),
+          CachedNetworkImage(
+            imageUrl:
+                "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+            imageBuilder: (context, imageProvider) => Container(
+              // width: 80.0,
+              // height: 80.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.5),
+                      BlendMode.multiply,
+                    ),
+                    image: imageProvider,
+                    fit: BoxFit.cover),
               ),
-              placeholder: (context, url) => ShimmerWidget.rectangular(
-                  height: 180, br: BorderRadius.circular(15)),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
+            placeholder: (context, url) => ShimmerWidget.rectangular(
+                height: 180, br: BorderRadius.circular(15)),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -115,7 +113,6 @@ class Ingredient_Card extends StatelessWidget {
                       size: 30,
                     ),
                     onTap: () {
-                      print("Hellloe");
                     },
                   ),
                 ),

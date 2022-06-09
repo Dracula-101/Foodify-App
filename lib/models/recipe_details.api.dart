@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:foodify/models/recipeDetails.dart';
+import 'package:foodify/models/recipe_details.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';
 
 class RecipeDetailsAPI {
-  static Future<RecipeDetails> getRecipeDetails(String Id) async {
-    var uri = Uri.https(BASE_URL, '/recipes/' + Id + '/information', {
+  static Future<RecipeDetails> getRecipeDetails(String id) async {
+    var uri = Uri.https(BASE_URL, '/recipes/' + id + '/information', {
       "apiKey": apiKey.first,
     });
 
@@ -14,7 +14,7 @@ class RecipeDetailsAPI {
 
     if (response.statusCode != 200) {
       changeAPiKey();
-      return getRecipeDetails(Id);
+      return getRecipeDetails(id);
     }
     Map data = jsonDecode(response.body);
     // print(data);

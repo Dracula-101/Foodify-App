@@ -1,8 +1,8 @@
 import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:foodify/loading/loader.dart';
-import 'package:foodify/models/recipeSearch.api.dart';
-import 'package:foodify/models/recipeSearch.dart';
+import 'package:foodify/models/recipe_search.api.dart';
+import 'package:foodify/models/recipe_search.dart';
 import 'package:foodify/views/widgets/recipe_card.dart';
 
 class RecipeSearchCard extends StatefulWidget {

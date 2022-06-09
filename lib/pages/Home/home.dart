@@ -5,7 +5,7 @@ import 'package:foodify/models/recipe.api.dart';
 import 'package:foodify/models/recipe.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
 import 'package:foodify/pages/Explore%20Page/explore.dart';
-import 'package:foodify/views/widgets/recipeSearch_card.dart';
+import 'package:foodify/views/widgets/recipe_search_card.dart';
 import 'package:foodify/views/widgets/recipe_card.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
@@ -106,7 +106,6 @@ class _HomeState extends State<Home> {
       triggerMode: RefreshIndicatorTriggerMode.anywhere,
       key: refreshIndicatorKey,
       onRefresh: () async {
-        print("refreshing");
         getRecipes();
       },
       child: Column(children: [
@@ -159,7 +158,6 @@ class _HomeState extends State<Home> {
                     onChanged: (text) async {
                       await RecipeSuggestionAPI.getSuggestion(text)
                           .then((value) => list = value);
-                      print('Recipe Searched');
                     },
                   ),
                   suggestionsBoxDecoration: const SuggestionsBoxDecoration(

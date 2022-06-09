@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:foodify/models/recipe_suggest.api.dart';
@@ -17,7 +16,6 @@ class VideoFinder extends StatefulWidget {
 class _VideoFinderState extends State<VideoFinder> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -95,7 +93,6 @@ class _VideoFinderState extends State<VideoFinder> {
                     onChanged: (text) async {
                       await RecipeSuggestionAPI.getSuggestion(text)
                           .then((value) => list = value);
-                      print('Recipe Searched');
                     },
                   ),
                   suggestionsCallback: (pattern) async {
@@ -168,7 +165,7 @@ class _VideoFinderState extends State<VideoFinder> {
                     ],
                   )
                 : const Loader()
-            : _videos != null
+            : _videos.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(

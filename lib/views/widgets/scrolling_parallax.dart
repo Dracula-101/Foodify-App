@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:foodify/constants/key.dart';
 import 'package:get/get.dart';
 
-import 'recipeSearch_card.dart';
+import 'recipe_search_card.dart';
 
 const Color darkBlue = Color.fromARGB(255, 18, 32, 47);
 

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 String removeBgKey = "itagkENup4Fr747E4crTGrmV";
 const String BASE_URL = "api.spoonacular.com";
 const String Image_URL = "https://spoonacular.com/cdn/ingredients_250x250/";

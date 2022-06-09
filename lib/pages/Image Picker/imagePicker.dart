@@ -16,13 +16,13 @@ class ImageSelector extends StatefulWidget {
 }
 
 class _ImageSelectorState extends State<ImageSelector> {
-  ImagePicker _picker = ImagePicker();
   final ImagePickerController _controller = Get.put(ImagePickerController());
   @override
   void initState() {
     if (widget.images != null) {
       _controller.images.addAll(widget.images!);
     }
+
     super.initState();
   }
 

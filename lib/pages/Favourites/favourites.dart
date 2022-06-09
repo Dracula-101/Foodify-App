@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodify/loading/loadingPlate.dart';
+import 'package:foodify/loading/loading_plate.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
 import 'package:get/get.dart';
 import '../../views/widgets/fav_card.dart';

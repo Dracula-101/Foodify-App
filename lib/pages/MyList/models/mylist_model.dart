@@ -7,24 +7,6 @@ class MyListModel {
   int number = 10;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
 
-  Widget _addItemButton(String item) {
-    return FloatingActionButton(
-      child: const Icon(Icons.add),
-      backgroundColor: Colors.blue,
-      foregroundColor: Colors.white,
-      onPressed: () => _insertSingleItem(item),
-    );
-  }
-
-  void _insertSingleUndoItem() {
-    if (deletedData != null && deletedData.isNotEmpty) {
-      String deletedItem = deletedData.elementAt(0);
-      data.add(deletedItem);
-      deletedData.remove(deletedItem);
-      _listKey.currentState!.insertItem(data.length - 1);
-    }
-  }
-
   Widget _buildItem(String item, Animation<double> animation, int index) {
     return SizeTransition(
       sizeFactor: animation,
@@ -67,18 +49,6 @@ class MyListModel {
         ),
       ),
     );
-  }
-
-  /// Method to add an item to an index in a list
-  Future<void> _insertSingleItem(String item) async {
-    int insertIndex;
-    if (data.length > 0) {
-      insertIndex = data.length;
-    } else {
-      insertIndex = 0;
-    }
-    data.add(item); //
-    _listKey.currentState!.insertItem(insertIndex);
   }
 
   /// Method to remove an item at an index from the list

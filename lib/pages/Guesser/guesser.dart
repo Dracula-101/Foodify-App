@@ -10,6 +10,7 @@ import 'package:foodify/loading/loader.dart';
 import 'package:foodify/models/image_analysis.api.dart';
 import 'package:foodify/models/image_analysis.dart';
 import 'package:foodify/views/widgets/image_analysis_widget.dart';
+import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -36,13 +37,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   ImageAnalysis? imageAnalysis;
 
   Future<String> uploadFile(XFile _image) async {
-    var link;
+    String link;
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child("Image: " + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(File(_image.path));
     await uploadTask.then((res) async {
       link = await res.ref.getDownloadURL();
-      print('link op is ' + link);
       await getImageAnalysis(link);
       return link;
     });
@@ -370,10 +370,33 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 try {
                   await _initializeControllerFuture;
                   image = await _controller.takePicture();
-                  print("Image Uploading");
                   link = await uploadFile(image!);
+                  Get.snackbar(
+                    'Image Taken',
+                    'Processing Image...',
+                    icon: const Icon(
+                      FontAwesomeIcons.circleCheck,
+                      color: Colors.green,
+                    ),
+                    backgroundColor: Colors.white,
+                    colorText: Colors.green,
+                    snackPosition: SnackPosition.BOTTOM,
+                    duration: const Duration(seconds: 2),
+                  );
                 } catch (e) {
-                  print(e);
+                  Get.snackbar(
+                    'Error',
+                    'Something went wrong',
+                    icon: const Icon(
+                      FontAwesomeIcons.exclamation,
+                      color: Colors.red,
+                    ),
+                    backgroundColor: Colors.white,
+                    colorText: Colors.red,
+                    borderRadius: 10,
+                    snackPosition: SnackPosition.BOTTOM,
+                    duration: const Duration(seconds: 3),
+                  );
                 }
               },
               child: FittedBox(

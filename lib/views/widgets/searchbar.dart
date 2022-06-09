@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:foodify/views/widgets/recipeSearch_card.dart';
+import 'package:foodify/views/widgets/recipe_search_card.dart';
 import 'package:get/get.dart';
 
 class SearchBar extends StatefulWidget {
+  SearchBar({Key? key, required this.text}) : super(key: key);
   String text;
   bool? searched = false;
   String? searchedRecipe;
-  TextEditingController searchController = TextEditingController();
-  SearchBar({Key? key, required this.text}) : super(key: key);
+  final TextEditingController searchController = TextEditingController();
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -102,7 +102,6 @@ class _SearchBarState extends State<SearchBar> {
                             onTap: () {
                               setState(() {
                                 widget.searched = false;
-                                print('Recipe cancelled');
                                 _folded = !_folded;
                               });
                             },

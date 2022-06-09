@@ -8,11 +8,11 @@ import "dart:io";
 import 'package:image_picker/image_picker.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:tflite/tflite.dart';
-import '../views/widgets/recipeFind.dart';
+import '../views/widgets/recipe_find.dart';
 
 class Prediction extends StatefulWidget {
-  List<XFile>? images;
-  Prediction({Key? key, required this.images}) : super(key: key);
+  const Prediction({Key? key, required this.images}) : super(key: key);
+  final List<XFile>? images;
 
   @override
   State<Prediction> createState() => _PredictionState();
@@ -31,25 +31,16 @@ class _PredictionState extends State<Prediction> {
   @override
   initState() {
     super.initState();
-    loadModel().then((val) {
-      print('Model Loaded');
-    });
+    loadModel();
   }
 
   loadModel() async {
     Tflite.close();
-    print('Loadmodel called 2');
     try {
-      String res;
-
-      res = (await Tflite.loadModel(
+      await Tflite.loadModel(
         model: "assets/tflite/model_unquant.tflite",
         labels: "assets/tflite/labels.txt",
-      ))!;
-      print('Result is $res');
-
-      print(res);
-      debugPrint('Model Loaded, res is ' + res);
+      );
       predictImage();
       //
       // setState(() {
@@ -57,13 +48,23 @@ class _PredictionState extends State<Prediction> {
       //   isLoading = false;
       // });
     } on PlatformException {
-      print("Failed to load the model");
+      Get.snackbar(
+        "Error",
+        "Failed to load the model",
+        icon: const Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        borderRadius: 10,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
     }
   }
 
   predictImage() async {
-    print('Predict image called');
-
     // await applyModel(image);
 
     for (var i = 0; i < widget.images!.length; i++) {
@@ -186,7 +187,6 @@ class _PredictionState extends State<Prediction> {
                             enabledTrackColor: Colors.amber,
                             onChanged: (val) {
                               isFruitAdded[index] = (!val!);
-                              print(isFruitAdded[index]);
                             },
                             value: true,
                             type: GFToggleType.ios,
@@ -286,7 +286,6 @@ class _PredictionState extends State<Prediction> {
                           duration: const Duration(milliseconds: 100),
                           onChanged: (val) {
                             isVegetableAdded[index] = (!val!);
-                            print(isVegetableAdded[index]);
                           },
                           value: true,
                           type: GFToggleType.ios,
@@ -338,7 +337,6 @@ class _PredictionState extends State<Prediction> {
           }
           Get.to(() {
             String bruh = makeList();
-            print(bruh);
             return RecipeFindClass(
                 ingredients: bruh, ranking: ranking.toString(), pantry: pantry);
           });
@@ -387,10 +385,9 @@ class _PredictionState extends State<Prediction> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount:
-                              widget.images!.isNotEmpty && recognitions != null
-                                  ? recognitions.length
-                                  : 0,
+                          itemCount: widget.images!.isNotEmpty
+                              ? recognitions.length
+                              : 0,
                           physics: const BouncingScrollPhysics(
                               parent: BouncingScrollPhysics()),
                           itemBuilder: (context, index) {

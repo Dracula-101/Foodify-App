@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
@@ -52,49 +53,40 @@ class _MyHomePageState extends State<MyHomePage> {
   List? recognitions;
   XFile? ximage;
   String? name, confidence;
-  ImagePicker? _picker;
 
   @override
   initState() {
     super.initState();
-    _picker = ImagePicker();
-    loadModel().then((val) {
-      print('Model Loaded');
-    });
+    loadModel();
   }
 
   loadModel() async {
     Tflite.close();
-    print('Loadmodel called 2');
     try {
-      String res;
-
-      res = (await Tflite.loadModel(
+      await Tflite.loadModel(
         model: "assets/tflite/model.tflite",
         labels: "assets/tflite/dict.txt",
-      ))!;
-      print('Result is $res');
-
-      print(res);
-      debugPrint('Model Loaded, res is ' + res);
+      );
     } on PlatformException {
-      print("Failed to load the model");
+      Get.snackbar(
+        'Error',
+        'Failed to load model.',
+        icon: const Icon(Icons.error),
+        backgroundColor: Colors.red,
+      );
     }
   }
 
   selectFromImagePicker() async {
-    print('aaaa');
     ImagePicker imagepick = ImagePicker();
     ximage = await imagepick.pickImage(source: ImageSource.gallery);
 
     image = convertToFile(ximage!);
-    print('image picked is ' + image!.path);
     // RemoveBgAPI.getImage(image!);
     predictImage(File(image!.path));
   }
 
   predictImage(File image) async {
-    print('Predict image called');
 
     await applyModel(image);
 
@@ -113,7 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   applyModel(File file) async {
-    print('get Image called7');
     var res = await Tflite.runModelOnImage(
       path: file.path,
       numResults: 5,
@@ -121,19 +112,15 @@ class _MyHomePageState extends State<MyHomePage> {
       imageMean: 0.0,
       imageStd: 255.0,
     );
-    print('reached mount');
     if (!mounted) return;
-    print('Setstate true');
 
     if (res!.isEmpty) {
-      print('returning 0');
       return;
     }
     String str = res[0]['label'];
     name = str.substring(2);
     double a = res[0]['confidence'] * 100.0;
     confidence = (a.toString().substring(0, 2)) + '%';
-    print(res);
     // Get.to(
     //   () {
     //     Prediction(image: file, recognitions: res);
@@ -148,19 +135,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              selectFromImagePicker();
-            },
-            child: const Text('Select Image'),
-          ),
-          Text('Name: $name'),
-          Text('Confidence: $confidence'),
-        ],
-      ),
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            selectFromImagePicker();
+          },
+          child: const Text('Select Image'),
+        ),
+        Text('Name: $name'),
+        Text('Confidence: $confidence'),
+      ],
     );
   }
 }

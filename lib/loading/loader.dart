@@ -8,7 +8,8 @@ class Loader extends StatefulWidget {
   final double radius;
   final double dotRadius;
 
-  const Loader({this.radius = 50.0, this.dotRadius = 20.0});
+  const Loader({this.radius = 50.0, this.dotRadius = 20.0, Key? key})
+      : super(key: key);
 
   @override
   _LoaderState createState() => _LoaderState();
@@ -59,10 +60,11 @@ class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
 
     controller.addListener(() {
       setState(() {
-        if (controller.value >= 0.75 && controller.value <= 1.0)
+        if (controller.value >= 0.75 && controller.value <= 1.0) {
           radius = widget.radius * animation_radius_in.value;
-        else if (controller.value >= 0.0 && controller.value <= 0.25)
+        } else if (controller.value >= 0.0 && controller.value <= 0.25) {
           radius = widget.radius * animation_radius_out.value;
+        }
       });
     });
 
@@ -94,7 +96,7 @@ class Dot extends StatelessWidget {
   final double? radius;
   final Color? color;
 
-  const Dot({this.radius, this.color});
+  const Dot({this.radius, this.color, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

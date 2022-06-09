@@ -5,8 +5,6 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('About Us'),
-    );
+    return Center(child: const Text('About Us'));
   }
 }

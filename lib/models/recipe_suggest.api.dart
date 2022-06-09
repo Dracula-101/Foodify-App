@@ -14,7 +14,7 @@ class RecipeSuggestionAPI {
         headers: {"x-api-key": apiKey.first, "useQueryString": "true"});
 
     List<dynamic> data = jsonDecode(response.body);
-    print(data);
+    // print(data);
 
     // if (data['code'] == 402) {
     //   changeAPiKey();

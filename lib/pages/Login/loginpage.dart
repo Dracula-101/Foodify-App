@@ -9,10 +9,12 @@ import 'package:foodify/pages/Signup/signup.dart';
 import '../../main.dart';
 
 class LoginPage extends StatelessWidget {
+  LoginPage({Key? key}) : super(key: key);
   static String _email = '', _password = '';
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -233,7 +235,7 @@ class LoginPage extends StatelessWidget {
     }
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: _email, password: _password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -245,7 +247,6 @@ class LoginPage extends StatelessWidget {
           icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
-        print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         Get.snackbar(
           "Password Incorrect",
@@ -254,7 +255,6 @@ class LoginPage extends StatelessWidget {
           icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
-        print('Wrong password provided for that user.');
       } else if (e.code == 'too-many-requests') {
         Get.snackbar(
           "Too many wrong attempts",
@@ -263,7 +263,6 @@ class LoginPage extends StatelessWidget {
           icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
-        print('Wrong password provided for that user.');
       } else if (e.code == 'invalid-email') {
         Get.snackbar(
           "Invalid Email",
@@ -272,10 +271,8 @@ class LoginPage extends StatelessWidget {
           icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
-        print('Wrong password provided for that user.');
       }
 
-      print('User !logged in ...${e.code}');
       return false;
     }
     Get.snackbar(
@@ -286,7 +283,6 @@ class LoginPage extends StatelessWidget {
       icon: const Icon(Icons.person, color: Colors.white),
       snackPosition: SnackPosition.BOTTOM,
     );
-    print('User logged in ...');
     return true;
   }
 }

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/constants/key.dart';
-import 'package:foodify/models/recipeDetails.api.dart';
-import 'package:foodify/models/recipeDetails.dart';
+import 'package:foodify/models/recipe_details.api.dart';
+import 'package:foodify/models/recipe_details.dart';
 import 'package:foodify/pages/Favourites/favourites.dart';
 import 'package:foodify/views/widgets/instructions.dart';
 import 'package:get/get.dart';
@@ -60,7 +60,6 @@ class _ProcedurePageState extends State<ProcedurePage> {
   }
 
   void urlLaucher(String url) async {
-    print(url);
     if (!await launch(url, forceWebView: true, enableJavaScript: true)) {
       Get.snackbar(
         "Couldn't launch URL",

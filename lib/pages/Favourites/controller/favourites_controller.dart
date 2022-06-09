@@ -28,7 +28,7 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
 
   void deleteDuplicates() {
     //delete duplicates
-    List<FavouritesCard> list = favouritesList.value;
+    List<FavouritesCard> list = favouritesList;
     List<FavouritesCard> newList = <FavouritesCard>[];
     for (int i = 0; i < list.length; i++) {
       if (!newList.contains(list[i])) {
@@ -40,8 +40,7 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
 
   void addFavourites(String recipeName, String id, String imageUrl,
       String rating, String cooktime) {
-    print(favouritesList.toString());
-    favouritesList.value.add(FavouritesCard(
+    favouritesList.add(FavouritesCard(
         recipeName: recipeName,
         id: id,
         imageUrl: imageUrl,
@@ -67,7 +66,6 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
 
   Future<void> addToDatabase(String recipeName, String id, String imageUrl,
       String rating, String cooktime) async {
-    print("Added to database");
     FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
@@ -88,7 +86,6 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
   }
 
   Future<void> getFromDatabase() async {
-    print("Getting from database");
     FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
@@ -96,7 +93,7 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
         .get()
         .then((value) {
       for (int i = 0; i < value.docs.length; i++) {
-        favouritesList.value.add(FavouritesCard(
+        favouritesList.add(FavouritesCard(
             recipeName: value.docs[i].data()['recipeName'],
             id: value.docs[i].data()['id'],
             imageUrl: value.docs[i].data()['imageUrl'],

@@ -359,7 +359,6 @@ class _SettingsState extends State<Settings> {
                       makeCuisine = cuisineLatest[0].toLowerCase() +
                           cuisineLatest.substring(1, cuisineLatest.length);
                     });
-                    print(makeCuisine);
                     if (makeCuisine != "Not Choosen") {
                       cuisine = makeCuisine;
                     } else {

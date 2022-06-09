@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,18 +10,13 @@ class VideoWidget extends StatefulWidget {
       required this.length,
       required this.thumbnail,
       required this.youtubeId,
-      required this.views});
+      required this.views,
+      Key? key}): super(key: key);
   @override
   _VideoWidgetState createState() => _VideoWidgetState();
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
-  double _sigmaX = 0.0; // from 0-10
-  double _sigmaY = 0.0; // from 0-10
-  double _opacity = 0.1; // from 0-1.0
-  double _width = 350;
-  double _height = 300;
-
   Widget buildGradient() {
     return Positioned.fill(
       child: Container(

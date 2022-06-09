@@ -1,7 +1,5 @@
 import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/views/widgets/recipe_card.dart';
 
@@ -16,7 +14,6 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  static bool _isLoading = true;
   final _controller = ScrollController();
 
   Widget buildRecipes(BuildContext context) {

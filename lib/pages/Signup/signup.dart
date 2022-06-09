@@ -85,9 +85,9 @@ class _SignupPageState extends State<SignupPage> {
                             color: Colors.grey[500]!.withOpacity(0.5),
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: TextField(
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Padding(
                                   padding:
@@ -104,15 +104,12 @@ class _SignupPageState extends State<SignupPage> {
                                     color: Colors.white,
                                     height: 1.5),
                               ),
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 22,
                                   color: Colors.white,
                                   height: 1.5),
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.next,
-                              onChanged: (text) {
-                                String name = text;
-                              },
                             ),
                           ),
                         ),
@@ -323,7 +320,6 @@ class _SignupPageState extends State<SignupPage> {
                                     color: Colors.white),
                                 snackPosition: SnackPosition.BOTTOM,
                               );
-                              print('Passwords don\'t match');
                             }
                           },
                           child: const Text(
@@ -384,7 +380,7 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<bool> createUser(String _email, String _password) async {
     try {
-      final newUser = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _email, password: _password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -395,7 +391,6 @@ class _SignupPageState extends State<SignupPage> {
           icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
-        print('Account already exists');
       } else if (e.code == 'weak-password') {
         Get.snackbar(
           "Password too weak",
@@ -404,7 +399,6 @@ class _SignupPageState extends State<SignupPage> {
           icon: const Icon(Icons.person, color: Colors.white),
           snackPosition: SnackPosition.BOTTOM,
         );
-        print('Minimum length of the password should be 6 characters');
       }
       return false;
     }
@@ -430,12 +424,15 @@ class a {
       user = auth.currentUser;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
+      } else if (e.code == 'email-already-in-use') {}
     } catch (e) {
-      print(e);
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        duration: const Duration(seconds: 2),
+        icon: const Icon(Icons.person, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
     return user;
   }

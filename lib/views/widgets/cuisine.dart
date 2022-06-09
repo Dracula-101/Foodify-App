@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'recipeSearch_card.dart';
+import 'recipe_search_card.dart';
 
 class Cuisines extends StatefulWidget {
   String cuisine, cuisineImage;

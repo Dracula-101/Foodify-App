@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ImagePickerController extends GetxController {
   var images = <XFile>[].obs;
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
   getImage(BuildContext context) async {
     showModalBottomSheet(

@@ -26,7 +26,8 @@ class RecipeFindCard extends StatelessWidget {
     required this.missedIngredients,
     required this.usedIngredients,
     required this.likes,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +128,7 @@ class RecipeFindCard extends StatelessWidget {
                             //     ),
                             //   ],
                             // ),
-                            if (missedIngredients.length > 0)
+                            if (missedIngredients.isNotEmpty)
                               (Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/models/image_analysis.dart';
@@ -12,7 +11,6 @@ class ImageAnalysisWidget extends StatelessWidget {
       : super(key: key);
 
   void urlLauncher(String url) async {
-    print(url);
     if (!await launch(url, forceWebView: true, enableJavaScript: true)) {
       Get.snackbar(
         "Couldn't launch URL",
@@ -121,7 +119,6 @@ class ImageAnalysisWidget extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                  print(imageAnalysis.recipes?[index].id);
                   if (imageAnalysis.recipes?[index].id != null) {
                     Get.to(() {
                       return ProcedurePage(

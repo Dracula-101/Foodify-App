@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:foodify/models/recipeFind.dart';
+import 'package:foodify/models/recipe_find.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodify/constants/key.dart';
 
