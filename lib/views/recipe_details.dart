@@ -1,3 +1,4 @@
+// ignore: camel_case_types
 class recipeID {
   late String title;
   late String imageUrl;

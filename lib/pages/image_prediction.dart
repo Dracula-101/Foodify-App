@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/constants/key.dart' as key;
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,7 @@ class _PredictionState extends State<Prediction> {
   List<bool> isVegetableAdded = [];
   bool pantry = true;
   int ranking = 1;
+  bool notFound = false;
   String dropdownValue = "Maximize Used Ingredients";
   @override
   initState() {
@@ -79,7 +81,7 @@ class _PredictionState extends State<Prediction> {
 
       recognitions.add(rec);
       String item = '';
-      if (recognitions[i] == null) {
+      if (recognitions[i] == null || recognitions[i].isEmpty) {
         item = 'Not Found';
       } else {
         item = recognitions[i][0]["label"].toString();
@@ -99,6 +101,24 @@ class _PredictionState extends State<Prediction> {
 
   File convertToFile(XFile xFile) {
     return File(xFile.path);
+  }
+
+  Widget showNothing(BuildContext context) {
+    return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
+          Text(
+            "Nothing Found",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+        ]));
   }
 
   Widget buildFruits(BuildContext context) {
@@ -320,6 +340,7 @@ class _PredictionState extends State<Prediction> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
+      extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ElevatedButton(
         style: ButtonStyle(
@@ -335,15 +356,21 @@ class _PredictionState extends State<Prediction> {
           } else {
             ranking = 2;
           }
-          Get.to(() {
-            String bruh = makeList();
-            return RecipeFindClass(
-                ingredients: bruh, ranking: ranking.toString(), pantry: pantry);
-          });
+          if (notFound) {
+            Get.to(() {
+              String bruh = makeList();
+              return RecipeFindClass(
+                  ingredients: bruh,
+                  ranking: ranking.toString(),
+                  pantry: pantry);
+            });
+          } else {
+            Get.back();
+          }
         },
-        child: const Text(
-          'Get Recipes',
-          style: TextStyle(
+        child: Text(
+          notFound ? 'Get Recipes' : 'Try Again',
+          style: const TextStyle(
             fontSize: 23,
           ),
         ),
@@ -377,7 +404,7 @@ class _PredictionState extends State<Prediction> {
                 ),
                 Container(
                   margin: const EdgeInsets.all(5),
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.8,
                   child: ListView(
                     children: [
                       SizedBox(
@@ -444,31 +471,53 @@ class _PredictionState extends State<Prediction> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: <Widget>[
-                                                Text(
-                                                  'Predicted ' +
-                                                      recognitions[index][0]
-                                                          ['label'],
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                                recognitions[index].isNotEmpty
+                                                    ? Text(
+                                                        'Predicted ' +
+                                                            recognitions[index]
+                                                                [0]['label'],
+                                                        style: const TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    : const Text(
+                                                        'Not Found',
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
                                                 const SizedBox(
                                                   height: 5,
                                                 ),
-                                                Text(
-                                                  'Accuracy: ' +
-                                                      (recognitions[index][0][
-                                                                  'confidence'] *
-                                                              100)
-                                                          .toString()
-                                                          .substring(0, 4) +
-                                                      '%',
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                                recognitions[index].isNotEmpty
+                                                    ? Text(
+                                                        'Accuracy: ' +
+                                                            (recognitions[index]
+                                                                            [0][
+                                                                        'confidence'] *
+                                                                    100)
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 4) +
+                                                            '%',
+                                                        style: const TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    : const Text(
+                                                        '0 %',
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
                                               ],
                                             ),
                                           ),
@@ -480,104 +529,220 @@ class _PredictionState extends State<Prediction> {
                           },
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Details',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black54,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 4.0,
-                              spreadRadius: 2.0,
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Include Pantry Items',
+                      if (notFound)
+                        Column(children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'Details',
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
+                                fontSize: 20,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            GFToggle(
-                              enabledTrackColor: Colors.amber,
-                              value: pantry,
-                              type: GFToggleType.ios,
-                              onChanged: (value) {
-                                setState(() {
-                                  pantry = value!;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 4.0,
-                              spreadRadius: 2.0,
-                            )
-                          ],
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: GFDropdown(
-                            padding: const EdgeInsets.all(15),
-                            borderRadius: BorderRadius.circular(15),
-                            border: const BorderSide(
-                                color: Colors.black12, width: 1),
-                            dropdownButtonColor: Colors.white,
-                            value: dropdownValue,
-                            onChanged: (newValue) {
-                              setState(() {
-                                dropdownValue = newValue.toString();
-                              });
-                            },
-                            items: [
-                              "Maximize Used Ingredients",
-                              "Minimize Missing Ingredients",
-                            ]
-                                .map((value) => DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    ))
-                                .toList(),
                           ),
-                        ),
-                      ),
-                      if (fruits.isNotEmpty) buildFruits(context),
-                      if (vegetables.isNotEmpty) buildVegetables(context),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade300,
+                                  blurRadius: 4.0,
+                                  spreadRadius: 2.0,
+                                )
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Include Pantry Items',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                GFToggle(
+                                  enabledTrackColor: Colors.amber,
+                                  value: pantry,
+                                  type: GFToggleType.ios,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      pantry = value!;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade300,
+                                  blurRadius: 4.0,
+                                  spreadRadius: 2.0,
+                                )
+                              ],
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: GFDropdown(
+                                padding: const EdgeInsets.all(15),
+                                borderRadius: BorderRadius.circular(15),
+                                border: const BorderSide(
+                                    color: Colors.black12, width: 1),
+                                dropdownButtonColor: Colors.white,
+                                value: dropdownValue,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue.toString();
+                                  });
+                                },
+                                items: [
+                                  "Maximize Used Ingredients",
+                                  "Minimize Missing Ingredients",
+                                ]
+                                    .map((value) => DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                          ),
+                          if (fruits.isNotEmpty) buildFruits(context),
+                          if (vegetables.isNotEmpty) buildVegetables(context),
+                        ])
+                      else
+                        showNoPrediction()
                     ],
                   ),
                 ),
               ],
             ),
+    );
+  }
+
+  Widget showNoPrediction() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            blurRadius: 4.0,
+            spreadRadius: 2.0,
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              SizedBox(
+                height: 2,
+              ),
+              Text(
+                'No Predictions found',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Try to take the picture in these conditions:',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 3),
+                leading: Icon(
+                  FontAwesomeIcons.camera,
+                  color: Colors.black54,
+                ),
+                title: Text(
+                  ' The object should be in the center of the screen',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 3),
+                leading: Icon(
+                  FontAwesomeIcons.camera,
+                  color: Colors.black54,
+                ),
+                title: Text(
+                  ' The object should be taken from the front with some elevation.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 3),
+                leading: Icon(
+                  FontAwesomeIcons.camera,
+                  color: Colors.black54,
+                ),
+                title: Text(
+                  ' Try to take the picture in good lightning.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 3),
+                leading: Icon(
+                  FontAwesomeIcons.camera,
+                  color: Colors.black54,
+                ),
+                title: Text(
+                  ' The picture should be clear and focused.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ]),
+      ),
     );
   }
 }

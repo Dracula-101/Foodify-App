@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 import '../../constants/key.dart';
 
 class Instructions extends StatelessWidget {
-  List<dynamic> instructions;
-  String title, url;
-  Instructions(
+  final List<dynamic> instructions;
+  final String title, url;
+  const Instructions(
       {Key? key,
       required this.instructions,
       required this.title,

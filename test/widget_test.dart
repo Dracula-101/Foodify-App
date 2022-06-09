@@ -87,7 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   predictImage(File image) async {
-
     await applyModel(image);
 
     // FileImage(image).resolve(ImageConfiguration()).addListener(

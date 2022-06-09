@@ -406,7 +406,7 @@ class _SignupPageState extends State<SignupPage> {
   }
 }
 
-class a {
+class Signing {
   static String? _email, _password;
   static Future<User?> registerUsingEmailPassword({
     required String email,

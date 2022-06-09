@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ImageAnalysisWidget extends StatelessWidget {
-  ImageAnalysis imageAnalysis;
-  ImageAnalysisWidget({Key? key, required this.imageAnalysis})
+  final ImageAnalysis imageAnalysis;
+  const ImageAnalysisWidget({Key? key, required this.imageAnalysis})
       : super(key: key);
 
   void urlLauncher(String url) async {

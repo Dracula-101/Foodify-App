@@ -35,7 +35,9 @@ class CustomNotchedRectangle extends NotchedShape {
     p[4] = Offset(-1.0 * p[1].dx, p[1].dy);
     p[5] = Offset(-1.0 * p[0].dx, p[0].dy);
 
-    for (int i = 0; i < p.length; i += 1) p[i] += guest.center;
+    for (int i = 0; i < p.length; i += 1) {
+      p[i] += guest.center;
+    }
 
     return Path()
       ..moveTo(host.left, host.top)

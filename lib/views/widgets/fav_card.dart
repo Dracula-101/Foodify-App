@@ -8,7 +8,8 @@ import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:get/get.dart';
 
 class FavouritesCard extends StatelessWidget {
-  String recipeName, id, imageUrl, rating, cooktime;
+  final String recipeName, id, imageUrl, rating, cooktime;
+  final FavouritesController controller = Get.put(FavouritesController());
   FavouritesCard({
     Key? key,
     required this.recipeName,
@@ -17,7 +18,6 @@ class FavouritesCard extends StatelessWidget {
     required this.rating,
     required this.cooktime,
   }) : super(key: key);
-  final FavouritesController controller = Get.put(FavouritesController());
 
   @override
   Widget build(BuildContext context) {
