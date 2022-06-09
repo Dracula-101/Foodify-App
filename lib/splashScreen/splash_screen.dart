@@ -15,17 +15,18 @@ class _SplashScreenState extends State<SplashScreen>
   AnimationController? _textAnimation;
   double _opacity = 0;
   bool changeDim = false;
+  Timer? timer;
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     _textAnimation = AnimationController(
-      duration: const Duration(milliseconds: 6000),
+      duration: const Duration(milliseconds: 4000),
       vsync: this,
     );
     fadeInText();
     if (mounted) {
-      Timer(
-        const Duration(milliseconds: 2000),
+      timer = Timer(
+        const Duration(milliseconds: 3000),
         () => setState(() {
           changeDim = !changeDim;
         }),
@@ -37,6 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void dispose() {
     _controller!.dispose();
+    timer!.cancel();
     _textAnimation!.dispose();
     super.dispose();
   }

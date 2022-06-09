@@ -46,7 +46,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   static Future<Widget> checkUser() async {
-    Firebase.initializeApp();
+    await Firebase.initializeApp();
     User? user = FirebaseAuth.instance.currentUser;
 
     // return user != null ? const MyHomePage() : LoginPage();
