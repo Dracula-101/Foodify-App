@@ -11,7 +11,8 @@ class VideoWidget extends StatefulWidget {
       required this.thumbnail,
       required this.youtubeId,
       required this.views,
-      Key? key}): super(key: key);
+      Key? key})
+      : super(key: key);
   @override
   _VideoWidgetState createState() => _VideoWidgetState();
 }
@@ -119,8 +120,8 @@ class _VideoWidgetState extends State<VideoWidget> {
   }
 
   openVideoURL() async {
-    String URL = 'https://www.youtube.com/watch?v=' + widget.youtubeId;
+    String url = 'https://www.youtube.com/watch?v=' + widget.youtubeId;
 
-    await launch(URL, forceWebView: false, enableJavaScript: true);
+    await launch(url, forceWebView: false, enableJavaScript: true);
   }
 }

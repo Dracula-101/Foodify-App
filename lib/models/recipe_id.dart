@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 class recipeID {
   late String title;
   late String imageUrl;

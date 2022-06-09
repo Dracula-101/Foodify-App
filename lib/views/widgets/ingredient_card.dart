@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:foodify/views/widgets/shimmer_widget.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class Ingredient_Card extends StatelessWidget {
+class IngredientCard extends StatelessWidget {
   final String vegetableName;
 
-  const Ingredient_Card({Key? key, required this.vegetableName})
+  const IngredientCard({Key? key, required this.vegetableName})
       : super(key: key);
 
   @override
@@ -112,8 +112,7 @@ class Ingredient_Card extends StatelessWidget {
                       color: Color.fromARGB(255, 59, 160, 255),
                       size: 30,
                     ),
-                    onTap: () {
-                    },
+                    onTap: () {},
                   ),
                 ),
                 alignment: Alignment.bottomRight,

@@ -7,11 +7,6 @@ class RandomRecipeController extends GetxController with StateMixin<dynamic> {
   final _recipes = <Recipe>[].obs;
   var isLoading = false.obs;
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
   isLoaded() {}
 
   Future<void> getRecipes() async {

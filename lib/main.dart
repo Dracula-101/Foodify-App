@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
@@ -8,8 +9,8 @@ import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/pages/Settings/settings.dart';
 import 'package:foodify/pages/VideoFinder/video_finder.dart';
-import 'package:foodify/pages/Image%20Picker/imagePicker.dart';
-import 'package:foodify/splashScreen/splashscreen.dart';
+import 'package:foodify/pages/Image%20Picker/image_picker.dart';
+import 'package:foodify/splashScreen/splash_screen.dart';
 import 'package:foodify/views/widgets/recipe_search_card.dart';
 import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,6 @@ Future<void> main() async {
   firstCamera = cameras.first;
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
   runApp(const MyApp());
 }
 
@@ -46,6 +46,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   static Future<Widget> checkUser() async {
+    Firebase.initializeApp();
     User? user = FirebaseAuth.instance.currentUser;
 
     // return user != null ? const MyHomePage() : LoginPage();

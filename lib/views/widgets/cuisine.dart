@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'recipe_search_card.dart';
 
 class Cuisines extends StatefulWidget {
-  String cuisine, cuisineImage;
-  Cuisines({Key? key, required this.cuisine, required this.cuisineImage})
+  final String cuisine, cuisineImage;
+  const Cuisines({Key? key, required this.cuisine, required this.cuisineImage})
       : super(key: key);
 
   @override

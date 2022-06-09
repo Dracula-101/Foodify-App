@@ -1,4 +1,4 @@
-class recipeID {
+class RecipeID {
   late String title;
   late String imageUrl;
   late int rating;
@@ -7,7 +7,7 @@ class recipeID {
   late String recipeId;
   late String summary;
 
-  recipeID({
+  RecipeID({
     required this.recipeId,
     String? title,
     String? imageUrl,
@@ -17,8 +17,8 @@ class recipeID {
     String? summary,
   });
 
-  factory recipeID.fromJson(dynamic json) {
-    return recipeID(
+  factory RecipeID.fromJson(dynamic json) {
+    return RecipeID(
         title: json['title'] as String,
         imageUrl: json['image'] as String,
         rating: (json['spoonacularScore']) / 20,
@@ -30,9 +30,9 @@ class recipeID {
         summary: json['summary']);
   }
 
-  static List<recipeID> recipesFromSnapshotDetails(List snapshot) {
+  static List<RecipeID> recipesFromSnapshotDetails(List snapshot) {
     return snapshot.map((data) {
-      return recipeID.fromJson(data);
+      return RecipeID.fromJson(data);
     }).toList();
   }
 

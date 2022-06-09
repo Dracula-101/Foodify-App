@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';

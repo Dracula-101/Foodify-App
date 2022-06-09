@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:foodify/pages/Image%20Picker/image_picker_controller.dart';
-import 'package:foodify/pages/imagePrediction.dart';
+import 'package:foodify/pages/image_prediction.dart';
 import 'package:get/get.dart';
 import "dart:io";
 
