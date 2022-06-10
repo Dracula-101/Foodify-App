@@ -34,11 +34,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   bool isError = false;
   bool isTakingTime = false;
   bool isCancelled = false;
+  bool pictureTaken = false;
   String? link;
   XFile? image;
   BuildContext? contextNew;
-  int height = 1200;
-  int width = 800;
+  double pictureHeight = 900;
+  double pictureWidth = 800;
   ImageAnalysis? imageAnalysis;
 
   Future<String> uploadFile(XFile _image) async {
@@ -221,22 +222,37 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   SizedBox displayImage() {
     final size = ImageSizeGetter.getSize(FileInput(File(image!.path)));
-    if (size.height > MediaQuery.of(context).size.height * 0.6) {
-      height = (MediaQuery.of(context).size.height * 0.6).toInt();
+    // log(size.height.toString() + "," + size.width.toString());
+    // if (size.height > MediaQuery.of(context).size.height * 0.6) {
+    //   setState(() {
+    //     height = (MediaQuery.of(context).size.height * 0.6).toInt();
+    //     log("this is the height" + height.toString());
+    //     width = size.width;
+    //   });
+    // }
+    if (!pictureTaken) {
+      setState(() {
+        pictureHeight = size.height.toDouble();
+        pictureWidth = size.width.toDouble();
+      });
+    } else {
+      setState(() {
+        MediaQuery.of(context).size.height * 0.6;
+        MediaQuery.of(context).size.width * 0.8;
+      });
     }
-    width = size.width;
     return SizedBox(
       child: Column(
         children: [
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
-            height: height.toDouble(),
-            width: width.toDouble(),
+            height: pictureHeight,
+            width: pictureWidth,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.shade200,
+                  color: Colors.grey.withOpacity(0.5),
                   blurRadius: 10.0, // has the effect of softening the shadow
                   spreadRadius: 5.0, // has the effect of extending the shadow
                 )
@@ -373,6 +389,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 startTimer();
                 takeTime();
                 setState(() {
+                  pictureTaken = true;
                   isSearching = true;
                 });
                 try {
