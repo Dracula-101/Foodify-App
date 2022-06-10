@@ -38,7 +38,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   String? link;
   XFile? image;
   BuildContext? contextNew;
-  double pictureHeight = 900;
+  double pictureHeight = 1000;
   double pictureWidth = 800;
   ImageAnalysis? imageAnalysis;
 
@@ -237,8 +237,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       });
     } else {
       setState(() {
-        MediaQuery.of(context).size.height * 0.6;
-        MediaQuery.of(context).size.width * 0.8;
+        pictureHeight = MediaQuery.of(context).size.height * 0.6;
+        pictureWidth = MediaQuery.of(context).size.width * 0.8;
       });
     }
     return SizedBox(
