@@ -229,7 +229,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       child: Column(
         children: [
           Container(
-            margin: const EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             height: height.toDouble(),
             width: width.toDouble(),
             decoration: BoxDecoration(
