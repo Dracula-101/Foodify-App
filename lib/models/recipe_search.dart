@@ -31,7 +31,7 @@ class RecipeSearch {
       cookTime: json['readyInMinutes'] as int,
       rating: json['spoonacularScore'] != null
           ? (json['spoonacularScore'] as double) / 20.0
-          : (json['weightWatcherSmartPoints'] as double) / 20.0,
+          : (json['weightWatcherSmartPoints']) / 5.0,
       vegetarian: json['vegetarian'] as bool,
       calories: json['nutrition']['nutrients'][0]['amount'].toString(),
       caloriesUnit: json['nutrition']['nutrients'][0]['unit'],
