@@ -359,7 +359,7 @@ class _SettingsState extends State<Settings> {
                       makeCuisine = cuisineLatest[0].toLowerCase() +
                           cuisineLatest.substring(1, cuisineLatest.length);
                     });
-                    if (makeCuisine != "Not Choosen") {
+                    if (makeCuisine != "not Choosen") {
                       cuisine = makeCuisine;
                     } else {
                       cuisine = "";
@@ -419,9 +419,9 @@ class _SettingsState extends State<Settings> {
             const Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                'The API might not give correct results due the lack of the data.Hope you will get the results as per your preference.',
+                'The API might not give correct results due the lack of the data. Hope you will get the results as per your preference.',
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 17,
                     color: Colors.black54,
                     fontWeight: FontWeight.normal),
               ),

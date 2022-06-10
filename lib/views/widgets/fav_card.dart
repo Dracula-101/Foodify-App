@@ -19,6 +19,92 @@ class FavouritesCard extends StatelessWidget {
     required this.cooktime,
   }) : super(key: key);
 
+  showAlertDialog(BuildContext dialogContext, String recipeName) {
+    // set up the button
+    actionButton(BuildContext context) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                controller.removeFavourite(id);
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.greenAccent,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Text("Yes",
+                    style: TextStyle(color: Colors.black, fontSize: 17)),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.redAccent,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: const Text("No",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ))),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      titlePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      title: const Text("Delete from favourites"),
+      content: Text("Are you sure you want to delete " + recipeName + "?"),
+      actions: [
+        actionButton(dialogContext),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: dialogContext,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -169,7 +255,10 @@ class FavouritesCard extends StatelessWidget {
             radius: 20,
             borderRadius: BorderRadius.circular(50),
             onTap: () {
-              controller.removeFavourite(id);
+              showAlertDialog(context, recipeName);
+              // showAlertDialog(
+              //     context, recipeName);
+              //g // controller.removeFavourite(id);
             },
             child: Container(
                 // margin: const EdgeInsets.only(right: 20, top: 5),

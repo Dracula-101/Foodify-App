@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   }
 
   Widget app() {
-    return GetMaterialApp(
+    return MaterialApp(
       // showPerformanceOverlay: true,
 
       title: 'Foodify',
