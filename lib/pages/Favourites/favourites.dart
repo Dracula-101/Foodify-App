@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:foodify/loading/loader.dart';
 import 'package:foodify/loading/loading_plate.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
 import 'package:get/get.dart';
@@ -13,6 +15,19 @@ class Favourites extends StatelessWidget {
   static addFavourites(String recipeName, String id, String imageUrl,
       String rating, String cooktime) {
     controller.addFavourites(recipeName, id, imageUrl, rating, cooktime);
+  }
+
+  FutureBuilder<void> displayContent(BuildContext context) {
+    return FutureBuilder(
+        future: controller.getFromDatabase(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            controller.deleteDuplicates();
+            return buildFav(context);
+          } else {
+            return const Loader();
+          }
+        });
   }
 
   Widget buildFav(BuildContext context) {
@@ -107,18 +122,38 @@ class Favourites extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          child: const Text(
-            "Favourites",
-            style: TextStyle(
-              fontFamily: "lorabold700",
-              color: Colors.black54,
-              fontSize: 30,
-              // decorationThickness: 10,
-              fontWeight: FontWeight.bold,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: const Text(
+                "Favourites",
+                style: TextStyle(
+                  fontFamily: "lorabold700",
+                  color: Colors.black54,
+                  fontSize: 30,
+                  // decorationThickness: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+            //Refresh Button
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.clockRotateLeft,
+                  size: 25,
+                  color: Colors.amberAccent,
+                ),
+                onPressed: () {
+                  controller.getFromDatabase();
+                  controller.deleteDuplicates();
+                },
+              ),
+            )
+          ],
         ),
         // Expanded(
         //   child: GetBuilder<FavouritesController>(
@@ -129,8 +164,8 @@ class Favourites extends StatelessWidget {
         //   ),
         // ),
         Obx(
-          () => controller.isLoading.value == true
-              ? const Center(child: CircularProgressIndicator())
+          () => controller.isLoading.value
+              ? const Center(child: Loader())
               : controller.favouritesList.isEmpty
                   ? showNoFav(context)
                   : buildFav(context),

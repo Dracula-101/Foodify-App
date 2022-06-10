@@ -83,7 +83,7 @@ class RecipeFindCard extends StatelessWidget {
                         title,
                         style:
                             TextStyle(fontSize: 19, color: HexColor("#ffffff")),
-                        overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.fade,
                         maxLines: 2,
                         textAlign: TextAlign.center,
                       ),
@@ -94,6 +94,7 @@ class RecipeFindCard extends StatelessWidget {
               ),
               Align(
                 child: Row(
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -105,122 +106,160 @@ class RecipeFindCard extends StatelessWidget {
                           color: Colors.black.withOpacity(0.4),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.start,
-                            //   crossAxisAlignment: CrossAxisAlignment.center,
-                            //   children: [
-                            //     const Icon(
-                            //       CupertinoIcons.clear_circled_solid,
-                            //       color: Colors.red,
-                            //       size: 15,
-                            //     ),
-                            //     const SizedBox(width: 9),
-                            //     Text(
-                            //       "Missed: " +
-                            //           missedIngredientCount.toString() +
-                            //           " ",
-                            //       style: TextStyle(
-                            //           fontSize: 12, color: HexColor("#ffffff")),
-                            //     ),
-                            //   ],
-                            // ),
-                            if (missedIngredients.isNotEmpty)
-                              (Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    CupertinoIcons.clear_circled_solid,
-                                    color: Colors.red,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(width: 9),
-                                  Text(
-                                    StringUtils.capitalize(missedIngredients[0]
-                                            ['name']
-                                        .toString()),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: HexColor("#ffffff")),
-                                  ),
-                                ],
-                              )),
-                            if (missedIngredients.length > 1)
-                              (Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    CupertinoIcons.clear_circled_solid,
-                                    color: Colors.red,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(width: 9),
-                                  Text(
-                                    StringUtils.capitalize(
-                                        missedIngredients[1]['name']),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: HexColor("#ffffff")),
-                                  ),
-                                ],
-                              )),
-                            if (missedIngredients.length > 2)
-                              (Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    CupertinoIcons.clear_circled_solid,
-                                    color: Colors.red,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(width: 9),
-                                  Text(
-                                    missedIngredients.length <= 2
-                                        ? StringUtils.capitalize(
-                                            missedIngredients[2]['name'])
-                                        : StringUtils.capitalize(
-                                                missedIngredients[2]['name']) +
-                                            ".." +
-                                            (missedIngredientCount - 2)
-                                                .toString() +
-                                            " more",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: HexColor("#ffffff")),
-                                  ),
-                                ],
-                              )),
-                          ],
+                        child: SizedBox(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              if (missedIngredients.isNotEmpty)
+                                Flexible(
+                                  child: (Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.clear_circled_solid,
+                                        color: Colors.red,
+                                        size: 15,
+                                      ),
+                                      const SizedBox(width: 9),
+                                      Text(
+                                        StringUtils.capitalize(
+                                            missedIngredients[0]['name']
+                                                .toString()),
+                                        overflow: TextOverflow
+                                            .ellipsis, // I used ellipsis, but it works with others (fade, clip, etc.)
+                                        maxLines: 1,
+
+                                        style: TextStyle(
+                                            overflow: TextOverflow.fade,
+                                            fontSize: 12,
+                                            color: HexColor("#ffffff")),
+                                      ),
+                                    ],
+                                  )),
+                                ),
+                              if (missedIngredients.length > 1)
+                                Flexible(
+                                  child: (Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.clear_circled_solid,
+                                        color: Colors.red,
+                                        size: 15,
+                                      ),
+                                      const SizedBox(width: 9),
+                                      Text(
+                                        StringUtils.capitalize(
+                                            missedIngredients[1]['name']),
+                                        overflow: TextOverflow.fade,
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                            overflow: TextOverflow.fade,
+                                            fontSize: 12,
+                                            color: HexColor("#ffffff")),
+                                      ),
+                                    ],
+                                  )),
+                                ),
+                              if (missedIngredients.length > 2)
+                                (Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      CupertinoIcons.clear_circled_solid,
+                                      color: Colors.red,
+                                      size: 15,
+                                    ),
+                                    const SizedBox(width: 9),
+                                    Text(
+                                      missedIngredients.length <= 2
+                                          ? StringUtils.capitalize(
+                                              missedIngredients[2]['name'])
+                                          : StringUtils.capitalize(
+                                                  missedIngredients[2]
+                                                      ['name']) +
+                                              ".." +
+                                              (missedIngredientCount - 2)
+                                                  .toString() +
+                                              " more",
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          overflow: TextOverflow.fade,
+                                          fontSize: 12,
+                                          color: HexColor("#ffffff")),
+                                    ),
+                                  ],
+                                )),
+                            ],
+                          ),
                         )),
-                    Container(
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                CupertinoIcons.checkmark_alt_circle_fill,
-                                color: Colors.green,
-                                size: 15,
-                              ),
-                              const SizedBox(width: 9),
-                              Text(
-                                "Used: " + usedIngredientCount.toString() + " ",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 12, color: HexColor("#ffffff")),
-                              ),
-                            ])),
+                    SizedBox(
+                      child: Container(
+                          // height: usedIngredientCount > 2 ? 65 : 45,
+                          // width: MediaQuery.of(context).size.width * 0.4,
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              for (int i = 0; i < usedIngredientCount - 1; i++)
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: (Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.check_mark_circled_solid,
+                                        color: Colors.green,
+                                        size: 15,
+                                      ),
+                                      const SizedBox(width: 9),
+                                      Text(
+                                        usedIngredients[i],
+                                        style: TextStyle(
+                                            overflow: TextOverflow.fade,
+                                            fontSize: 12,
+                                            color: HexColor("#ffffff")),
+                                      ),
+                                    ],
+                                  )),
+                                ),
+                            ],
+                          )),
+                    ),
+                    // Container(
+                    //     padding: const EdgeInsets.all(5),
+                    //     margin: const EdgeInsets.all(10),
+                    //     decoration: BoxDecoration(
+                    //       color: Colors.black.withOpacity(0.4),
+                    //       borderRadius: BorderRadius.circular(15),
+                    //     ),
+                    //     child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: [
+                    //           const Icon(
+                    //             CupertinoIcons.checkmark_alt_circle_fill,
+                    //             color: Colors.green,
+                    //             size: 15,
+                    //           ),
+                    //           const SizedBox(width: 9),
+                    //           Text(
+                    //             "Used: " + usedIngredientCount.toString() + " ",
+                    //             overflow: TextOverflow.fade,
+                    //             style: TextStyle(
+                    //                 fontSize: 12, color: HexColor("#ffffff")),
+                    //           ),
+                    //         ])),
                   ],
                 ),
                 alignment: Alignment.topLeft,
@@ -247,9 +286,10 @@ class RecipeFindCard extends StatelessWidget {
                                 const SizedBox(width: 9),
                                 Text(
                                   "Likes: $likes",
-                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      fontSize: 12, color: HexColor("#ffffff")),
+                                      overflow: TextOverflow.fade,
+                                      fontSize: 12,
+                                      color: HexColor("#ffffff")),
                                 ),
                               ])),
                     ]),

@@ -20,7 +20,7 @@ class recipeID {
     return recipeID(
         title: json['title'] as String,
         imageUrl: json['image'] as String,
-        rating: (json['spoonacularScore']) / 20,
+        rating: (json['weightWatcherSmartPoints']) / 20,
         ingredients: (json['extendedIngredients'] as List)
             .map((e) => e['original'])
             .toList(),

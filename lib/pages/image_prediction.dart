@@ -81,8 +81,12 @@ class _PredictionState extends State<Prediction> {
 
       recognitions.add(rec);
       String item = '';
-      if (recognitions[i] == null || recognitions[i].isEmpty) {
+      if (recognitions[i] == null) {
         item = 'Not Found';
+      } else if (recognitions[i].isEmpty) {
+        setState(() {
+          notFound = true;
+        });
       } else {
         item = recognitions[i][0]["label"].toString();
       }
@@ -305,7 +309,7 @@ class _PredictionState extends State<Prediction> {
                           enabledTrackColor: Colors.amber,
                           duration: const Duration(milliseconds: 100),
                           onChanged: (val) {
-                            isVegetableAdded[index] = (!val!);
+                            isVegetableAdded[index] = (val!);
                           },
                           value: true,
                           type: GFToggleType.ios,
@@ -326,7 +330,8 @@ class _PredictionState extends State<Prediction> {
     for (int i = 0; i < vegetables.length; i++) {
       if (isVegetableAdded[i]) finalList += vegetables[i] + ",";
     }
-    finalList.substring(0, finalList.length - 2);
+    finalList = finalList.substring(0, finalList.length - 1);
+    print(finalList);
     return finalList;
   }
 
@@ -356,7 +361,7 @@ class _PredictionState extends State<Prediction> {
           } else {
             ranking = 2;
           }
-          if (notFound) {
+          if (!notFound) {
             Get.to(() {
               String bruh = makeList();
               return RecipeFindClass(
@@ -369,7 +374,7 @@ class _PredictionState extends State<Prediction> {
           }
         },
         child: Text(
-          notFound ? 'Get Recipes' : 'Try Again',
+          !notFound ? 'Get Recipes' : 'Try Again',
           style: const TextStyle(
             fontSize: 23,
           ),
@@ -404,8 +409,10 @@ class _PredictionState extends State<Prediction> {
                 ),
                 Container(
                   margin: const EdgeInsets.all(5),
-                  height: MediaQuery.of(context).size.height * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   child: ListView(
+                    physics: const BouncingScrollPhysics(
+                        parent: BouncingScrollPhysics()),
                     children: [
                       SizedBox(
                         height: 370,
@@ -529,102 +536,111 @@ class _PredictionState extends State<Prediction> {
                           },
                         ),
                       ),
-                      if (notFound)
-                        Column(children: [
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Details',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.all(8),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300,
-                                  blurRadius: 4.0,
-                                  spreadRadius: 2.0,
-                                )
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Include Pantry Items',
+                      if (!notFound)
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Details',
                                   style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,
+                                    fontSize: 20,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                GFToggle(
-                                  enabledTrackColor: Colors.amber,
-                                  value: pantry,
-                                  type: GFToggleType.ios,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      pantry = value!;
-                                    });
-                                  },
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300,
-                                  blurRadius: 4.0,
-                                  spreadRadius: 2.0,
-                                )
-                              ],
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: GFDropdown(
-                                padding: const EdgeInsets.all(15),
-                                borderRadius: BorderRadius.circular(15),
-                                border: const BorderSide(
-                                    color: Colors.black12, width: 1),
-                                dropdownButtonColor: Colors.white,
-                                value: dropdownValue,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue.toString();
-                                  });
-                                },
-                                items: [
-                                  "Maximize Used Ingredients",
-                                  "Minimize Missing Ingredients",
-                                ]
-                                    .map((value) => DropdownMenuItem(
-                                          value: value,
-                                          child: Text(value),
-                                        ))
-                                    .toList(),
                               ),
-                            ),
-                          ),
-                          if (fruits.isNotEmpty) buildFruits(context),
-                          if (vegetables.isNotEmpty) buildVegetables(context),
-                        ])
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      blurRadius:
+                                          10.0, // has the effect of softening the shadow
+                                      spreadRadius:
+                                          5.0, // has the effect of extending the shadow
+                                    )
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Include Pantry Items',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    GFToggle(
+                                      enabledTrackColor: Colors.amber,
+                                      value: pantry,
+                                      type: GFToggleType.ios,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          pantry = value!;
+                                        });
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade200,
+                                      blurRadius:
+                                          10.0, // has the effect of softening the shadow
+                                      spreadRadius:
+                                          5.0, // has the effect of extending the shadow
+                                    )
+                                  ],
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: GFDropdown(
+                                    padding: const EdgeInsets.all(15),
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: const BorderSide(
+                                        color: Colors.black12, width: 1),
+                                    dropdownButtonColor: Colors.white,
+                                    value: dropdownValue,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        dropdownValue = newValue.toString();
+                                      });
+                                    },
+                                    items: [
+                                      "Maximize Used Ingredients",
+                                      "Minimize Missing Ingredients",
+                                    ]
+                                        .map((value) => DropdownMenuItem(
+                                              value: value,
+                                              child: Text(value),
+                                            ))
+                                        .toList(),
+                                  ),
+                                ),
+                              ),
+                              if (fruits.isNotEmpty) buildFruits(context),
+                              if (vegetables.isNotEmpty)
+                                buildVegetables(context),
+                            ])
                       else
                         showNoPrediction()
                     ],

@@ -11,7 +11,7 @@ class RecipeDetails {
   String? gaps;
   bool? lowFodmap;
   int? aggregateLikes;
-  double? spoonacularScore;
+  int? spoonacularScore;
   double? healthScore;
   // String? creditsText;
   // String? license;
@@ -87,7 +87,7 @@ class RecipeDetails {
     gaps = json['gaps'];
     lowFodmap = json['lowFodmap'];
     aggregateLikes = json['aggregateLikes'];
-    spoonacularScore = json['spoonacularScore'];
+    spoonacularScore = json['weightWatcherSmartPoints'];
     healthScore = json['healthScore'];
     // creditsText = json['creditsText'];
     // license = json['license'];
@@ -156,7 +156,7 @@ class RecipeDetails {
     data['gaps'] = gaps;
     data['lowFodmap'] = lowFodmap;
     data['aggregateLikes'] = aggregateLikes;
-    data['spoonacularScore'] = spoonacularScore;
+    data['weightWatcherSmartPoints'] = spoonacularScore;
     data['healthScore'] = healthScore;
     // data['creditsText'] = creditsText;
     // data['license'] = license;
@@ -213,7 +213,7 @@ class RecipeDetails {
       gaps: snapshot['gaps'],
       lowFodmap: snapshot['lowFodmap'],
       aggregateLikes: snapshot['aggregateLikes'],
-      spoonacularScore: snapshot['spoonacularScore'],
+      spoonacularScore: snapshot['weightWatcherSmartPoints'],
       // healthScore: snapshot['healthScore'] as double,
       // creditsText: snapshot['creditsText'],
       // license: snapshot['license'],

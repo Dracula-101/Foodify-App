@@ -26,6 +26,12 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
     getFromDatabase().then((value) => changeLoading());
   }
 
+  //getxstate function
+  GetXState database() {
+    getFromDatabase().then((value) => changeLoading());
+    return value;
+  }
+
   void deleteDuplicates() {
     //delete duplicates
     List<FavouritesCard> list = favouritesList;
@@ -53,11 +59,12 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
   void removeFavourite(String id) {
     favouritesList.removeWhere((element) => element.id == id);
     update();
+    removeFromDatabase(id);
   }
 
   void removeFromDatabase(String id) {
     FirebaseFirestore.instance
-        .collection('favourites')
+        .collection('users')
         .doc(user!.uid)
         .collection('favourites')
         .doc(id)
@@ -86,6 +93,7 @@ class FavouritesController extends GetxController with StateMixin<dynamic> {
   }
 
   Future<void> getFromDatabase() async {
+    favouritesList.clear();
     FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)

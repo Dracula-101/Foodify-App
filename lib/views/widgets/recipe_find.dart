@@ -27,12 +27,15 @@ class _RecipeFindClassState extends State<RecipeFindClass> {
   @override
   void initState() {
     super.initState();
+    widget.ingredients.split(',').forEach((element) {
+      ingredients.add(element);
+    });
     getRecipes();
   }
 
   late List<RecipeFind> _recipes;
   bool _isLoading = true;
-
+  late List<String> ingredients = [];
   Future<void> getRecipes() async {
     _recipes = await RecipeFindApi.getRecipe(
         widget.ingredients, widget.ranking, widget.pantry);
@@ -49,51 +52,50 @@ class _RecipeFindClassState extends State<RecipeFindClass> {
         body: _isLoading
             ? const Center(child: Loader())
             : Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(children: [
-                  IconButton(
-                    icon: const Icon(CupertinoIcons.back),
-                    iconSize: 40,
-                    onPressed: () {
-                      Get.back();
-                    },
+                children: [
+                  const SizedBox(
+                    height: 30,
                   ),
-                  const Text(
-                    "Recipes",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ]),
-                Expanded(
-                  child: FadingEdgeScrollView.fromScrollView(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(0.0),
-                      controller: _controller,
-                      itemCount: _recipes.length,
-                      itemBuilder: (context, index) {
-                        return RecipeFindCard(
-                          id: _recipes[index].id,
-                          title: _recipes[index].title,
-                          image: _recipes[index].image,
-                          likes: _recipes[index].usedIngredientCount,
-                          missedIngredientCount:
-                              _recipes[index].missedIngredientCount,
-                          usedIngredientCount:
-                              _recipes[index].usedIngredientCount,
-                          missedIngredients:
-                              _recipes[index].missedIngredients,
-                          usedIngredients: _recipes[index].usedIngredients,
-                        );
+                  Row(children: [
+                    IconButton(
+                      icon: const Icon(CupertinoIcons.back),
+                      iconSize: 40,
+                      onPressed: () {
+                        Get.back();
                       },
                     ),
+                    const Text(
+                      "Recipes",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ]),
+                  Expanded(
+                    child: FadingEdgeScrollView.fromScrollView(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(0.0),
+                        controller: _controller,
+                        itemCount: _recipes.length,
+                        itemBuilder: (context, index) {
+                          return RecipeFindCard(
+                            id: _recipes[index].id,
+                            title: _recipes[index].title,
+                            image: _recipes[index].image,
+                            likes: _recipes[index].usedIngredientCount,
+                            missedIngredientCount:
+                                _recipes[index].missedIngredientCount,
+                            usedIngredientCount: ingredients.length,
+                            missedIngredients:
+                                _recipes[index].missedIngredients,
+                            usedIngredients: ingredients,
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ));
+                ],
+              ));
   }
 }

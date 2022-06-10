@@ -154,28 +154,29 @@ class _RecipeCardState extends State<RecipeCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                              size: 18,
-                            ),
-                            const SizedBox(width: 7),
-                            Text(
-                              widget.rating,
-                              style: TextStyle(
-                                  fontSize: 12, color: HexColor("#ffffff")),
-                            ),
-                          ],
-                        )),
+                    if (widget.description != "search")
+                      Container(
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 7),
+                              Text(
+                                widget.rating,
+                                style: TextStyle(
+                                    fontSize: 12, color: HexColor("#ffffff")),
+                              ),
+                            ],
+                          )),
                     widget.description == "search"
                         ? Container(
                             padding: const EdgeInsets.all(5),

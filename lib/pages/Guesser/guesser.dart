@@ -32,6 +32,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   bool isSearching = false;
   bool isError = false;
   bool isTakingTime = false;
+  bool isCancelled = false;
   String? link;
   XFile? image;
   ImageAnalysis? imageAnalysis;
@@ -112,7 +113,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                   (InkWell(
                     onTap: () {
                       setState(() {
-                        isLoaded = false;
+                        isLoaded = !isLoaded;
                       });
                     },
                     child: const Padding(
@@ -131,7 +132,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           const SizedBox(
             height: 10,
           ),
-          !isLoaded && !isSearching
+          !isLoaded && !isSearching && !isCancelled
               ? displayCamera()
               : isSearching && !isError
                   ? Column(children: [
@@ -169,38 +170,40 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         (InkWell(
                           onTap: () {
                             setState(() {
-                              isLoaded = !isLoaded;
+                              isLoaded = false;
+                              isSearching = false;
+                              isCancelled = false;
                             });
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: Container(
-                              padding: const EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Colors.redAccent,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: FittedBox(
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      FontAwesomeIcons.xmark,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: FittedBox(
+                              child: Row(
+                                children: const [
+                                  Icon(
+                                    FontAwesomeIcons.xmark,
+                                    color: Colors.white,
+                                    size: 35,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      fontSize: 20,
                                       color: Colors.white,
-                                      size: 35,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      'Cancel',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -341,11 +344,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ElevatedButton(
                   onPressed: () {
-                    startTimer();
-                    takeTime();
-                    setState(() {
-                      isSearching = true;
-                    });
                     getImage();
                   },
                   child: const Text("Add From Gallery")),
@@ -427,11 +425,21 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   void getImage() async {
-    image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      isSearching = true;
+    image = await ImagePicker()
+        .pickImage(source: ImageSource.gallery)
+        .then((value) {
+      startTimer();
+      takeTime();
+      if (value != null) {
+        if (!isCancelled) {
+          setState(() {
+            isSearching = !isSearching;
+          });
+        }
+      }
+      return value;
     });
+
     if (image != null) {
       link = await uploadFile(image!);
       // getImageAnalysis(link!);

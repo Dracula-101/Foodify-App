@@ -255,7 +255,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                       },
                       icon: const Icon(
                         FontAwesomeIcons.shareNodes,
-                        color: Colors.black,
+                        color: Colors.black54,
                         size: 30,
                       ),
                     )),
@@ -434,7 +434,7 @@ class _ProcedurePageState extends State<ProcedurePage> {
                                           Text(
                                               details!.spoonacularScore != null
                                                   ? (details!.spoonacularScore! /
-                                                          20.0)
+                                                          5.0)
                                                       .toString()
                                                   : (Random().nextDouble() * 5)
                                                           .toStringAsPrecision(

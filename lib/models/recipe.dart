@@ -25,7 +25,7 @@ class Recipe {
             : json['image'] as String,
         rating: json['spoonacularScore'] != null
             ? (json['spoonacularScore'] as double) / 20.0
-            : roundOffToXDecimal((Random().nextDouble()) * 5),
+            : (json['weightWatcherSmartPoints'] as int) / 5.0,
         readyInMinutes: json['readyInMinutes'] as int,
         vegetarian: json['vegetarian'] as bool);
   }
