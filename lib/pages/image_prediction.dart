@@ -331,7 +331,6 @@ class _PredictionState extends State<Prediction> {
       if (isVegetableAdded[i]) finalList += vegetables[i] + ",";
     }
     finalList = finalList.substring(0, finalList.length - 1);
-    print(finalList);
     return finalList;
   }
 

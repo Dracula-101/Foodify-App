@@ -385,7 +385,7 @@ class _HomeDrawerState extends State<HomeDrawer>
                 onTap: () {
                   Get.snackbar(
                     "Developed by:",
-                    "Pratik Pujari, Dilip Patel and Krishna Pai",
+                    "Dracula-101, Dilip Patel",
                     duration: const Duration(seconds: 2),
                     icon: const Icon(FontAwesomeIcons.handsClapping,
                         color: Colors.black54),

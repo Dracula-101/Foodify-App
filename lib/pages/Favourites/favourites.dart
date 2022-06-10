@@ -4,8 +4,6 @@ import 'package:foodify/loading/loader.dart';
 import 'package:foodify/loading/loading_plate.dart';
 import 'package:foodify/pages/Favourites/controller/favourites_controller.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/components/alert/gf_alert.dart';
-import 'package:getwidget/components/floating_widget/gf_floating_widget.dart';
 import '../../views/widgets/fav_card.dart';
 
 class Favourites extends StatelessWidget {
