@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:image_size_getter/file_input.dart';
+import 'package:image_size_getter/image_size_getter.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -35,6 +36,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   bool isCancelled = false;
   String? link;
   XFile? image;
+  BuildContext? contextNew;
+  int height = 1200;
+  int width = 800;
   ImageAnalysis? imageAnalysis;
 
   Future<String> uploadFile(XFile _image) async {
@@ -216,12 +220,18 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   SizedBox displayImage() {
+    final size = ImageSizeGetter.getSize(FileInput(File(image!.path)));
+    if (size.height > MediaQuery.of(context).size.height * 0.6) {
+      height = (MediaQuery.of(context).size.height * 0.6).toInt();
+    }
+    width = size.width;
     return SizedBox(
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.6,
-            width: MediaQuery.of(context).size.width * 0.8,
+            margin: const EdgeInsets.all(20),
+            height: height.toDouble(),
+            width: width.toDouble(),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               boxShadow: [
@@ -368,7 +378,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                 try {
                   await _initializeControllerFuture;
                   image = await _controller.takePicture();
-                  link = await uploadFile(image!);
                   Get.snackbar(
                     'Image Taken',
                     'Processing Image...',
@@ -381,6 +390,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     snackPosition: SnackPosition.BOTTOM,
                     duration: const Duration(seconds: 2),
                   );
+                  link = await uploadFile(image!);
                 } catch (e) {
                   Get.snackbar(
                     'Error',
@@ -427,7 +437,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   void getImage() async {
     image = await ImagePicker()
         .pickImage(source: ImageSource.gallery)
-        .then((value) {
+        .then((value) async {
       startTimer();
       takeTime();
       if (value != null) {
