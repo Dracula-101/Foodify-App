@@ -21,9 +21,7 @@ class ImageCamera extends StatefulWidget {
 class _ImageCameraState extends State<ImageCamera> {
   @override
   void initState() {
-    initializeCamera().then((value) {
-      _controller.setFlashMode(FlashMode.off);
-    });
+    initializeCamera();
     super.initState();
   }
 
@@ -53,6 +51,8 @@ class _ImageCameraState extends State<ImageCamera> {
       future: _initializeControllerFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          //TURN OFF FLASH
+          _controller.setFlashMode(FlashMode.off);
           return buildCamera(context);
         } else {
           return const Center(child: Loader());

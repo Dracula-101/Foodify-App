@@ -210,7 +210,7 @@ class _PredictionState extends State<Prediction> {
                           GFToggle(
                             enabledTrackColor: Colors.amber,
                             onChanged: (val) {
-                              isFruitAdded[index] = (!val!);
+                              isFruitAdded[index] = !isFruitAdded[index];
                             },
                             value: true,
                             type: GFToggleType.ios,
@@ -309,7 +309,7 @@ class _PredictionState extends State<Prediction> {
                           enabledTrackColor: Colors.amber,
                           duration: const Duration(milliseconds: 100),
                           onChanged: (val) {
-                            isVegetableAdded[index] = (val!);
+                            isVegetableAdded[index] = !isVegetableAdded[index];
                           },
                           value: true,
                           type: GFToggleType.ios,
@@ -330,7 +330,14 @@ class _PredictionState extends State<Prediction> {
     for (int i = 0; i < vegetables.length; i++) {
       if (isVegetableAdded[i]) finalList += vegetables[i] + ",";
     }
-    finalList = finalList.substring(0, finalList.length - 1);
+    if (finalList == '') {
+      Get.snackbar(
+        'Error',
+        'Please select atleast one item',
+      );
+    } else {
+      finalList = finalList.substring(0, finalList.length - 1);
+    }
     return finalList;
   }
 

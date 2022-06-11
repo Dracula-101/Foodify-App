@@ -199,7 +199,7 @@ class RecipeFindCard extends StatelessWidget {
                         )),
                     SizedBox(
                       child: Container(
-                          // height: usedIngredientCount > 2 ? 65 : 45,
+                          height: getDim(usedIngredientCount),
                           // width: MediaQuery.of(context).size.width * 0.4,
                           padding: const EdgeInsets.all(5),
                           margin: const EdgeInsets.all(10),
@@ -210,9 +210,8 @@ class RecipeFindCard extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              for (int i = 0; i < usedIngredientCount - 1; i++)
+                              for (int i = 0; i < usedIngredientCount; i++)
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: (Row(
@@ -237,29 +236,6 @@ class RecipeFindCard extends StatelessWidget {
                             ],
                           )),
                     ),
-                    // Container(
-                    //     padding: const EdgeInsets.all(5),
-                    //     margin: const EdgeInsets.all(10),
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.black.withOpacity(0.4),
-                    //       borderRadius: BorderRadius.circular(15),
-                    //     ),
-                    //     child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.center,
-                    //         children: [
-                    //           const Icon(
-                    //             CupertinoIcons.checkmark_alt_circle_fill,
-                    //             color: Colors.green,
-                    //             size: 15,
-                    //           ),
-                    //           const SizedBox(width: 9),
-                    //           Text(
-                    //             "Used: " + usedIngredientCount.toString() + " ",
-                    //             overflow: TextOverflow.fade,
-                    //             style: TextStyle(
-                    //                 fontSize: 12, color: HexColor("#ffffff")),
-                    //           ),
-                    //         ])),
                   ],
                 ),
                 alignment: Alignment.topLeft,
@@ -295,35 +271,6 @@ class RecipeFindCard extends StatelessWidget {
                     ]),
                 alignment: Alignment.bottomCenter,
               ),
-              // Align(
-              //   child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Container(
-              //             padding: const EdgeInsets.all(5),
-              //             margin: const EdgeInsets.all(10),
-              //             decoration: BoxDecoration(
-              //               color: Colors.black.withOpacity(0.4),
-              //               borderRadius: BorderRadius.circular(15),
-              //             ),
-              //             child: Row(
-              //                 // mainAxisAlignment: MainAxisAlignment.center,
-              //                 children: [
-              //                   const Icon(
-              //                     CupertinoIcons.heart_solid,
-              //                     color: Colors.pinkAccent,
-              //                     size: 15,
-              //                   ),
-              //                   const SizedBox(width: 9),
-              //                   Text(
-              //                     "Bro WTF",
-              //                     style: TextStyle(
-              //                         fontSize: 12, color: HexColor("#ffffff")),
-              //                   ),
-              //                 ])),
-              //       ]),
-              //   alignment: AlignmentDirectional.bottomEnd,
-              // ),
             ],
           ),
           decoration: BoxDecoration(
@@ -340,16 +287,28 @@ class RecipeFindCard extends StatelessWidget {
                 spreadRadius: -6.0,
               ),
             ],
-            // image: DecorationImage(
-            //   colorFilter: ColorFilter.mode(
-            //     Colors.black.withOpacity(0.5),
-            //     BlendMode.multiply,
-            //   ),
-            //   image: NetworkImage(thumbnailUrl),
-            //   fit: BoxFit.cover,
-            // ),
           ),
         ));
+  }
+
+  double getDim(int count) {
+    switch (count) {
+      case 1:
+        return 31.0;
+      case 2:
+        return 45.0;
+      case 3:
+        return 65.0;
+      case 4:
+        return 85.0;
+      case 5:
+        return 105.0;
+      case 6:
+        return 125.0;
+      case 7:
+        return 145.0;
+    }
+    return 0.0;
   }
 
   Widget buildShimmer(BuildContext context) => Container(
