@@ -373,7 +373,11 @@ class _PredictionState extends State<Prediction> {
           }
         },
         child: Text(
-          !notFound ? 'Get Recipes' : 'Try Again',
+          !isLoading
+              ? !notFound
+                  ? 'Get Recipes'
+                  : 'Try Again'
+              : 'Loading...',
           style: const TextStyle(
             fontSize: 23,
           ),

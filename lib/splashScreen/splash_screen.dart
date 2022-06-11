@@ -80,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen>
               Column(
                 children: [
                   AnimatedContainer(
-                    duration: const Duration(milliseconds: 1500),
+                    duration: const Duration(milliseconds: 1000),
                     curve: Curves.fastOutSlowIn,
                     height: changeDim
                         ? MediaQuery.of(context).size.height * 0.35
@@ -89,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen>
                   AnimatedOpacity(
                     opacity: _opacity,
                     duration: const Duration(seconds: 2),
-                    child: const Center(
+                    child: Center(
                       child: FittedBox(
                         child: Text(
                           'Foodify',
@@ -98,6 +98,12 @@ class _SplashScreenState extends State<SplashScreen>
                             fontSize: 55,
                             fontFamily: 'Amsterdam-ZVGqm',
                             fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 10,
+                                color: Colors.white.withOpacity(0.7),
+                              ),
+                            ],
                           ),
                         ),
                       ),

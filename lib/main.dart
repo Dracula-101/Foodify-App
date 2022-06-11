@@ -16,6 +16,7 @@ import 'package:foodify/views/widgets/trending.dart';
 import 'package:get/get.dart';
 import 'pages/Favourites/favourites.dart';
 import 'pages/Home/home.dart';
+import 'pages/Image Camera/image_camera.dart';
 import 'pages/MyList/mylist.dart';
 import 'pages/Guesser/guesser.dart';
 import 'dart:io';
@@ -589,15 +590,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // backgroundColor: Colors.transparent,
           elevation: 4,
           onPressed: () async {
-            List<XFile>? images =
-                await _picker?.pickMultiImage(imageQuality: 100);
-            setState(() {});
-            if (images!.isEmpty) return;
             Get.to(() {
-              return ImageSelector(
-                images: images,
+              return ImageCamera(
+                cameras: firstCamera,
               );
-            }, transition: Transition.upToDown);
+            });
+            // List<XFile>? images =
+            //     await _picker?.pickMultiImage(imageQuality: 100);
+            // setState(() {});
+            // if (images!.isEmpty) return;
+            // Get.to(() {
+            //   return ImageSelector(
+            //     images: images,
+            //   );
+            // }, transition: Transition.upToDown);
           },
           isExtended: true,
           child: const Icon(
