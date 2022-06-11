@@ -31,6 +31,12 @@ class RecipeFindCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    for (int i = 0; i < missedIngredients.length; i++) {
+      if (missedIngredients[i]['name'].length > 17) {
+        missedIngredients[i]['name'] =
+            missedIngredients[i]['name'].substring(0, 17);
+      }
+    }
     return InkWell(
         onTap: () async {
           Get.to(
@@ -85,6 +91,7 @@ class RecipeFindCard extends StatelessWidget {
                             TextStyle(fontSize: 19, color: HexColor("#ffffff")),
                         overflow: TextOverflow.fade,
                         maxLines: 2,
+                        softWrap: true,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -94,12 +101,11 @@ class RecipeFindCard extends StatelessWidget {
               ),
               Align(
                 child: Row(
-                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        height: missedIngredients.length > 2 ? 65 : 45,
+                        height: missedIngredients.length > 2 ? 70 : 50,
                         padding: const EdgeInsets.all(5),
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -108,7 +114,7 @@ class RecipeFindCard extends StatelessWidget {
                         ),
                         child: SizedBox(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               if (missedIngredients.isNotEmpty)
@@ -129,7 +135,7 @@ class RecipeFindCard extends StatelessWidget {
                                         overflow: TextOverflow
                                             .ellipsis, // I used ellipsis, but it works with others (fade, clip, etc.)
                                         maxLines: 1,
-
+                                        softWrap: true,
                                         style: TextStyle(
                                             overflow: TextOverflow.fade,
                                             fontSize: 12,
@@ -154,7 +160,7 @@ class RecipeFindCard extends StatelessWidget {
                                             missedIngredients[1]['name']),
                                         overflow: TextOverflow.fade,
                                         maxLines: 1,
-                                        softWrap: false,
+                                        softWrap: true,
                                         style: TextStyle(
                                             overflow: TextOverflow.fade,
                                             fontSize: 12,
@@ -225,6 +231,7 @@ class RecipeFindCard extends StatelessWidget {
                                       const SizedBox(width: 9),
                                       Text(
                                         usedIngredients[i],
+                                        softWrap: true,
                                         style: TextStyle(
                                             overflow: TextOverflow.fade,
                                             fontSize: 12,
@@ -296,7 +303,7 @@ class RecipeFindCard extends StatelessWidget {
       case 1:
         return 31.0;
       case 2:
-        return 45.0;
+        return 52.0;
       case 3:
         return 65.0;
       case 4:

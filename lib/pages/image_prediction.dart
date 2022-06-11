@@ -28,7 +28,7 @@ class _PredictionState extends State<Prediction> {
   List<bool> isVegetableAdded = [];
   bool pantry = true;
   int ranking = 1;
-  bool notFound = false;
+  bool notFound = true;
   String dropdownValue = "Maximize Used Ingredients";
   @override
   initState() {
@@ -81,14 +81,13 @@ class _PredictionState extends State<Prediction> {
 
       recognitions.add(rec);
       String item = '';
-      if (recognitions[i] == null) {
+      if (recognitions[i] == null || recognitions[i].isEmpty) {
         item = 'Not Found';
-      } else if (recognitions[i].isEmpty) {
-        setState(() {
-          notFound = true;
-        });
       } else {
         item = recognitions[i][0]["label"].toString();
+        setState(() {
+          notFound = false;
+        });
       }
       if (key.fruits.contains(item) && !fruits.contains(item)) {
         fruits.add(recognitions[i][0]["label"]);
