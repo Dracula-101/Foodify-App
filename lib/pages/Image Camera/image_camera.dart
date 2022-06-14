@@ -1,11 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
-
+import 'dart:math' as math;
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:foodify/pages/Image%20Camera/image_controller.dart';
+import 'package:foodify/views/widgets/render_boxes.dart';
 import 'package:get/get.dart';
+import 'package:tflite/tflite.dart';
 
 import '../../loading/loader.dart';
 import '../image_prediction.dart';
@@ -19,31 +23,105 @@ class ImageCamera extends StatefulWidget {
 }
 
 class _ImageCameraState extends State<ImageCamera> {
-  @override
-  void initState() {
-    initializeCamera();
-    super.initState();
-  }
-
   late CameraController _controller; //To control the camera
   late Future<void>
       _initializeControllerFuture; //Future to wait until camera initializes
   final ImageCameraController controller = Get.put(ImageCameraController());
   bool isCaptured = false;
   double bottomPos = 20;
+  bool isLoading = true;
+  bool isDetecting = false;
+  List? results;
+  var tmp;
+  double? screenH, screenW, previewH, previewW, screenRatio, previewRatio;
 
-  initializeCamera() async {
-    _controller = CameraController(
-      widget.cameras,
-      ResolutionPreset.high,
-    );
-    _initializeControllerFuture = _controller.initialize();
+  @override
+  void initState() {
+    super.initState();
+    loadModel();
+    initializeCamera();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  initializeCamera() async {
+    _controller = CameraController(
+      widget.cameras,
+      ResolutionPreset.low,
+    );
+    _initializeControllerFuture = _controller.initialize().then((value) async {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+        startDetection();
+      }
+
+      return value;
+    });
+  }
+
+  loadModel() async {
+    Tflite.close();
+    try {
+      await Tflite.loadModel(
+        model: "assets/tflite/model_unquant.tflite",
+        labels: "assets/tflite/labels.txt",
+      );
+      //
+      // setState(() {
+      //   print("Hwllo");
+      //   isLoading = false;
+      // });
+    } on PlatformException {
+      Get.snackbar(
+        "Error",
+        "Failed to load the model",
+        icon: const Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        borderRadius: 10,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
+    }
+  }
+
+  void startDetection() async {
+    _controller.startImageStream((CameraImage img) {
+      if (!isDetecting) {
+        setState(() {
+          isDetecting = true;
+        });
+
+        int startTime = DateTime.now().millisecondsSinceEpoch;
+        Tflite.runModelOnFrame(
+          bytesList: img.planes.map((plane) {
+            return plane.bytes;
+          }).toList(),
+          imageHeight: img.height,
+          imageWidth: img.width,
+          numResults: 2,
+        ).then((recognitions) {
+          int endTime = DateTime.now().millisecondsSinceEpoch;
+          log("Detection took ${endTime - startTime}");
+          results = recognitions;
+          log(results.toString());
+          // widget.setRecognitions(recognitions, img.height, img.width);
+
+          setState(() {
+            isDetecting = false;
+          });
+        });
+      }
+    });
   }
 
   FutureBuilder<void> displayCamera() {
@@ -121,7 +199,8 @@ class _ImageCameraState extends State<ImageCamera> {
         ),
         child: IconButton(
           onPressed: () {
-            return Get.back();
+            controller.dispose();
+            Get.back();
           },
           icon: const Icon(
             FontAwesomeIcons.arrowLeft,
@@ -346,6 +425,15 @@ class _ImageCameraState extends State<ImageCamera> {
 
   @override
   Widget build(BuildContext context) {
+    tmp = MediaQuery.of(context).size;
+    screenH = math.max(tmp.height, tmp.width);
+    screenW = math.min(tmp.height, tmp.width);
+    tmp = _controller.value.previewSize!;
+    previewH = math.max(tmp.height, tmp.width);
+    previewW = math.min(tmp.height, tmp.width);
+    screenRatio = screenH! / screenW!;
+    previewRatio = previewH! / previewW!;
+
     return Scaffold(
         body: Stack(
       children: [
@@ -354,16 +442,33 @@ class _ImageCameraState extends State<ImageCamera> {
         buildCaptureButton(),
         images(),
         flashButton(),
-        doneButton()
+        doneButton(),
       ],
     ));
   }
 
   SizedBox buildCamera(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: CameraPreview(_controller),
+      width: tmp.width,
+      height: tmp.height,
+      child: OverflowBox(
+        maxHeight: screenRatio! > previewRatio!
+            ? screenH
+            : screenW! / previewW! * previewH!,
+        maxWidth: screenRatio! > previewRatio!
+            ? screenH! / previewH! * previewW!
+            : screenW!,
+        child: CameraPreview(_controller),
+      ),
+    );
+  }
+
+  Stack text(BuildContext context) {
+    return Stack(
+      children: [
+        BndBox(
+            results!, previewH!.toInt(), previewW!.toInt(), screenH!, screenW!)
+      ],
     );
   }
 }

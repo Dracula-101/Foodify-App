@@ -34,7 +34,7 @@ class RecipeFindCard extends StatelessWidget {
     for (int i = 0; i < missedIngredients.length; i++) {
       if (missedIngredients[i]['name'].length > 17) {
         missedIngredients[i]['name'] =
-            missedIngredients[i]['name'].substring(0, 17);
+            missedIngredients[i]['name'].substring(0, 16);
       }
     }
     return InkWell(
@@ -76,28 +76,6 @@ class RecipeFindCard extends StatelessWidget {
                 placeholder: (context, url) => ShimmerWidget.rectangular(
                     height: 180, br: BorderRadius.circular(15)),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-              Align(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 15),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 5),
-                      child: Text(
-                        title,
-                        style:
-                            TextStyle(fontSize: 19, color: HexColor("#ffffff")),
-                        overflow: TextOverflow.fade,
-                        maxLines: 2,
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-                alignment: Alignment.center,
               ),
               Align(
                 child: Row(
@@ -207,7 +185,7 @@ class RecipeFindCard extends StatelessWidget {
                       child: Container(
                           height: getDim(usedIngredientCount),
                           // width: MediaQuery.of(context).size.width * 0.4,
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(2),
                           margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.4),
@@ -278,6 +256,28 @@ class RecipeFindCard extends StatelessWidget {
                     ]),
                 alignment: Alignment.bottomCenter,
               ),
+              Align(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5.0, vertical: 5),
+                      child: Text(
+                        title,
+                        style:
+                            TextStyle(fontSize: 19, color: HexColor("#ffffff")),
+                        overflow: TextOverflow.fade,
+                        maxLines: 2,
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+              ),
             ],
           ),
           decoration: BoxDecoration(
@@ -305,7 +305,7 @@ class RecipeFindCard extends StatelessWidget {
       case 2:
         return 52.0;
       case 3:
-        return 65.0;
+        return 73.0;
       case 4:
         return 85.0;
       case 5:

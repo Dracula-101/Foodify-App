@@ -81,14 +81,23 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
+  refreshCamera() {
+    // _controller.dispose();
     _controller = CameraController(
       widget.camera,
       ResolutionPreset.high,
     );
     _initializeControllerFuture = _controller.initialize();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // _controller = CameraController(
+    //   widget.camera,
+    //   ResolutionPreset.high,
+    // );
+    // _initializeControllerFuture = _controller.initialize();
   }
 
   @override
@@ -99,7 +108,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // log('sett rebuild');
+    refreshCamera();
     return Scaffold(
       body: ListView(
         shrinkWrap: true,
@@ -336,7 +345,16 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         if (snapshot.connectionState == ConnectionState.done) {
           return buildCamera();
         } else {
-          return const Center(child: Loader());
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.5,
+              ),
+              const Loader()
+            ],
+          );
         }
       },
     );
@@ -374,6 +392,36 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                   },
                   child: const Text("Add From Gallery")),
             ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                    color: Colors.amberAccent,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black54,
+                        blurRadius: 4.0,
+                        spreadRadius: 4.0,
+                      )
+                    ],
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      FontAwesomeIcons.arrowRotateLeft,
+                      color: Colors.black,
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      refreshCamera();
+                    },
+                  ),
+                ),
+              ),
+            )
           ],
         ),
         const SizedBox(
