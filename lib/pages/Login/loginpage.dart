@@ -235,6 +235,14 @@ class LoginPage extends StatelessWidget {
     }
 
     try {
+      Get.snackbar(
+        "Logging in",
+        "Please wait",
+        colorText: Colors.black,
+        duration: const Duration(seconds: 3),
+        icon: const Icon(Icons.person, color: Colors.white),
+        snackPosition: SnackPosition.TOP,
+      );
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: _email, password: _password);
     } on FirebaseAuthException catch (e) {

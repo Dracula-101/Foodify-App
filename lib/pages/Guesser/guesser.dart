@@ -82,7 +82,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }
 
   refreshCamera() {
-    // _controller.dispose();
     _controller = CameraController(
       widget.camera,
       ResolutionPreset.high,
@@ -93,22 +92,15 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   void initState() {
     super.initState();
-    // _controller = CameraController(
-    //   widget.camera,
-    //   ResolutionPreset.high,
-    // );
-    // _initializeControllerFuture = _controller.initialize();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    _controller = CameraController(
+      widget.camera,
+      ResolutionPreset.high,
+    );
+    _initializeControllerFuture = _controller.initialize();
   }
 
   @override
   Widget build(BuildContext context) {
-    refreshCamera();
     return Scaffold(
       body: ListView(
         shrinkWrap: true,
@@ -231,14 +223,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   SizedBox displayImage() {
     final size = ImageSizeGetter.getSize(FileInput(File(image!.path)));
-    // log(size.height.toString() + "," + size.width.toString());
-    // if (size.height > MediaQuery.of(context).size.height * 0.6) {
-    //   setState(() {
-    //     height = (MediaQuery.of(context).size.height * 0.6).toInt();
-    //     log("this is the height" + height.toString());
-    //     width = size.width;
-    //   });
-    // }
     if (!pictureTaken) {
       setState(() {
         pictureHeight = size.height.toDouble();
@@ -392,36 +376,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                   },
                   child: const Text("Add From Gallery")),
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    color: Colors.amberAccent,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black54,
-                        blurRadius: 4.0,
-                        spreadRadius: 4.0,
-                      )
-                    ],
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.arrowRotateLeft,
-                      color: Colors.black,
-                      size: 25,
-                    ),
-                    onPressed: () {
-                      refreshCamera();
-                    },
-                  ),
-                ),
-              ),
-            )
           ],
         ),
         const SizedBox(

@@ -9,7 +9,6 @@ import 'package:foodify/pages/Login/loginpage.dart';
 import 'package:foodify/pages/RandomRecipe/random_recipe.dart';
 import 'package:foodify/pages/Settings/settings.dart';
 import 'package:foodify/pages/VideoFinder/video_finder.dart';
-import 'package:foodify/pages/Image%20Picker/image_picker.dart';
 import 'package:foodify/splashScreen/splash_screen.dart';
 import 'package:foodify/views/widgets/recipe_search_card.dart';
 import 'package:foodify/views/widgets/trending.dart';
@@ -394,32 +393,6 @@ class _HomeDrawerState extends State<HomeDrawer>
                   );
                 },
               ),
-
-              // Align(
-              //   alignment: Alignment.centerLeft,
-              //   child: Container(
-              //     color: Colors.transparent,
-              //     height: 55,
-              //     width: 200,
-              //     child: InkWell(
-              //       child: const Center(
-              //         child: Text(
-              //           "Close",
-              //           textAlign: TextAlign.center,
-              //           style: TextStyle(
-              //             fontSize: 22,
-              //             color: Colors.white,
-              //             fontWeight: FontWeight.normal,
-              //           ),
-              //         ),
-              //       ),
-              //       onTap: () {
-              //         print('closed');
-              //         _controller.close();
-              //       },
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -450,7 +423,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String? name, confidence;
   int currentTab = 0;
 
-  ImagePicker? _picker;
   TextEditingController searchController = TextEditingController();
 
   Widget? createdHome;
@@ -482,11 +454,6 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                   child: TextField(
                 onTap: () {},
-                controller: searchController,
-                // onChanged: (value) async {
-                //   await RecipeSuggestionAPI.getSuggestion(value)
-                //       .then((value) => list = value);
-                // },
                 onSubmitted: (value) {
                   Get.to(RecipeSearchCard(
                     title: value,
@@ -506,11 +473,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
                     hintText: "Search Recipes"),
-                // onChanged: (text) {
-                //   widget.searched = true;
-                //   widget.searchedRecipe = text;
-                //   print('Recipe Searched');
-                // },
               )),
               IconButton(
                 splashRadius: 20,
@@ -562,7 +524,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     super.initState();
-    _picker = ImagePicker();
     loadModel();
     createdHome = createHome(context);
   }
@@ -595,15 +556,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 cameras: firstCamera,
               );
             });
-            // List<XFile>? images =
-            //     await _picker?.pickMultiImage(imageQuality: 100);
-            // setState(() {});
-            // if (images!.isEmpty) return;
-            // Get.to(() {
-            //   return ImageSelector(
-            //     images: images,
-            //   );
-            // }, transition: Transition.upToDown);
           },
           isExtended: true,
           child: const Icon(

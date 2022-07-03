@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:foodify/pages/MyList/mylist.dart';
 import 'package:lottie/lottie.dart';
+
+import '../pages/Favourites/favourites.dart';
+import '../pages/Home/home.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -41,6 +45,12 @@ class _SplashScreenState extends State<SplashScreen>
     _textAnimation!.dispose();
     timer!.cancel();
     super.dispose();
+  }
+
+  void initializePages() {
+    const Home();
+    const Favourites();
+    const MyList();
   }
 
   fadeInText() async {
@@ -100,8 +110,8 @@ class _SplashScreenState extends State<SplashScreen>
                             fontWeight: FontWeight.bold,
                             shadows: [
                               Shadow(
-                                blurRadius: 10,
-                                color: Colors.white.withOpacity(0.7),
+                                blurRadius: 100,
+                                color: Colors.white.withOpacity(0.8),
                               ),
                             ],
                           ),
