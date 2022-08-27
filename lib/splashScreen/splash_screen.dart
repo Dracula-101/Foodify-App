@@ -47,12 +47,6 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  void initializePages() {
-    const Home();
-    const Favourites();
-    const MyList();
-  }
-
   fadeInText() async {
     Future.delayed(const Duration(milliseconds: 200), () {
       if (!mounted) return;
